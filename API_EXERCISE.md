@@ -63,3 +63,5 @@ Each command has access to the simulation controller, which manages the current 
 
 ###How is the GUI updated after a command has completed execution
 The GUI is returned the state of the simulation after a command is executed. This state package will hold all the data that the GUI needs to draw.
+
+The Main class will be responsible for initializing the IDE. The IDE will be split into the GUI and a Reader which reads the input from the user. This input is then passed in to the Parser, which parses the input and generates a list of commands. These commands will be passed in to the TurtlesController or the Logic classes depending on the nature of the command.
