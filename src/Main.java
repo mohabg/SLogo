@@ -13,8 +13,6 @@ import javafx.util.Duration;
  * This is the main program, which runs Cell Society.
  */
 public class Main extends Application {
-    // public static final int WIDTH = 600;
-    // public static final int HEIGHT = 400;
 
     private GUI myGUI;
 
