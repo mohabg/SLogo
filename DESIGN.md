@@ -94,39 +94,38 @@ information required to display the turtle’s position, lines on the canvas, et
 Design Considerations
 ===================
 1. Defining how the user will do things outside of the SLogo
-
 * How will commands be executed?
 * How will scripts be called?
 * How will syntax errors/other user input errors be called? Back end does screening, front end doesn't give indication of errors until
 after info is parsed and sent to logic
-2. Classes to interact between front end and back end- Will the parser declare commands?
 
+2. Classes to interact between front end and back end- Will the parser declare commands?
 * Parser can either only turn string input into data structure, or have additional responsibilities involving processing of commands
 * Would either make the parser more active with more responsibility, or more closed with more specialization
-3. What data structure will be sent from the parser to the backend?
 
+3. What data structure will be sent from the parser to the backend?
 * Submit as a map, or maybe a tree
 * On a higher level, what is the point of the parser? Should it be screening for syntax errors?
 * What would make the parser as closed as possible? How would this trade off with how closed the logic is?
-4. What data structure will be sent from the backend to the front end to update?
 
+4. What data structure will be sent from the backend to the front end to update?
 * Next data object, contains all settings for drawing screen and moving turtle
 * Must contain all variables and functions declared
 * What information does the front end need to draw the canvas without giving it all away?
-5. How will we decide which commands to execute? Interpreter vs. factory vs. tree
 
+5. How will we decide which commands to execute? Interpreter vs. factory vs. tree
 * A factory might allow us to submit a variety of command rules while out putting commands in a standard way- increase closedness of 
 logic
 * Will we get lost in if statements and logic for the tree?
 * Can an interpreter handle complex commands?
-6. Will turtle move itself or will controller move turtle?
 
+6. Will turtle move itself or will controller move turtle?
 * Allowing the turtle to move itself will make it a more active class
 * A turtle only holding its state will make it more passive, but also allow more flexibility
 * A controller would have visibility of the whole canvas, while a turtle's vision is limited to itself- more flexibility could result
 from a controller doing the moving
-7. What will the relationship between the commands and the controller be?
 
+7. What will the relationship between the commands and the controller be?
 * Will the controller object have its own actions or will that be matched up to a method in the controller?
 * Encapsulation would be better if we only used the controller to match up turtles to commands
 * Increased flexibility- could be used for multiple turtles and a variety of commands
