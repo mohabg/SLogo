@@ -19,7 +19,6 @@ position) and acting as an object for the controller to delegate to.
 
 Design Overview
 ==============
-How internal/external front end/back end work together
 
 ###API Details
 
@@ -67,9 +66,10 @@ encountered. The user will press enter to execute the currently typed command
 * The User Functions and Variables window shows variables that have been defined in either the script or command window, in a string 
 format
 
-If the user enters an empty string and attempts the execute, nothing will happen. If the user enters an invalid command or code, a red 
+If the user enters an empty string and attempts the execute, nothing will happen. If the user enters an invalid command or code, a red
 error message will appear in the command window.
 
+![UI Sketch](https://github.com/duke-compsci308-spring2016/slogo_team10/blob/master/plans/UISketch.png)
 
 
 API Details
@@ -81,9 +81,10 @@ created to display text from their respective text fields and relay it to the ba
 for incorporating all elements of the user interface. There will be a button (tentatively located near the upper left-hand corner) to 
 update language, another to execute scripts, and another to display the help page in the GUI class.
 
-The UML diagram generated from the backend API is shown below.
+The UML diagrams generated from the backend and frontend APIs are shown below.
 
-
+![Front End](https://github.com/duke-compsci308-spring2016/slogo_team10/blob/master/plans/FrontEndUML.png)
+![Back End] (https://github.com/duke-compsci308-spring2016/slogo_team10/blob/master/plans/uml.png)
 
 API Example Code
 ===============
