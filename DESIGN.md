@@ -10,7 +10,7 @@ requiring flexibility in the logic of translating commands to actions, as well a
 for complex actions.
 
 
-The project will be designed such that in the front end TALK ABOUT OPEN/CLOSED IN FRONT END
+The project will be designed such that in the front end will be completely closed, and will only call other functions within the backend and parser.
 The intermediary between the front and back end will be closed, parsing the code inputted by the user in the same manner regardless of 
 what commands are inputted and outputting that information to the logic. It is within the logic and controller that the user will have 
 more ability to add functionality. Openness in these parts of the code will allow for additional commands and actions for the turtle to 
