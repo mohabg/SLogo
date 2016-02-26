@@ -1,3 +1,4 @@
+package slogo;
 
 public class LogicController {
     private Interpreter interpreter;

@@ -1,9 +1,13 @@
 package gui;
 
-public class Workspace {
+import observers.WorkspaceData;
 
-    public Workspace () {
-        // TODO Auto-generated constructor stub
+
+public class Workspace {
+    private WorkspaceData data;
+
+    public Workspace (WorkspaceData data) {
+        this.data = data;
     }
 
     public void handleReturnKey () {

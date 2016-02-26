@@ -1,3 +1,4 @@
+package slogo;
 import javafx.geometry.Point2D;
 
 

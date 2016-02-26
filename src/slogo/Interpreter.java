@@ -1,5 +1,10 @@
+package slogo;
 
-public class Interpreter {
+import java.util.Observable;
+import observers.Data;
+
+
+public class Interpreter extends Observable {
     private LogicController logicController;
     private TurtleController turtleController;
     private SceneManager sceneManager;
@@ -8,7 +13,7 @@ public class Interpreter {
         // TODO Auto-generated constructor stub
     }
 
-    public ReturnData interpret (String command) {
+    public Data interpret (String command) {
         // TODO
         return null;
     }
