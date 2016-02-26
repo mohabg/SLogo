@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>gui</OriginalElement>
+  <nodes>
+    <node x="184.0" y="0.0">gui.Workspace</node>
+    <node x="0.0" y="0.0">gui.Canvas</node>
+    <node x="421.0" y="11.0">gui.CommandWindow</node>
+    <node x="253.5" y="145.0">gui.GUI</node>
+    <node x="574.0" y="22.0">gui.ScriptWindow</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="gui.GUI" target="gui.Workspace">
+      <point x="-34.125" y="-114.0" />
+      <point x="355.875" y="115.0" />
+      <point x="292.5" y="115.0" />
+      <point x="0.0" y="47.5" />
+    </edge>
+    <edge source="gui.GUI" target="gui.Canvas">
+      <point x="-102.375" y="-114.0" />
+      <point x="287.625" y="125.0" />
+      <point x="82.0" y="125.0" />
+      <point x="0.0" y="47.5" />
+    </edge>
+    <edge source="gui.GUI" target="gui.CommandWindow">
+      <point x="34.125" y="-114.0" />
+      <point x="424.125" y="115.0" />
+      <point x="487.5" y="115.0" />
+      <point x="0.0" y="36.5" />
+    </edge>
+    <edge source="gui.GUI" target="gui.ScriptWindow">
+      <point x="102.375" y="-114.0" />
+      <point x="492.375" y="125.0" />
+      <point x="664.0" y="125.0" />
+      <point x="0.0" y="25.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="377.0" y="186.5" />
+  <SelectedNodes>
+    <node>gui.Workspace</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
