@@ -1,9 +1,10 @@
-
-public class Forward extends TurtleCommand {
+package slogo;
+public class Forward extends Command {
 
 	private Double pixels;
 	
-	public Forward(Double pixels) {
+	public Forward(Double pixels, int iterations) {
+		super(iterations);
 		this.pixels = pixels;
 	}
 

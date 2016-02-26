@@ -1,27 +1,45 @@
 package slogo;
-import javafx.geometry.Point2D;
-
+import javafx.scene.image.Image;
 
 public class Turtle {
-    private Point2D position;
-    private double heading;
-    private boolean penDown;
 
-    public Turtle () {
-        // TODO Auto-generated constructor stub
-    }
+	//public static final Image DEFAULT_IMAGE
 
-    // Turtle commands
-    public void forward (double pixels) {
-        // TODO
-    }
+	private double xCord;
+	private double yCord;
+	private double orientation;
+	private Image myImage;
+	private boolean penDown;
+	// In case user wants to resize turtle
+	//private double height;
+	//private double width;
 
-    // Turtle Queries
-    public double getXCor () {
-        return position.getX();
-    }
+	public Turtle() {
+		xCord = 0;
+		yCord = 0;
+		orientation = 0;
+		penDown = true;
+	}
 
-    public double getYCor () {
-        return position.getY();
-    }
+	public double getX(){
+		return xCord;
+	}
+	public double getY(){
+		return yCord;
+	}
+	public double getOrientation(){
+		return orientation;
+	}
+	public Image getImage(){
+		return myImage;
+	}
+	public void setX(Double x){
+		xCord = x;
+	}
+	public void setY(Double y){
+		yCord = y;
+	}
+	public void turn(Double angle){
+		orientation += angle;
+	}
 }
