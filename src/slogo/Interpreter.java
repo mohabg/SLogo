@@ -7,7 +7,7 @@ import gui.CommandWindow;
 public class Interpreter extends Observable {
     private LogicController logicController;
     private TurtleController turtleController;
-    private SceneManager sceneManager;
+    private SlogoManager manager;
 
     private CommandWindow console;
 
