@@ -1,5 +1,9 @@
 package slogo;
+import java.util.List;
+
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Turtle {
 
@@ -8,8 +12,11 @@ public class Turtle {
 	private double xCord;
 	private double yCord;
 	private double orientation;
-	private Image myImage;
+	private ImageView myImage;
 	private boolean penDown;
+	private String penColor;
+	private List<Point2D> points; 
+	
 	// In case user wants to resize turtle
 	//private double height;
 	//private double width;
@@ -30,7 +37,7 @@ public class Turtle {
 	public double getOrientation(){
 		return orientation;
 	}
-	public Image getImage(){
+	public ImageView getImage(){
 		return myImage;
 	}
 	public void setX(Double x){
