@@ -65,7 +65,8 @@ public class Interpreter extends Observable {
         return regex.matcher(text).matches();
     }
     public String interpret (String command) {
-        // TODO: parse
+        final String WHITESPACE = "\\p{Space}";
+        parseText(command.split(WHITESPACE));
         return "test echo: " + command;
     }
 
