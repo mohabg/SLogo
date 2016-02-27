@@ -1,16 +1,23 @@
 package gui;
 
-public class CommandWindow {
+import javafx.scene.control.TextArea;
+
+
+public class CommandWindow extends TextArea {
 
     public CommandWindow () {
-        // TODO Auto-generated constructor stub
+
     }
 
-    public void print () {
+    public void printError (String message) {
 
     }
 
     public void handleReturnKey () {
+
+    }
+
+    private void print (String message) {
 
     }
 
