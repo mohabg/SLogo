@@ -1,19 +1,24 @@
 package slogo;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import javafx.geometry.Point2D;
 
 
 public class SlogoManager {
-    private TurtleController turtleController;
-    private List<Point2D> points; // points that are drawn per frame, maintains history
+	private TurtleController turtleController;
+	private Parser myParser;
+	private List<CommandNode> currCommandTree;
+	private List<CommandNode> pastCommands;
+	// points that are drawn per frame, maintains history
 
-    public SlogoManager () {
-        // TODO Auto-generated constructor stub
-    	turtleController = new TurtleController();
-    }
-
-    public void update () { // called in every frame
-        turtleController.update();
-        // TODO: what else?
-    }
+	public SlogoManager () {
+		// TODO Auto-generated constructor stub
+		turtleController = new TurtleController();
+	}
+	public void initialize(){
+	}
+	public void update (String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // called in every frame
+		currCommandTree = myParser.interpret(input);
+		turtleController.update();
+	}
 }
