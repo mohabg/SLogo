@@ -1,5 +1,7 @@
 package gui;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 import slogo.Interpreter;
@@ -23,8 +25,6 @@ public class CommandWindow extends TextArea {
         String text = this.getText().trim();
         System.out.println(text);
         String command = text.substring(text.lastIndexOf("\n")).trim();
-        String retStr = interpreter.interpret(command);
-        print(retStr);
         // TODO: add prompt character
     }
 

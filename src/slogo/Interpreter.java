@@ -5,6 +5,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Observable;
 import java.util.ResourceBundle;
+import java.lang.reflect.InvocationTargetException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
@@ -16,14 +17,18 @@ public class Interpreter extends Observable {
     private LogicController logicController;
     private TurtleController turtleController;
     private SlogoManager manager;
-
+    
+    private CommandFactory commandFactory;
     private CommandWindow console;
     
+    private List<CommandNode> commands;
     private List<Entry<String, Pattern>> mySymbols;
 
     public Interpreter (CommandWindow console) {
         this.console = console;
+        commandFactory = new CommandFactory();
         mySymbols = new ArrayList<>();
+        commands = new ArrayList<>();
     }
     
     public void addLanguage(String language){
@@ -41,13 +46,23 @@ public class Interpreter extends Observable {
         }
     }
 
-    private void parseText(String[] text){
-    	for(String word : text){
+    private List<CommandNode> parseText(String[] text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    	for(int i = 0; i < text.length; i++){
+    		String word = text[i];
     		if(word.trim().length() > 0){
     			String symbol = getSymbol(word);
+    			CommandNode command = commandFactory.getCommandNode(symbol);
+    			commands.add(command);
+    			int childrenNeeded = command.parametersNeeded();
+    			for(int j = 0; j < childrenNeeded; j++){
+    				String nextWord = text[i++];
+    				String nextSymbol = getSymbol(nextWord);
+    				command.addToChildren(commandFactory.getCommandNode(nextSymbol));
+    			}
     			
     		}
     	}
+    	return commands;
     }
     // returns the language's type associated with the given text if one exists 
     private String getSymbol (String text) {
@@ -64,10 +79,9 @@ public class Interpreter extends Observable {
     private boolean match (String text, Pattern regex) {
         return regex.matcher(text).matches();
     }
-    public String interpret (String command) {
+    public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         final String WHITESPACE = "\\p{Space}";
-        parseText(command.split(WHITESPACE));
-        return "test echo: " + command;
+        return parseText(command.split(WHITESPACE));
     }
 
 }

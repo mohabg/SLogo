@@ -1,11 +1,21 @@
 package slogo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class CommandNode {
 
-	public CommandNode() {
-		// TODO Auto-generated constructor stub
-	}
+	private List<CommandNode> children;
 	
-	abstract void parametersNeeded();
-
+	public CommandNode() {
+		children = new ArrayList<>();
+	}
+	public void addToChildren(CommandNode command){
+		children.add(command);
+	}
+	public List<CommandNode> getChildren(){
+		return children;
+	}
+	abstract int parametersNeeded();
+		
 }
