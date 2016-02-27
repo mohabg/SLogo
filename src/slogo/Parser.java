@@ -4,64 +4,77 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.lang.reflect.InvocationTargetException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import sun.reflect.generics.tree.Tree;
+
 public class Parser{
 
-    private List<Entry<String, Pattern>> mySymbols;
+	private CommandFactory commandFactory;
+	private List<Entry<String, Pattern>> mySymbols;
 
-    public Parser () {
-        mySymbols = new ArrayList<>();
-    }
-    
-    public void addLanguage(String language){
-    	addPatterns(language);
-    }
-    private void addPatterns (String language) {
-    	String filePath = String.format("resources/languages/%s", language);
-        ResourceBundle resources = ResourceBundle.getBundle(filePath);
-        Enumeration<String> iter = resources.getKeys();
-        while (iter.hasMoreElements()) {
-            String key = iter.nextElement();
-            String regex = resources.getString(key);
-            mySymbols.add(new SimpleEntry<>(key,
-                           Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
-        }
-    }
+	public Parser () {
+		commandFactory = new CommandFactory();
+		mySymbols = new ArrayList<>();
+	}
 
-    private void parseText(String[] text){
-    	for(String word : text){
-    		if(word.trim().length() > 0){
-    			String symbol = getSymbol(word);
-    			
-    		}
-    	}
-    }
-    // returns the language's type associated with the given text if one exists 
-    private String getSymbol (String text) {
-        final String ERROR = "NO MATCH";
-        for (Entry<String, Pattern> e : mySymbols) {
-            if (match(text, e.getValue())) {
-                return e.getKey();
-            }
-        }
-        // Indicates syntax error
-        return ERROR;
-    }
+	public void addLanguage(String language){
+		addPatterns(language);
+	}
+	private void addPatterns (String language) {
+		String filePath = String.format("resources/languages/%s", language);
+		ResourceBundle resources = ResourceBundle.getBundle(filePath);
+		Enumeration<String> iter = resources.getKeys();
+		while (iter.hasMoreElements()) {
+			String key = iter.nextElement();
+			String regex = resources.getString(key);
+			mySymbols.add(new SimpleEntry<>(key,
+					Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
+		}
+	}
 
-    // returns true if the given text matches the given regular expression pattern
-    private boolean match (String text, Pattern regex) {
-        return regex.matcher(text).matches();
-    }
-    
-    //public Tree buildCommandTree(){
-    	//return;
-    //}
-    /*public String interpret (String command) {
-        // TODO: parse
-        return "test echo: " + command;
-    }*/
+	private List<CommandNode> parseText(String[] text)throws InstantiationException, IllegalAccessException,
+	IllegalArgumentException, InvocationTargetException{
+		ArrayList<CommandNode> CommandList = new ArrayList<CommandNode>();
+		for(int i = 0; i < text.length; i++){
+			String word = text[i];
+			if(word.trim().length() > 0){
+				String symbol = getSymbol(word);
+				CommandNode command = commandFactory.getCommandNode(symbol);
+				CommandList.add(command);
+				int childrenNeeded = command.parametersNeeded();
+				for(int j = 0; j < childrenNeeded; j++){
+					String nextWord = text[i++];
+					String nextSymbol = getSymbol(nextWord);
+					command.addToChildren(commandFactory.getCommandNode(nextSymbol));
+				}
 
-}
+			}
+		}
+		return CommandList;
+	}
+		// returns the language's type associated with the given text if one exists 
+		private String getSymbol (String text) {
+			final String ERROR = "NO MATCH";
+			for (Entry<String, Pattern> e : mySymbols) {
+				if (match(text, e.getValue())) {
+					return e.getKey();
+				}
+			}
+			// Indicates syntax error
+			return ERROR;
+		}
+
+		// returns true if the given text matches the given regular expression pattern
+		private boolean match (String text, Pattern regex) {
+			return regex.matcher(text).matches();
+		}
+		public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	        final String WHITESPACE = "\\p{Space}";
+	        return parseText(command.split(WHITESPACE));
+	    }
+
+	}
