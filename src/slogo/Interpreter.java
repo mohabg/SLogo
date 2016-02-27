@@ -2,7 +2,6 @@ package slogo;
 
 import java.util.Observable;
 import gui.CommandWindow;
-import observers.Data;
 
 
 public class Interpreter extends Observable {
@@ -17,9 +16,9 @@ public class Interpreter extends Observable {
         // TODO
     }
 
-    public Data interpret (String command) {
-        // TODO
-        return null;
+    public String interpret (String command) {
+        // TODO: parse
+        return "test echo: " + command;
     }
 
 }

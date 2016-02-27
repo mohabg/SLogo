@@ -1,15 +1,15 @@
 package gui;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -17,11 +17,11 @@ import observers.CanvasData;
 import observers.ReturnData;
 import observers.WorkspaceData;
 import slogo.Interpreter;
-import slogo.Resources;
 
 
 public class GUI {
     private Stage stage;
+    private ObservableList<Node> rootNodeChildren;
 
     // Data-transfer
     ReturnData data;
@@ -41,11 +41,7 @@ public class GUI {
 
         this.data = new ReturnData();
 
-        this.canvas = createCanvas((CanvasData) data);
-        this.commandWindow = createCommandWindow();
-        this.scriptWindow = createScriptWindow();
-        this.workspace = createWorkspace((WorkspaceData) data);
-
+        // TODO: design flaw? Interpreter and CommandWindow reference each other
         this.interpreter = new Interpreter(commandWindow);
         interpreter.addObserver(data);
     }
@@ -53,10 +49,18 @@ public class GUI {
     public Scene init (int width, int height) {
         Group root = new Group();
         Scene myScene = new Scene(root, width, height);
+        rootNodeChildren = root.getChildren();
 
+        // GUI elements
+        this.canvas = createCanvas((CanvasData) data);
+        this.commandWindow = createCommandWindow(interpreter);
+        this.scriptWindow = createScriptWindow();
+        this.workspace = createWorkspace((WorkspaceData) data);
+
+        // Root node and grid layout
         GridPane grid =
                 createGridPane(this.canvas, this.commandWindow, this.scriptWindow, this.workspace);
-        root.getChildren().add(grid);
+        rootNodeChildren.add(grid);
 
         return myScene;
     }
@@ -86,6 +90,13 @@ public class GUI {
         return (new Point2D(screenWidth / 2, screenHeight / 2));
     }
 
+    public static void setCenterPos (Node node, Point2D centerPos) {
+        double x = centerPos.getX();
+        double y = centerPos.getY();
+        node.setTranslateX(x - node.getBoundsInLocal().getWidth() / 2);
+        node.setTranslateY(y - node.getBoundsInLocal().getHeight() / 2);
+    }
+
     // Reference: http://docs.oracle.com/javafx/2/layout/builtin_layouts.htm
     private GridPane createGridPane (MyCanvas canvas,
                                      CommandWindow console,
@@ -97,19 +108,15 @@ public class GUI {
         grid.setPadding(new Insets(0, 10, 0, 10));
 
         grid.add(canvas, 0, 0);
-        grid.add(console, 1, 0);
-        grid.add(editor, 1, 1);
+        grid.add(console, 1, 1);
+        grid.add(editor, 1, 0);
         grid.add(workspace, 0, 1);
 
         return grid;
     }
 
+    // TODO: remove
     private void example (GridPane grid) {
-        // Category in column 2, row 1
-        Text title = new Text(Resources.TITLE);
-        title.setFont(Font.font(Resources.FONT, FontWeight.BOLD, Resources.TITLE_FONT_SIZE));
-        grid.add(title, 1, 0);
-
         // Right label in column 4 (top), row 3
         Text servicesPercent = new Text("Services\n20%");
         GridPane.setValignment(servicesPercent, VPos.TOP);
@@ -117,13 +124,16 @@ public class GUI {
     }
 
     private MyCanvas createCanvas (CanvasData data) {
-        MyCanvas canvas = new MyCanvas(data);
+        Group canvasNode = new Group();
+        // TODO: GUI.setCenterPos(canvasNode, ...)?
+        rootNodeChildren.add(canvasNode);
+        MyCanvas canvas = new MyCanvas(data, canvasNode.getChildren());
         // TODO
         return canvas;
     }
 
-    private CommandWindow createCommandWindow () {
-        CommandWindow console = new CommandWindow();
+    private CommandWindow createCommandWindow (Interpreter interpreter) {
+        CommandWindow console = new CommandWindow(interpreter);
         // TODO
         return console;
     }
