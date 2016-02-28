@@ -1,4 +1,6 @@
 package slogo;
+import java.lang.reflect.InvocationTargetException;
+
 import gui.GUI;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -16,12 +18,19 @@ import javafx.util.Duration;
 public class Main extends Application {
 
     private GUI myGUI;
+    private SlogoManager myManager;
 
     /**
      * Set things up at the beginning.
+     * @throws InvocationTargetException 
+     * @throws IllegalArgumentException 
+     * @throws IllegalAccessException 
+     * @throws InstantiationException 
      */
     @Override
-    public void start (Stage stage) {
+    public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    	myManager = new SlogoManager();
+    	myManager.update("fd 50");
         myGUI = new GUI(stage);
         // TODO: stage.setTitle();
 

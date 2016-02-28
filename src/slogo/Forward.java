@@ -1,16 +1,15 @@
 package slogo;
 public class Forward extends CommandNode {
-
-	private Double pixels;
 	
 	public Forward() {
-		setParametersNeeded(2);
+		setParametersNeeded(1);
+		setUsesTurtle(true);
 	}
 
 	@Override
 	void run() {
-		getTurtle().setX(getTurtle().getX() + pixels*Math.sin(getTurtle().getOrientation()));
-		getTurtle().setX(getTurtle().getY() + pixels*Math.cos(getTurtle().getOrientation()));
+		getTurtle().setX(getTurtle().getX() + getChildren().get(0).getValue()*Math.sin(getTurtle().getOrientation()));
+		getTurtle().setX(getTurtle().getY() + getChildren().get(0).getValue()*Math.cos(getTurtle().getOrientation()));
 	}
 
 	@Override
