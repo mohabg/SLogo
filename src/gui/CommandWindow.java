@@ -1,6 +1,7 @@
 package gui;
 
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import slogo.Interpreter;
 import slogo.Resources;
@@ -11,6 +12,18 @@ public class CommandWindow extends TextArea {
 
     public CommandWindow (Interpreter interpreter) {
         this.interpreter = interpreter;
+        print("\n"); // TODO: hack!
+        initControls();
+    }
+
+    private void initControls () {
+        this.setOnKeyPressed(e -> handleKeyPressed(e.getCode()));
+    }
+
+    private void handleKeyPressed (KeyCode key) {
+        if (key == KeyCode.ENTER) {
+            handleReturnKey();
+        }
     }
 
     public void printError (String message) {
@@ -20,9 +33,9 @@ public class CommandWindow extends TextArea {
     }
 
     public void handleReturnKey () {
-        String text = this.getText().trim();
+        String text = this.getText();
         System.out.println(text);
-        String command = text.substring(text.lastIndexOf("\n")).trim();
+        String command = text.substring(text.lastIndexOf("\n"));
         String retStr = interpreter.interpret(command);
         print(retStr);
         // TODO: add prompt character

@@ -18,7 +18,7 @@ public class Interpreter extends Observable {
 
     public String interpret (String command) {
         // TODO: parse
-        return "test echo: " + command;
+        return "\ntest echo: " + command;
     }
 
 }
