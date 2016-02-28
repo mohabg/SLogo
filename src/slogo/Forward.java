@@ -7,12 +7,13 @@ public class Forward extends CommandNode {
 	}
 
 	@Override
-	void run() {
-		getTurtle().setX(getTurtle().getX() + getChildren().get(0).getValue()*Math.sin(getTurtle().getOrientation()));
-		getTurtle().setX(getTurtle().getY() + getChildren().get(0).getValue()*Math.cos(getTurtle().getOrientation()));
+	double run() {
+		setValue(getChildren().get(0).run());
+		double pixelsToMove = getValue();
+		double x = (getTurtle().getX() + pixelsToMove*Math.sin(getTurtle().getOrientation()));
+		double y = (getTurtle().getY() + pixelsToMove*Math.cos(getTurtle().getOrientation()));
+		getTurtle().move(x, y);
+		return pixelsToMove;
 	}
 
-	@Override
-	void setParameters() {		
-	}
 }

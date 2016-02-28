@@ -30,7 +30,7 @@ public class Main extends Application {
     @Override
     public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	myManager = new SlogoManager();
-    	myManager.update("fd 50");
+    	myManager.update("forward forward 50");
         myGUI = new GUI(stage);
         // TODO: stage.setTitle();
 

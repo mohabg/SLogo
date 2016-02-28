@@ -14,7 +14,6 @@ public abstract class CommandNode {
 	public CommandNode() {
 		children = new ArrayList<>();
 	}
-	abstract void setParameters();
 
 	public int parametersNeeded(){
 		return parametersNeeded;
@@ -22,7 +21,7 @@ public abstract class CommandNode {
 	public void addToChildren(CommandNode command){
 		children.add(command);
 	}
-	abstract void run();
+	abstract double run();
 
 	public Turtle getTurtle(){
 		return turtle;

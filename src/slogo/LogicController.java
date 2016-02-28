@@ -7,5 +7,7 @@ public class LogicController {
         // TODO Auto-generated constructor stub
     }
 
-    // Math and boolean op's
+    public void update(CommandNode command){
+    	command.run();
+    }
 }

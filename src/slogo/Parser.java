@@ -41,16 +41,20 @@ public class Parser{
 		ArrayList<CommandNode> CommandList = new ArrayList<CommandNode>();
 		for(int i = 0; i < text.length; i++){
 			String word = text[i];
+			System.out.println(word + " " + i);
 			if(word.trim().length() > 0){
 				String symbol = getSymbol(word);
 				CommandNode command = commandFactory.getCommandNode(symbol, word);
 				CommandList.add(command);
 				int childrenNeeded = command.parametersNeeded();
-				for(int j = 0; j < childrenNeeded; j++){
-					String nextWord = text[++i];
+				System.out.println(command + " " + childrenNeeded);
+				for(int j = 1; j <= childrenNeeded; j++){
+					String nextWord = text[i + j - 1];
 					String nextSymbol = getSymbol(nextWord);
 					System.out.println(nextWord + " " + nextSymbol);
-					command.addToChildren(commandFactory.getCommandNode(nextSymbol, nextWord));
+					CommandNode nextCommand = commandFactory.getCommandNode(nextSymbol, nextWord); 
+					command.addToChildren(nextCommand);
+					System.out.println(command.getChildren().size());
 				}
 
 			}

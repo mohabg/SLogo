@@ -6,6 +6,7 @@ import javafx.geometry.Point2D;
 
 public class SlogoManager {
 	private TurtleController turtleController;
+	private LogicController logicController;
 	private Parser myParser;
 	private List<CommandNode> currCommandTree;
 	private List<CommandNode> pastCommands;
@@ -14,6 +15,7 @@ public class SlogoManager {
 	public SlogoManager () {
 		// TODO Auto-generated constructor stub
 		turtleController = new TurtleController();
+		logicController = new LogicController();
 		myParser = new Parser();
 	}
 	public void initialize(){
@@ -23,6 +25,9 @@ public class SlogoManager {
 		for (CommandNode command : currCommandTree){
 			if(command.getUsesTurtle()){
 				turtleController.update(command);
+			}
+			else {
+				logicController.update(command);
 			}
 		}
 	}
