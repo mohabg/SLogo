@@ -9,8 +9,6 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import sun.reflect.generics.tree.Tree;
-
 public class Parser{
 
 	private CommandFactory commandFactory;
@@ -19,6 +17,8 @@ public class Parser{
 	public Parser () {
 		commandFactory = new CommandFactory();
 		mySymbols = new ArrayList<>();
+		addLanguage("English");
+		addLanguage("Syntax");
 	}
 
 	public void addLanguage(String language){
@@ -43,13 +43,14 @@ public class Parser{
 			String word = text[i];
 			if(word.trim().length() > 0){
 				String symbol = getSymbol(word);
-				CommandNode command = commandFactory.getCommandNode(symbol);
+				CommandNode command = commandFactory.getCommandNode(symbol, word);
 				CommandList.add(command);
 				int childrenNeeded = command.parametersNeeded();
 				for(int j = 0; j < childrenNeeded; j++){
-					String nextWord = text[i++];
+					String nextWord = text[++i];
 					String nextSymbol = getSymbol(nextWord);
-					command.addToChildren(commandFactory.getCommandNode(nextSymbol));
+					System.out.println(nextWord + " " + nextSymbol);
+					command.addToChildren(commandFactory.getCommandNode(nextSymbol, nextWord));
 				}
 
 			}

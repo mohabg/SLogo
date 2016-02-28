@@ -16,12 +16,17 @@ public class CommandFactory {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CommandNode getCommandNode(String commandName){
+	public CommandNode getCommandNode(String commandName, String word){
 		// Gets correct command constructor through reflection, instatiates node
 		try {
-			Class commClass = Class.forName(commandName);
+			Class commClass = Class.forName("slogo." + commandName);
 			Constructor commConstructor = commClass.getConstructor();
 			CommandNode commCalled =  (CommandNode) commConstructor.newInstance();
+			try{
+			commCalled.setValue(Integer.parseInt(word));
+			}catch (NumberFormatException e){
+				//TODO:catch error
+			}
 			return commCalled;
 
 		} catch (ClassNotFoundException e) {

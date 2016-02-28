@@ -14,11 +14,16 @@ public class SlogoManager {
 	public SlogoManager () {
 		// TODO Auto-generated constructor stub
 		turtleController = new TurtleController();
+		myParser = new Parser();
 	}
 	public void initialize(){
 	}
 	public void update (String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // called in every frame
 		currCommandTree = myParser.interpret(input);
-		turtleController.update();
+		for (CommandNode command : currCommandTree){
+			if(command.getUsesTurtle()){
+				turtleController.update(command);
+			}
+		}
 	}
 }
