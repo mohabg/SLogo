@@ -30,11 +30,9 @@ public class CommandFactory {
 			return commCalled;
 
 		} catch (Exception e){
-			e.printStackTrace();
 		}
-
 		return null;
-	}
+}
 	private void fillCommandMap(){
 
 	}
