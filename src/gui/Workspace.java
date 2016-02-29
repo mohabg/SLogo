@@ -1,9 +1,10 @@
 package gui;
 
+import javafx.scene.control.TableView;
 import observers.WorkspaceData;
 
 
-public class Workspace {
+public class Workspace extends TableView<String> {
     private WorkspaceData data;
 
     public Workspace (WorkspaceData data) {

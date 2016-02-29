@@ -2,12 +2,14 @@ package slogo;
 
 public class Make extends CommandNode {
 
-	public Make() {
+	public Make(double val) {
+		super(val);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	void run() {
+	double run() {
+		return 0;
 		// TODO Auto-generated method stub
 
 	}

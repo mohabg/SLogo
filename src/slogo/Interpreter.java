@@ -1,7 +1,7 @@
 package slogo;
 
 import java.util.Observable;
-import observers.Data;
+import gui.CommandWindow;
 
 
 public class Interpreter extends Observable {
@@ -9,13 +9,16 @@ public class Interpreter extends Observable {
     private TurtleController turtleController;
     private SlogoManager manager;
 
-    public Interpreter () {
-        // TODO Auto-generated constructor stub
+    private CommandWindow console;
+
+    public Interpreter (CommandWindow console) {
+        this.console = console;
+        // TODO
     }
 
-    public Data interpret (String command) {
-        // TODO
-        return null;
+    public String interpret (String command) {
+        // TODO: parse
+        return "test echo: " + command;
     }
 
 }

@@ -35,51 +35,67 @@ public class Parser{
 					Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
 		}
 	}
-
-	private List<CommandNode> parseText(String[] text)throws InstantiationException, IllegalAccessException,
+	private List<CommandNode> parseText(String[] text) throws InstantiationException, IllegalAccessException,
 	IllegalArgumentException, InvocationTargetException{
-		ArrayList<CommandNode> CommandList = new ArrayList<CommandNode>();
+
+		List<CommandNode> commandList = createCommandNodes(text);
+		List<CommandNode> commandHeads = new ArrayList<>();
+		List<Integer> headCommandIndices = new ArrayList<>();
+		for(int i = 0; i < commandList.size() - 1; i++){
+			headCommandIndices.add(i);
+			i = createChildren(commandList, i);
+		}
+		for(int i = 0; i < headCommandIndices.size(); i++){
+			int headCommandIndex = headCommandIndices.get(i);
+			commandHeads.add(commandList.get(headCommandIndex));
+		}
+		return commandHeads;
+	}
+
+	private List<CommandNode> createCommandNodes(String[] text){
+		List<CommandNode> commandList = new ArrayList<>();
 		for(int i = 0; i < text.length; i++){
 			String word = text[i];
-			System.out.println(word + " " + i);
 			if(word.trim().length() > 0){
 				String symbol = getSymbol(word);
 				CommandNode command = commandFactory.getCommandNode(symbol, word);
-				CommandList.add(command);
-				int childrenNeeded = command.parametersNeeded();
-				System.out.println(command + " " + childrenNeeded);
-				for(int j = 1; j <= childrenNeeded; j++){
-					String nextWord = text[i + j - 1];
-					String nextSymbol = getSymbol(nextWord);
-					System.out.println(nextWord + " " + nextSymbol);
-					CommandNode nextCommand = commandFactory.getCommandNode(nextSymbol, nextWord); 
-					command.addToChildren(nextCommand);
-					System.out.println(command.getChildren().size());
-				}
-
+				commandList.add(command);
 			}
 		}
-		return CommandList;
+		return commandList;
 	}
-		// returns the language's type associated with the given text if one exists 
-		private String getSymbol (String text) {
-			final String ERROR = "NO MATCH";
-			for (Entry<String, Pattern> e : mySymbols) {
-				if (match(text, e.getValue())) {
-					return e.getKey();
-				}
+	private int createChildren(List<CommandNode> commandList, int currentIndex) {
+		CommandNode currentCommand = commandList.get(currentIndex);
+		int lastChildIndex = currentIndex + currentCommand.parametersNeeded();
+		for(int i = currentIndex + 1; i <= lastChildIndex; i++){
+			CommandNode nextCommand = commandList.get(i);
+			currentCommand.addToChildren(nextCommand);
+			if(nextCommand.parametersNeeded() > 0){
+				i = createChildren(commandList, i) - 1;
 			}
-			// Indicates syntax error
-			return ERROR;
 		}
-
-		// returns true if the given text matches the given regular expression pattern
-		private boolean match (String text, Pattern regex) {
-			return regex.matcher(text).matches();
-		}
-		public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-	        final String WHITESPACE = "\\p{Space}";
-	        return parseText(command.split(WHITESPACE));
-	    }
-
+		return lastChildIndex;
 	}
+
+	// returns the language's type associated with the given text if one exists 
+	private String getSymbol (String text) {
+		final String ERROR = "NO MATCH";
+		for (Entry<String, Pattern> e : mySymbols) {
+			if (match(text, e.getValue())) {
+				return e.getKey();
+			}
+		}
+		// Indicates syntax error
+		return ERROR;
+	}
+
+	// returns true if the given text matches the given regular expression pattern
+	private boolean match (String text, Pattern regex) {
+		return regex.matcher(text).matches();
+	}
+	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		final String WHITESPACE = "\\p{Space}";
+		return parseText(command.split(WHITESPACE));
+	}
+
+}
