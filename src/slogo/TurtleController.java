@@ -12,14 +12,9 @@ public class TurtleController {
 
 	public void update (CommandNode command) {
 		for (Turtle turtle : turtleList){
-			System.out.println("Before: " + turtle.getX());
-			System.out.println("Before: " + turtle.getY());
 			command.setTurtle(turtle);
-			System.out.println(command);
+			System.out.println("Running " + command);
 			command.run();
-			System.out.println("After: " + turtle.getX());
-			System.out.println("After: " + turtle.getX());
-			System.out.println(turtle.getPoints().size());
 		}
 	}
 

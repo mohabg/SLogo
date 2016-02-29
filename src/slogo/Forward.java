@@ -14,7 +14,6 @@ public class Forward extends CommandNode {
 		double x = (getTurtle().getX() + getValue()*Math.sin(getTurtle().getOrientation()));
 		double y = (getTurtle().getY() + getValue()*Math.cos(getTurtle().getOrientation()));
 		getTurtle().move(x, y);
-		System.out.println(getTurtle().getX() + " " + getTurtle().getY());
 		return getValue();
 	}
 	private void addTurtleToChildren(){

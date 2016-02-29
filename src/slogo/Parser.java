@@ -43,6 +43,7 @@ public class Parser{
 			List<CommandNode> commandHeads = new ArrayList<>();
 			List<Integer> headCommandIndices = new ArrayList<>();
 			for(int i = 0; i < commandList.size() - 1; i++){
+				System.out.println(i);
 				headCommandIndices.add(i);
 				i = createChildren(commandList, i);
 			}
@@ -72,7 +73,8 @@ public class Parser{
 			   CommandNode nextCommand = commandList.get(i);
 				currentCommand.addToChildren(nextCommand);
 				if(nextCommand.parametersNeeded() > 0){
-					i = createChildren(commandList, i) - 1;
+					i = createChildren(commandList, i);
+					lastChildIndex = i;
 				}
 			}
 		return lastChildIndex;
