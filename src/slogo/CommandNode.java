@@ -21,7 +21,7 @@ public abstract class CommandNode {
 	public void addToChildren(CommandNode command){
 		children.add(command);
 	}
-	abstract double run();
+	abstract void run();
 
 	public Turtle getTurtle(){
 		return turtle;

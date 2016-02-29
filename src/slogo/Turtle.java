@@ -14,6 +14,7 @@ public class Turtle {
 	private double yCord;
 	private double orientation;
 	private ImageView myImage;
+	private boolean visible;
 	private boolean penDown;
 	private String penColor;
 	private List<Point2D> points = new ArrayList<Point2D>(); 
@@ -28,6 +29,7 @@ public class Turtle {
 		orientation = 0;
 		points.add(new Point2D(xCord, yCord));
 		penDown = true;
+		visible = true;
 	}
 	public void move(double x, double y){
 		setX(x);

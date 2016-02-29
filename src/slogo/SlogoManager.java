@@ -1,6 +1,8 @@
 package slogo;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
+
 import javafx.geometry.Point2D;
 
 
@@ -10,25 +12,42 @@ public class SlogoManager {
 	private Parser myParser;
 	private List<CommandNode> currCommandTree;
 	private List<CommandNode> pastCommands;
+	private Map<CommandNode, Double> userVariables;
+	private List<CommandNode> userFunctions;
+
 	// points that are drawn per frame, maintains history
 
 	public SlogoManager () {
-		// TODO Auto-generated constructor stub
 		turtleController = new TurtleController();
 		logicController = new LogicController();
 		myParser = new Parser();
 	}
 	public void initialize(){
 	}
-	public void update (String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // called in every frame
-		currCommandTree = myParser.interpret(input);
-		for (CommandNode command : currCommandTree){
-			if(command.getUsesTurtle()){
-				turtleController.update(command);
-			}
-			else {
-				logicController.update(command);
-			}
+	public void update(CommandNode command){
+		pastCommands.add(command);
+		if (command.getClass().equals("MakeUserInstruction")){
+			userFunctions.add(command);
 		}
+		if (command.getClass().equals("Make")){
+			userVariables.put(command, command.getValue());
+		}
+		if(command.getUsesTurtle()){
+			turtleController.update(command);
+		}
+		else {
+			logicController.update(command);
+		}
+		for (CommandNode subcommand : command.getChildren()){
+			update(subcommand);
+		}
+	}
+	public void compile (String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // called in every frame
+		currCommandTree = myParser.interpret(input);
+		for (CommandNode command: currCommandTree){
+			update(command);
+		}
+		// Send data to GUI here
+
 	}
 }
