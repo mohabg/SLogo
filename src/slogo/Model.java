@@ -4,10 +4,21 @@ import java.util.*;
 
 public class Model {
 
-	private List<CommandNode> variables = new ArrayList<CommandNode>();
+	private Map<CommandNode, Double> userVariables;
+	private Set<CommandNode> userFunctions;
+	private List<Double> consoleOutputs;
+	private SlogoManager manager;
 	
 	public Model() {
-		// TODO Auto-generated constructor stub
+		userVariables = new TreeMap<CommandNode, Double>();
+		userFunctions = new TreeSet<CommandNode>();
+		consoleOutputs = new ArrayList<Double>();
+		manager = new SlogoManager();
+	}
+	
+	private void getCompileInfo(){
+		manager.addFunctions(userFunctions);
+		manager.addVariables(userVariables);
 	}
 
 }

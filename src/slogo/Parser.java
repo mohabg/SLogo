@@ -24,6 +24,7 @@ public class Parser{
 	public void addLanguage(String language){
 		addPatterns(language);
 	}
+	
 	private void addPatterns (String language) {
 		String filePath = String.format("resources/languages/%s", language);
 		ResourceBundle resources = ResourceBundle.getBundle(filePath);
