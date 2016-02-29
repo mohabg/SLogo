@@ -11,8 +11,9 @@ public abstract class CommandNode {
 	private boolean usesTurtle;
 	private double value;
 
-	public CommandNode() {
+	public CommandNode(double val){
 		children = new ArrayList<>();
+		this.value = val;
 	}
 	abstract void setParameters();
 
@@ -22,7 +23,7 @@ public abstract class CommandNode {
 	public void addToChildren(CommandNode command){
 		children.add(command);
 	}
-	abstract void run();
+	abstract double run();
 
 	public Turtle getTurtle(){
 		return turtle;

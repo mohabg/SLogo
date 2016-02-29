@@ -2,8 +2,8 @@ package slogo;
 
 public class Constant extends CommandNode{
 	
-	public Constant() {
-		// TODO Auto-generated constructor stub
+	public Constant(double val) {
+		super(val);
 	}
 	@Override
 	void setParameters() {
@@ -11,8 +11,8 @@ public class Constant extends CommandNode{
 		
 	}
 	@Override
-	void run() {
-		// TODO Auto-generated method stub
+	double run() {
+		return getValue();
 		
 	}
 

@@ -36,27 +36,48 @@ public class Parser{
 		}
 	}
 
-	private List<CommandNode> parseText(String[] text)throws InstantiationException, IllegalAccessException,
-	IllegalArgumentException, InvocationTargetException{
-		ArrayList<CommandNode> CommandList = new ArrayList<CommandNode>();
-		for(int i = 0; i < text.length; i++){
-			String word = text[i];
-			if(word.trim().length() > 0){
-				String symbol = getSymbol(word);
-				CommandNode command = commandFactory.getCommandNode(symbol, word);
-				CommandList.add(command);
-				int childrenNeeded = command.parametersNeeded();
-				for(int j = 0; j < childrenNeeded; j++){
-					String nextWord = text[++i];
-					String nextSymbol = getSymbol(nextWord);
-					System.out.println(nextWord + " " + nextSymbol);
-					command.addToChildren(commandFactory.getCommandNode(nextSymbol, nextWord));
-				}
-
-			}
+		private List<CommandNode> parseText(String[] text) throws InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException{
+		
+		List<CommandNode> commandList = createCommandNodes(text);
+		List<CommandNode> commandHeads = new ArrayList<>();
+		List<Integer> headCommandIndices = new ArrayList<>();
+		for(int i = 0; i < commandList.size() - 1; i++){
+			headCommandIndices.add(i);
+			i = createChildren(commandList, i);
 		}
-		return CommandList;
+		for(int i = 0; i < headCommandIndices.size(); i++){
+			int headCommandIndex = headCommandIndices.get(i);
+			commandHeads.add(commandList.get(headCommandIndex));
+		}
+		return commandHeads;
 	}
+	
+		private List<CommandNode> createCommandNodes(String[] text){
+			List<CommandNode> commandList = new ArrayList<>();
+			for(int i = 0; i < text.length; i++){
+				String word = text[i];
+				if(word.trim().length() > 0){
+					String symbol = getSymbol(word);
+					CommandNode command = commandFactory.getCommandNode(symbol, word);
+					commandList.add(command);
+				}
+			}
+			return commandList;
+		}
+		private int createChildren(List<CommandNode> commandList, int currentIndex) {
+			CommandNode currentCommand = commandList.get(currentIndex);
+			int lastChildIndex = currentIndex + currentCommand.parametersNeeded();
+		   for(int i = currentIndex + 1; i <= lastChildIndex; i++){
+			   CommandNode nextCommand = commandList.get(i);
+				currentCommand.addToChildren(nextCommand);
+				if(nextCommand.parametersNeeded() > 0){
+					i = createChildren(commandList, i) - 1;
+				}
+			}
+		return lastChildIndex;
+	}
+
 		// returns the language's type associated with the given text if one exists 
 		private String getSymbol (String text) {
 			final String ERROR = "NO MATCH";
