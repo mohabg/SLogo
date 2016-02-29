@@ -9,25 +9,23 @@ import java.util.Set;
 
 
 public class SlogoManager {
-	private TurtleController turtleController;
-	private LogicController logicController;
+	private Controller controller;
 	private Parser myParser;
 	private List<CommandNode> currCommandTree;
 	private List<CommandNode> pastCommands;
 	private Map<CommandNode, Double> userVariables;
-	private List<CommandNode> userFunctions;
-	private Collection<Double> outputs;
+	private Map<String, CommandNode> userFunctions;
+	private List<Double> outputs;
 
 	// points that are drawn per frame, maintains history
 
 	public SlogoManager () {
-		turtleController = new TurtleController();
-		logicController = new LogicController();
+		controller = new Controller();
 		myParser = new Parser();
 		currCommandTree = new ArrayList<CommandNode>();
 		pastCommands = new ArrayList<CommandNode>();
 		userVariables = new HashMap<CommandNode, Double>();
-		userFunctions = new ArrayList<CommandNode>();
+		userFunctions = new HashMap<String, CommandNode>();
 		outputs = new ArrayList<Double>();
 	}
 	public void initialize(){
@@ -35,22 +33,12 @@ public class SlogoManager {
 	public void update(CommandNode command){
 		pastCommands.add(command);
 		if (command.getClass().equals("MakeUserInstruction")){
-			userFunctions.add(command);
+			userFunctions.put(((Make)command).getName(), command);
 		}
 		if (command.getClass().equals("Make")){
 			userVariables.put(command, command.getValue());
 		}
-		if(command.getUsesTurtle()){
-			turtleController.update(command);
-		}
-		else {
-			logicController.update(command);
-		}
-		if (command.getChildren().size() != 0){
-			for (CommandNode subcommand : command.getChildren()){
-				update(subcommand);
-			}
-		}
+		controller.update(command);
 	}
 	public void compile (String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // called in every frame
 		currCommandTree = myParser.interpret(input);
@@ -68,5 +56,8 @@ public class SlogoManager {
 		for (int i=0; i < userFunctions.size(); i++){
 			functions.add(userFunctions.get(i));
 		}
+	}
+	public List getOutputs(){
+		return outputs;
 	}
 }
