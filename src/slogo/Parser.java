@@ -39,18 +39,18 @@ public class Parser{
 		private List<CommandNode> parseText(String[] text) throws InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException{
 		
-		List<CommandNode> commandList = createCommandNodes(text);
-		List<CommandNode> commandHeads = new ArrayList<>();
-		List<Integer> headCommandIndices = new ArrayList<>();
-		for(int i = 0; i < commandList.size() - 1; i++){
-			headCommandIndices.add(i);
-			i = createChildren(commandList, i);
-		}
-		for(int i = 0; i < headCommandIndices.size(); i++){
-			int headCommandIndex = headCommandIndices.get(i);
-			commandHeads.add(commandList.get(headCommandIndex));
-		}
-		return commandHeads;
+			List<CommandNode> commandList = createCommandNodes(text);
+			List<CommandNode> commandHeads = new ArrayList<>();
+			List<Integer> headCommandIndices = new ArrayList<>();
+			for(int i = 0; i < commandList.size() - 1; i++){
+				headCommandIndices.add(i);
+				i = createChildren(commandList, i);
+			}
+			for(int i = 0; i < headCommandIndices.size(); i++){
+				int headCommandIndex = headCommandIndices.get(i);
+				commandHeads.add(commandList.get(headCommandIndex));
+			}
+			return commandHeads;
 	}
 	
 		private List<CommandNode> createCommandNodes(String[] text){

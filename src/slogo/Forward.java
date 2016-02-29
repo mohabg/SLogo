@@ -11,8 +11,9 @@ public class Forward extends CommandNode {
 	double run() {
 		addTurtleToChildren();
 		setValue(getChildren().get(0).run());
-		getTurtle().setX(getTurtle().getX() + getValue()*Math.sin(getTurtle().getOrientation()));
-		getTurtle().setY(getTurtle().getY() + getValue()*Math.cos(getTurtle().getOrientation()));
+		double x = (getTurtle().getX() + getValue()*Math.sin(getTurtle().getOrientation()));
+		double y = (getTurtle().getY() + getValue()*Math.cos(getTurtle().getOrientation()));
+		getTurtle().move(x, y);
 		System.out.println(getTurtle().getX() + " " + getTurtle().getY());
 		return getValue();
 	}
@@ -24,4 +25,5 @@ public class Forward extends CommandNode {
 	@Override
 	void setParameters() {		
 	}
+
 }

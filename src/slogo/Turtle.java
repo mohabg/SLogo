@@ -1,4 +1,5 @@
 package slogo;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.geometry.Point2D;
@@ -13,10 +14,11 @@ public class Turtle {
 	private double yCord;
 	private double orientation;
 	private ImageView myImage;
+	private boolean visible;
 	private boolean penDown;
 	private String penColor;
-	private List<Point2D> points; 
-	
+	private List<Point2D> points = new ArrayList<Point2D>(); 
+
 	// In case user wants to resize turtle
 	//private double height;
 	//private double width;
@@ -25,9 +27,16 @@ public class Turtle {
 		xCord = 0;
 		yCord = 0;
 		orientation = 0;
+		points.add(new Point2D(xCord, yCord));
 		penDown = true;
+		visible = true;
 	}
-
+	public void move(double x, double y){
+		System.out.println("turtle " + x + " " + y);
+		setX(x);
+		setY(y);
+		points.add(new Point2D(xCord, yCord));
+	}
 	public double getX(){
 		return xCord;
 	}
@@ -40,13 +49,16 @@ public class Turtle {
 	public ImageView getImage(){
 		return myImage;
 	}
-	public void setX(Double x){
-		xCord = x;
+	private void setX(Double x){
+		xCord = x;		
 	}
-	public void setY(Double y){
+	private void setY(Double y){
 		yCord = y;
 	}
 	public void turn(Double angle){
 		orientation += angle;
+	}
+	public List getPoints(){
+		return points;
 	}
 }
