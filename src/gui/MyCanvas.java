@@ -29,6 +29,7 @@ public class MyCanvas {
         this.canvas = new Canvas(width, height);
         this.data = data;
         this.canvasNodeChildren = canvasNodeChildren;
+        initContextMenu();
     }
 
     public Canvas getCanvas () {
@@ -68,14 +69,14 @@ public class MyCanvas {
             @Override
             public void handle (ActionEvent event) {
                 System.out.println("Select background color");
-                // TODO
+                // TODO: use lambda
             }
         });
         selectPenColor.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle (ActionEvent event) {
                 System.out.println("Select pen color");
-                // TODO
+                // TODO: use lambda
             }
         });
     }
