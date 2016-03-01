@@ -2,9 +2,14 @@ package gui;
 
 import java.util.List;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Line;
@@ -38,6 +43,21 @@ public class MyCanvas extends Canvas {
     private void drawLines () {
         List<Line> lines = data.getLines();
         // TODO: color, canvasNodeChildren.addAll(lines);
+    }
+
+    private void handleRightClick () {
+        TextField textField = new TextField("Type Something");
+        final ContextMenu contextMenu = new ContextMenu();
+        MenuItem cut = new MenuItem("Cut");
+        MenuItem copy = new MenuItem("Copy");
+        MenuItem paste = new MenuItem("Paste");
+        contextMenu.getItems().addAll(cut, copy, paste);
+        cut.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle (ActionEvent event) {
+                System.out.println("Cut...");
+            }
+        });
     }
 
 }
