@@ -2,15 +2,19 @@ package gui;
 
 import javafx.scene.control.TextArea;
 
+public class ScriptWindow {
 
-public class ScriptWindow extends TextArea {
+	private TextArea myTextArea;
 
-    public ScriptWindow () {
-        // TODO Auto-generated constructor stub
-    }
+	public ScriptWindow() {
+		myTextArea = new TextArea();
+	}
 
-    public void handleRunButton () {
+	public void handleRunButton() {
 
-    }
+	}
 
+	public TextArea getTextArea() {
+		return myTextArea;
+	}
 }

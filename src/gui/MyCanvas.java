@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.List;
+import data.CanvasData;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,8 +12,8 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
-import observers.CanvasData;
 
 
 public class MyCanvas {
@@ -25,9 +26,13 @@ public class MyCanvas {
                      ObservableList<Node> canvasNodeChildren,
                      int width,
                      int height) {
-        canvas = new Canvas(width, height);
+        this.canvas = new Canvas(width, height);
         this.data = data;
         this.canvasNodeChildren = canvasNodeChildren;
+    }
+
+    public Canvas getCanvas () {
+        return canvas;
     }
 
     public void update () {
@@ -46,6 +51,11 @@ public class MyCanvas {
 
     private void drawLines () {
         List<Line> lines = data.getLines();
+
+        for (Line l : lines) {
+
+        }
+
         // TODO: color, canvasNodeChildren.addAll(lines);
     }
 
@@ -58,12 +68,14 @@ public class MyCanvas {
             @Override
             public void handle (ActionEvent event) {
                 System.out.println("Select background color");
+                // TODO
             }
         });
         selectPenColor.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle (ActionEvent event) {
                 System.out.println("Select pen color");
+                // TODO
             }
         });
     }
@@ -72,9 +84,25 @@ public class MyCanvas {
         contextMenu.hide();
     }
 
-    private void handleRightClick () {
+    private void handleRightClick (MouseEvent e) {
+        double x = e.getX();
+        double y = e.getY();
+        contextMenu.show(canvas, x, y);
+    }
 
-        contextMenu.show(canvas, 0, 0);
+    private Point2D getCartesianPos (Point2D pos) { // TODO: test
+        double x = pos.getX() + canvas.getWidth() / 2;
+        double y = canvas.getHeight() / 2 - pos.getY();
+        Point2D newPos = new Point2D(x, y);
+        return newPos;
+    }
+
+    private void setCenterPos (Node node, Point2D centerPos) {
+        double x = centerPos.getX() - node.getBoundsInLocal().getWidth() / 2;
+        double y = centerPos.getY() - node.getBoundsInLocal().getHeight() / 2;
+        Point2D newCenterPos = getCartesianPos(new Point2D(x, y));
+        node.setTranslateX(newCenterPos.getX());
+        node.setTranslateY(newCenterPos.getY());
     }
 
 }

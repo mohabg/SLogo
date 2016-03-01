@@ -1,4 +1,4 @@
-package observers;
+package data;
 
 import java.util.List;
 import javafx.geometry.Point2D;
@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 
-public interface CanvasData extends Data {
+public interface CanvasData {
 
     public Image getTurtleImage ();
 
@@ -15,6 +15,6 @@ public interface CanvasData extends Data {
 
     public List<Line> getLines ();
 
-    public Color gerBackgroundColor ();
+    public Color getBackgroundColor ();
 
 }
