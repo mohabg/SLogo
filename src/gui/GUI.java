@@ -102,7 +102,7 @@ public class GUI {
 
 		grid.add(canvas, 0, 0);
 		grid.add(console, 1, 1);
-		grid.add(editor, 1, 0);
+		grid.add(editor.getTextArea(), 1, 0);
 		grid.add(workspace, 0, 1);
 
 		return grid;

@@ -10,34 +10,38 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Line;
 import observers.CanvasData;
 
-
 public class MyCanvas extends Canvas {
-    CanvasData data;
-    ObservableList<Node> canvasNodeChildren;
+	CanvasData data;
+	ObservableList<Node> canvasNodeChildren;
 
-    public MyCanvas (CanvasData data, ObservableList<Node> canvasNodeChildren, int width, int height) {
-        super(width, height);
-        this.data = data;
-        this.canvasNodeChildren = canvasNodeChildren;
-    }
+	public MyCanvas(CanvasData data, ObservableList<Node> canvasNodeChildren, int width, int height) {
+		super(width, height);
+		this.data = data;
+		this.canvasNodeChildren = canvasNodeChildren;
+	}
 
-    public void update () {
-        drawTurtle();
-        drawLines();
-    }
+	public void update() {
+		drawTurtle();
+		drawLines();
+	}
 
-    private void drawTurtle () {
-        Image image = data.getTurtleImage();
-        Point2D pos = data.getTurtlePos();
-        // TODO: color, pen, etc.
-        ImageView turtle = new ImageView(image);
-        // TODO: GUI.setCenterPos(turtle, pos);
-        canvasNodeChildren.add(turtle);
-    }
+	private void drawTurtle() {
+		Image image = data.getTurtleImage();
+		Point2D pos = data.getTurtlePos();
+		// TODO: color, pen, etc.
+		ImageView turtle = new ImageView(image);
+		// TODO: GUI.setCenterPos(turtle, pos);
+		canvasNodeChildren.add(turtle);
+	}
 
-    private void drawLines () {
-        List<Line> lines = data.getLines();
-        // TODO: color, canvasNodeChildren.addAll(lines);
-    }
+	private void drawLines() {
+		List<Line> lines = data.getLines();
+
+		for (Line l : lines) {
+
+		}
+
+		// TODO: color, canvasNodeChildren.addAll(lines);
+	}
 
 }
