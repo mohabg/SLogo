@@ -20,8 +20,8 @@ public class MyCanvas extends Canvas {
     CanvasData data;
     ObservableList<Node> canvasNodeChildren;
 
-    public MyCanvas (CanvasData data, ObservableList<Node> canvasNodeChildren) {
-        super(GUI.getScreenWidth() / 2, GUI.getScreenHeight() / 2);
+    public MyCanvas (CanvasData data, ObservableList<Node> canvasNodeChildren, int width, int height) {
+        super(width, height);
         this.data = data;
         this.canvasNodeChildren = canvasNodeChildren;
     }
