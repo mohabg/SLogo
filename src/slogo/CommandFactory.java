@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import commands.CommandNode;
+
 public class CommandFactory {
 
 	private HashMap<String, String> CommandMap = new HashMap<String, String>();
@@ -17,47 +19,23 @@ public class CommandFactory {
 	}
 
 	public CommandNode getCommandNode(String commandName, String word){
+		double constant = 0;
 		// Gets correct command constructor through reflection, instatiates node
-		try {
-			Class commClass = Class.forName("slogo." + commandName);
-			Constructor commConstructor = commClass.getConstructor();
-			CommandNode commCalled =  (CommandNode) commConstructor.newInstance();
-			try{
-			commCalled.setValue(Integer.parseInt(word));
+		try{
+			 constant = Integer.parseInt(word);
 			}catch (NumberFormatException e){
-				//TODO:catch error
 			}
+		try {
+			Class commClass = Class.forName("commands." + commandName);
+			Constructor commConstructor = commClass.getConstructor(double.class);
+			CommandNode commCalled =  (CommandNode) commConstructor.newInstance(constant);
 			return commCalled;
 
-		} catch (ClassNotFoundException e) {
-			// Error in function name
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// Error in function inputs
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// Access issues
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// Can't instantiate particular class
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e){
 			e.printStackTrace();
 		}
-
 		return null;
-	}
+}
 	private void fillCommandMap(){
 
 	}

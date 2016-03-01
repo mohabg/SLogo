@@ -20,17 +20,17 @@ public class Main extends Application {
 
     /**
      * Set things up at the beginning.
-     * 
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
      * @throws InstantiationException
+     * @throws
      */
     @Override
     public void start (Stage stage) throws InstantiationException, IllegalAccessException,
                                     IllegalArgumentException, InvocationTargetException {
         myManager = new SlogoManager();
-        myManager.update("fd 50");
+        myManager.compile("to poly [ :length :angle ] [ fd :length fd :angle ] poly 3 4");
         myGUI = new GUI(myManager);
         // TODO: stage.setTitle();
 

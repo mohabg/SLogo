@@ -9,14 +9,18 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import commands.*;
+
 public class Parser{
 
 	private CommandFactory commandFactory;
 	private List<Entry<String, Pattern>> mySymbols;
-
+	private Model model;
+	
 	public Parser () {
 		commandFactory = new CommandFactory();
 		mySymbols = new ArrayList<>();
+		model = Model.getModelInstance();
 		addLanguage("English");
 		addLanguage("Syntax");
 	}
@@ -35,47 +39,127 @@ public class Parser{
 					Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
 		}
 	}
-
-	private List<CommandNode> parseText(String[] text)throws InstantiationException, IllegalAccessException,
+	private List<CommandNode> parseText(String[] text) throws InstantiationException, IllegalAccessException,
 	IllegalArgumentException, InvocationTargetException{
-		ArrayList<CommandNode> CommandList = new ArrayList<CommandNode>();
+
+		List<CommandNode> commandList = createCommandNodes(text);
+		List<CommandNode> commandHeads = new ArrayList<>();
+		List<Integer> headCommandIndices = new ArrayList<>();
+		
+		for(int i = 0; i < commandList.size(); i++){
+			headCommandIndices.add(i);
+			i = createChildren(commandList, i);
+		}
+		
+		for(int i = 0; i < headCommandIndices.size(); i++){
+			int headCommandIndex = headCommandIndices.get(i);
+			commandHeads.add(commandList.get(headCommandIndex));
+		}
+		System.out.println(commandHeads);
+		printCommandHeads(commandHeads);
+		return commandHeads;
+	}
+
+	private void printCommandHeads(List<CommandNode> commandHeads) {
+		for(int i = 0; i < commandHeads.size(); i++){
+			System.out.println(commandHeads.get(i) + " children " + commandHeads.get(i).getChildren());
+				printCommandHeads(commandHeads.get(i).getChildren());
+		}
+		
+	}
+
+	private List<CommandNode> createCommandNodes(String[] text){
+		List<CommandNode> commandList = new ArrayList<>();
 		for(int i = 0; i < text.length; i++){
-			String word = text[i];
-			if(word.trim().length() > 0){
-				String symbol = getSymbol(word);
-				CommandNode command = commandFactory.getCommandNode(symbol, word);
-				CommandList.add(command);
-				int childrenNeeded = command.parametersNeeded();
-				for(int j = 0; j < childrenNeeded; j++){
-					String nextWord = text[++i];
-					String nextSymbol = getSymbol(nextWord);
-					System.out.println(nextWord + " " + nextSymbol);
-					command.addToChildren(commandFactory.getCommandNode(nextSymbol, nextWord));
-				}
-
+			if(text[i].trim().length() > 0){
+				CommandNode command = getCommandForWord(text, i);
+				commandList.add(command);
 			}
 		}
-		return CommandList;
+		System.out.println(commandList);
+		return commandList;
 	}
-		// returns the language's type associated with the given text if one exists 
-		private String getSymbol (String text) {
-			final String ERROR = "NO MATCH";
-			for (Entry<String, Pattern> e : mySymbols) {
-				if (match(text, e.getValue())) {
-					return e.getKey();
+	
+	private CommandNode getCommandForWord(String[] text, int index){
+			String word = text[index];
+			String symbol = getSymbol(word);
+			CommandNode command = commandFactory.getCommandNode(symbol, word);
+			if(command instanceof Variable){
+				CommandNode storedCommandForVariable = model.getCommandForVariable(word);
+				if(storedCommandForVariable != null){
+					return storedCommandForVariable;
+				}
+				else{
+					model.addVariableToMap(command, word);
 				}
 			}
-			// Indicates syntax error
-			return ERROR;
-		}
-
-		// returns true if the given text matches the given regular expression pattern
-		private boolean match (String text, Pattern regex) {
-			return regex.matcher(text).matches();
-		}
-		public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-	        final String WHITESPACE = "\\p{Space}";
-	        return parseText(command.split(WHITESPACE));
-	    }
-
+			if(command instanceof Command){
+				CommandNode storedCommand = model.getCommandForFunction(word);
+				if(storedCommand != null){
+					return storedCommand;
+				}
+				else{
+					model.addCommandToMap(command, word);
+				}
+			}
+			return command;
 	}
+	
+	private int createChildren(List<CommandNode> commandList, int currentIndex) {
+		CommandNode currentCommand = commandList.get(currentIndex);
+		int counter = 0;
+		while(counter++ < currentCommand.parametersNeeded()){
+			CommandNode nextCommand = commandList.get(++currentIndex);
+			currentCommand.addToChildren(nextCommand);
+			//System.out.println("Adding " + nextCommand + " to " + currentCommand);
+			if(nextCommand instanceof ListStart){
+				currentIndex = setChildrenForList(commandList, currentIndex);
+			}
+			if(nextCommand.parametersNeeded() > 0){
+				currentIndex = createChildren(commandList, currentIndex) ;
+			}
+		}
+		if(currentCommand instanceof MakeUserInstruction){
+			currentCommand.run();
+		}
+		return currentIndex;
+	}
+
+	private int setChildrenForList(List<CommandNode> commandList, int currentIndex) {
+		CommandNode startOfList = commandList.get(currentIndex);
+		currentIndex++;
+		while(true){
+			//System.out.println("Adding " + commandList.get(currentIndex) + " to " + startOfList);
+			startOfList.addToChildren(commandList.get(currentIndex));
+			currentIndex = createChildren(commandList, currentIndex) + 1;
+			if(commandList.get(currentIndex) instanceof ListEnd){
+				startOfList.addToChildren(commandList.get(currentIndex));
+				//System.out.println("Adding " + commandList.get(currentIndex) + " to " + startOfList);
+				break;
+			}
+		}
+		return currentIndex;
+	}
+
+	// returns the language's type associated with the given text if one exists 
+	private String getSymbol (String text) {
+		final String ERROR = "NO MATCH";
+		for (Entry<String, Pattern> e : mySymbols) {
+			if (match(text, e.getValue())) {
+				return e.getKey();
+			}
+		}
+		// Indicates syntax error
+		return ERROR;
+	}
+
+	// returns true if the given text matches the given regular expression pattern
+	private boolean match (String text, Pattern regex) {
+		return regex.matcher(text).matches();
+	}
+	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		final String WHITESPACE = "\\p{Space}";
+		return parseText(command.split(WHITESPACE));
+	}
+
+}

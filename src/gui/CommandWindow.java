@@ -54,7 +54,7 @@ public class CommandWindow {
                         .trim();
         String retStr = null;
         try {
-            retStr = interpreter.update(command);
+            retStr = interpreter.compile(command);
         }
         catch (InstantiationException e) {
             // TODO Auto-generated catch block
