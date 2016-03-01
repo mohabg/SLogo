@@ -9,19 +9,23 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Line;
 import observers.CanvasData;
 
 
-public class MyCanvas extends Canvas {
+public class MyCanvas {
+    Canvas canvas;
     CanvasData data;
     ObservableList<Node> canvasNodeChildren;
+    private ContextMenu contextMenu;
 
-    public MyCanvas (CanvasData data, ObservableList<Node> canvasNodeChildren, int width, int height) {
-        super(width, height);
+    public MyCanvas (CanvasData data,
+                     ObservableList<Node> canvasNodeChildren,
+                     int width,
+                     int height) {
+        canvas = new Canvas(width, height);
         this.data = data;
         this.canvasNodeChildren = canvasNodeChildren;
     }
@@ -45,19 +49,32 @@ public class MyCanvas extends Canvas {
         // TODO: color, canvasNodeChildren.addAll(lines);
     }
 
-    private void handleRightClick () {
-        TextField textField = new TextField("Type Something");
-        final ContextMenu contextMenu = new ContextMenu();
-        MenuItem cut = new MenuItem("Cut");
-        MenuItem copy = new MenuItem("Copy");
-        MenuItem paste = new MenuItem("Paste");
-        contextMenu.getItems().addAll(cut, copy, paste);
-        cut.setOnAction(new EventHandler<ActionEvent>() {
+    private void initContextMenu () {
+        contextMenu = new ContextMenu();
+        MenuItem selectBackgroundColor = new MenuItem("Select background color");
+        MenuItem selectPenColor = new MenuItem("Select pen color");
+        contextMenu.getItems().addAll(selectBackgroundColor, selectPenColor);
+        selectBackgroundColor.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle (ActionEvent event) {
-                System.out.println("Cut...");
+                System.out.println("Select background color");
             }
         });
+        selectPenColor.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle (ActionEvent event) {
+                System.out.println("Select pen color");
+            }
+        });
+    }
+
+    private void handleLeftClick () {
+        contextMenu.hide();
+    }
+
+    private void handleRightClick () {
+
+        contextMenu.show(canvas, 0, 0);
     }
 
 }
