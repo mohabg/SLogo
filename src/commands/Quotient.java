@@ -1,4 +1,4 @@
-package slogo;
+package commands;
 
 public class Quotient extends CommandNode{
 
@@ -8,8 +8,8 @@ public class Quotient extends CommandNode{
 	}
 
 	@Override
-	double run() {
-		return getChildren().get(0).getValue() / getChildren().get(1).getValue();
+	public double run() {
+		return getChildren().get(0).run() / getChildren().get(1).run();
 	}
 
 }

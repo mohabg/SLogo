@@ -1,4 +1,5 @@
 package slogo;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import gui.GUI;
@@ -26,11 +27,12 @@ public class Main extends Application {
      * @throws IllegalArgumentException 
      * @throws IllegalAccessException 
      * @throws InstantiationException 
+     * @throws  
      */
     @Override
     public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	myManager = new SlogoManager();
-    	myManager.compile("ifelse quotient 1 1 [ repeat 2 [ fd 50 ] ] [ fd 100 ]");
+    	myManager.compile("to poly [ :length :angle ] [ fd :length fd :angle ] poly 3 4");
         myGUI = new GUI(stage);
         // TODO: stage.setTitle();
 

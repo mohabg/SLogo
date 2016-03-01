@@ -1,4 +1,4 @@
-package slogo;
+package commands;
 
 public class IfElse extends CommandNode{
 
@@ -9,7 +9,7 @@ public class IfElse extends CommandNode{
 	}
 
 	@Override
-	double run() {
+	public double run() {
 		CommandNode expression = getChildren().get(0);
 		if(expression.run() != 0){
 			CommandNode trueCommands = getChildren().get(1);

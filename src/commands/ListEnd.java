@@ -1,4 +1,4 @@
-package slogo;
+package commands;
 
 public class ListEnd extends CommandNode{
 
@@ -8,7 +8,7 @@ public class ListEnd extends CommandNode{
 	}
 
 	@Override
-	double run() {
+	public double run() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

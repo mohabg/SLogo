@@ -9,14 +9,18 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import commands.*;
+
 public class Parser{
 
 	private CommandFactory commandFactory;
 	private List<Entry<String, Pattern>> mySymbols;
+	private Model model;
 	
 	public Parser () {
 		commandFactory = new CommandFactory();
 		mySymbols = new ArrayList<>();
+		model = Model.getModelInstance();
 		addLanguage("English");
 		addLanguage("Syntax");
 	}
@@ -72,7 +76,7 @@ public class Parser{
 				commandList.add(command);
 			}
 		}
-		//System.out.println(commandList);
+		System.out.println(commandList);
 		return commandList;
 	}
 	
@@ -80,6 +84,24 @@ public class Parser{
 			String word = text[index];
 			String symbol = getSymbol(word);
 			CommandNode command = commandFactory.getCommandNode(symbol, word);
+			if(command instanceof Variable){
+				CommandNode storedCommandForVariable = model.getCommandForVariable(word);
+				if(storedCommandForVariable != null){
+					return storedCommandForVariable;
+				}
+				else{
+					model.addVariableToMap(command, word);
+				}
+			}
+			if(command instanceof Command){
+				CommandNode storedCommand = model.getCommandForFunction(word);
+				if(storedCommand != null){
+					return storedCommand;
+				}
+				else{
+					model.addCommandToMap(command, word);
+				}
+			}
 			return command;
 	}
 	
@@ -91,16 +113,19 @@ public class Parser{
 			currentCommand.addToChildren(nextCommand);
 			//System.out.println("Adding " + nextCommand + " to " + currentCommand);
 			if(nextCommand instanceof ListStart){
-				currentIndex = setParameters(commandList, currentIndex);
+				currentIndex = setChildrenForList(commandList, currentIndex);
 			}
 			if(nextCommand.parametersNeeded() > 0){
 				currentIndex = createChildren(commandList, currentIndex) ;
 			}
 		}
+		if(currentCommand instanceof MakeUserInstruction){
+			currentCommand.run();
+		}
 		return currentIndex;
 	}
 
-	private int setParameters(List<CommandNode> commandList, int currentIndex) {
+	private int setChildrenForList(List<CommandNode> commandList, int currentIndex) {
 		CommandNode startOfList = commandList.get(currentIndex);
 		currentIndex++;
 		while(true){

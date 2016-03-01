@@ -1,4 +1,4 @@
-package slogo;
+package commands;
 
 public class SetPosition extends CommandNode{
 
@@ -9,7 +9,7 @@ public class SetPosition extends CommandNode{
 	}
 
 	@Override
-	double run() {
+	public double run() {
 		getTurtle().move(getChildren().get(0).getValue(), getChildren().get(1).getValue());
 		return 0;
 		

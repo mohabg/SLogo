@@ -58,7 +58,7 @@ public class Turtle {
 	public void turn(Double angle){
 		orientation += angle;
 	}
-	public List getPoints(){
+	public List<Point2D> getPoints(){
 		return points;
 	}
 }

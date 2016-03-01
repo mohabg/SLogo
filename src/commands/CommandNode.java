@@ -1,7 +1,9 @@
-package slogo;
+package commands;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import slogo.Turtle;
 
 public abstract class CommandNode {
 
@@ -22,7 +24,7 @@ public abstract class CommandNode {
 	public void addToChildren(CommandNode command){
 		children.add(command);
 	}
-	abstract double run();
+	public abstract double run();
 	public Turtle getTurtle(){
 		return turtle;
 	}

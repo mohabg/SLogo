@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import commands.CommandNode;
+
 public class CommandFactory {
 
 	private HashMap<String, String> CommandMap = new HashMap<String, String>();
@@ -24,12 +26,13 @@ public class CommandFactory {
 			}catch (NumberFormatException e){
 			}
 		try {
-			Class commClass = Class.forName("slogo." + commandName);
+			Class commClass = Class.forName("commands." + commandName);
 			Constructor commConstructor = commClass.getConstructor(double.class);
 			CommandNode commCalled =  (CommandNode) commConstructor.newInstance(constant);
 			return commCalled;
 
 		} catch (Exception e){
+			e.printStackTrace();
 		}
 		return null;
 }

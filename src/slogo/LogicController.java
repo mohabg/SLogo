@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import commands.CommandNode;
+
 public class LogicController {
     private Interpreter interpreter;
     private List<Double> logicResults;

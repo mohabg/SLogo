@@ -1,4 +1,4 @@
-package slogo;
+package commands;
 
 public class Repeat extends CommandNode{
 
@@ -9,7 +9,7 @@ public class Repeat extends CommandNode{
 	}
 
 	@Override
-	double run() {
+	public double run() {
 		setValue(getChildren().get(0).run());
 		int i = 0;
 		double listStartReturnValue = 0;

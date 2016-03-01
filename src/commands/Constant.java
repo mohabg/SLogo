@@ -1,5 +1,5 @@
 
-package slogo;
+package commands;
 
 public class Constant extends CommandNode{
 	
@@ -11,7 +11,7 @@ public class Constant extends CommandNode{
 		
 	}
 	@Override
-	double run() {
+	public double run() {
 		return getValue();
 		
 	}

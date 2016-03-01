@@ -1,4 +1,4 @@
-package slogo;
+package commands;
 
 public class ListStart extends CommandNode{
 
@@ -7,7 +7,7 @@ public class ListStart extends CommandNode{
 	}
 
 	@Override
-	double run() {
+	public double run() {
 		double lastExecutedCommandValue = 0;
 		for(int i = 0; i < getChildren().size() - 1; i++){
 			lastExecutedCommandValue = getChildren().get(i).run();
