@@ -11,10 +11,10 @@ public interface CanvasData extends Data {
 
     public Image getTurtleImage ();
 
-    public Point2D getTurtlePos ();
+    public List<Point2D> getTurtlePosition ();
 
     public List<Line> getLines ();
 
-    public Color gerBackgroundColor ();
+    public Color getBackgroundColor ();
 
 }

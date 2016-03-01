@@ -1,5 +1,6 @@
 package observers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -11,6 +12,11 @@ import javafx.scene.shape.Line;
 
 
 public class ReturnData implements CanvasData, WorkspaceData {
+	
+	private List<Line> lines = new ArrayList<Line>();
+	private List<Point2D> turtlePosition = new ArrayList<Point2D>();
+	private Map userVariables;
+	private Map userFunctions;
 
     public ReturnData () {
         // TODO Auto-generated constructor stub
@@ -27,7 +33,7 @@ public class ReturnData implements CanvasData, WorkspaceData {
         return null;
     }
 
-    public Point2D getTurtlePos () {
+    public List<Point2D> getTurtlePosition () {
         // TODO
         return null;
     }
@@ -37,7 +43,7 @@ public class ReturnData implements CanvasData, WorkspaceData {
         return null;
     }
 
-    public Color gerBackgroundColor () {
+    public Color getBackgroundColor () {
         // TODO
         return null;
     }
@@ -51,5 +57,20 @@ public class ReturnData implements CanvasData, WorkspaceData {
         // TODO
         return null;
     }
+/*public void setUserFunctions(){
+	this.UserFunctions =
+}
+public void setUserVariables(){
+	this.UserVariables
+}*/
 
+	public void addLines(List<Line> lines) {
+		this.lines = lines;
+		
+	}
+
+	public void addTurtlePosition(List<Point2D> turtlePosition) {
+		this.turtlePosition = turtlePosition;
+		
+	}
 }

@@ -1,4 +1,5 @@
 package slogo;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import gui.GUI;
@@ -18,7 +19,7 @@ import javafx.util.Duration;
 public class Main extends Application {
 
     private GUI myGUI;
-    private SlogoManager myManager;
+    private Model myModel;
 
     /**
      * Set things up at the beginning.
@@ -26,11 +27,12 @@ public class Main extends Application {
      * @throws IllegalArgumentException 
      * @throws IllegalAccessException 
      * @throws InstantiationException 
+     * @throws  
      */
     @Override
     public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    	myManager = new SlogoManager();
-    	//myManager.compile("forward forward 50");
+    	myModel = new Model();
+    	myModel.compile("to poly [ :length :angle ] [ fd :length fd :angle ] poly 3 4");
         myGUI = new GUI(stage);
         // TODO: stage.setTitle();
 

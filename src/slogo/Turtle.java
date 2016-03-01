@@ -32,6 +32,7 @@ public class Turtle {
 		visible = true;
 	}
 	public void move(double x, double y){
+		System.out.println("turtle " + x + " " + y);
 		setX(x);
 		setY(y);
 		points.add(new Point2D(xCord, yCord));

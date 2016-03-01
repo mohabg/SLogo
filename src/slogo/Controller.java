@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javafx.geometry.Point2D;
+
+import commands.CommandNode;
+import commands.MakeUserInstruction;
 import javafx.scene.shape.Line;
 
 public class Controller {
 	private List<Turtle> turtleList;
+	private List<Line> returnLines;
 
 	public Controller () {
 		Turtle turtle = new Turtle();
+		returnLines = new ArrayList<Line>();
 		turtleList = new ArrayList<Turtle>();
 		turtleList.add(turtle);
 
@@ -29,15 +35,23 @@ public class Controller {
 		}
 		return outputs;
 	}
-	
-	private List<Line> makeLines(Turtle turtle){
-		ArrayList<Line> lines = new ArrayList<Line>();
-		for (int i = 0; i< turtle.getPoints().size() - 1; i++){
-			Line line = new Line(turtle.getPoints().get(i).getX(), turtle.getPoints().get(i).getY(), 
-					turtle.getPoints().get(i+1).getX(), turtle.getPoints().get(i+1).getY());
-			lines.add(line);
-		}
-	return lines;
-	}
 
+	public List<Line> makeLines(){
+		ArrayList<Line> lines = new ArrayList<Line>();
+		for (Turtle turtle : turtleList){
+			for (int i = 0; i< turtle.getPoints().size() - 1; i++){
+				Line line = new Line(turtle.getPoints().get(i).getX(), turtle.getPoints().get(i).getY(), 
+						turtle.getPoints().get(i+1).getX(), turtle.getPoints().get(i+1).getY());
+				lines.add(line);
+			}
+		}
+		return lines;
+	}
+	public List<Point2D> getTurtlePosition(){
+		List<Point2D> turtlePositions = new ArrayList<Point2D>();
+		for(Turtle turtle : turtleList){
+			turtlePositions.add(turtle.getPoints().get(turtle.getPoints().size() - 1));
+		}
+		return turtlePositions;
+	}
 }
