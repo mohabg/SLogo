@@ -8,6 +8,8 @@ public class Resources {
 
     // GUI
     public static final String TITLE = "SLogo";
+    public static final int WIDTH = 1000;
+    public static final int HEIGHT = 800;
 
     // CommandWindow
     public static final String ERROR_TEXT_STYLE = "-fx-text-fill: rgb(255,0,0)";

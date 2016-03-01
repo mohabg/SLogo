@@ -1,22 +1,21 @@
 package gui;
 
+import data.CanvasData;
+import data.WorkspaceData;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import observers.CanvasData;
-import observers.ReturnData;
-import observers.WorkspaceData;
 import slogo.Interpreter;
+import slogo.Resources;
+import slogo.ReturnData;
 
 
 public class GUI {
@@ -43,19 +42,18 @@ public class GUI {
 
         // TODO: design flaw? Interpreter and CommandWindow reference each other
         this.interpreter = new Interpreter(commandWindow);
-        interpreter.addObserver(data);
     }
 
-    public Scene init (int width, int height) {
+    public Scene init () {
         Group root = new Group();
-        Scene myScene = new Scene(root, width, height);
+        Scene myScene = new Scene(root, Resources.WIDTH, Resources.HEIGHT);
         rootNodeChildren = root.getChildren();
 
         // GUI elements
         this.canvas = createCanvas((CanvasData) data);
-        this.commandWindow = createCommandWindow(interpreter);
-        this.scriptWindow = createScriptWindow();
-        this.workspace = createWorkspace((WorkspaceData) data);
+        this.commandWindow = new CommandWindow(interpreter);
+        this.scriptWindow = new ScriptWindow();
+        this.workspace = new Workspace((WorkspaceData) data);
 
         // Root node and grid layout
         GridPane grid =
@@ -66,20 +64,15 @@ public class GUI {
     }
 
     public void step (double millisecondDelay) {
-        // TODO: data.update()?
         canvas.update();
     }
 
-    public static double getScreenWidth () {
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-        return bounds.getWidth();
+    public int getScreenWidth () {
+        return Resources.WIDTH;
     }
 
-    public static double getScreenHeight () {
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-        return bounds.getHeight();
+    public int getScreenHeight () {
+        return Resources.HEIGHT;
     }
 
     public static Point2D getScreenCenter () {
@@ -88,13 +81,6 @@ public class GUI {
         double screenWidth = bounds.getWidth();
         double screenHeight = bounds.getHeight();
         return (new Point2D(screenWidth / 2, screenHeight / 2));
-    }
-
-    public static void setCenterPos (Node node, Point2D centerPos) {
-        double x = centerPos.getX();
-        double y = centerPos.getY();
-        node.setTranslateX(x - node.getBoundsInLocal().getWidth() / 2);
-        node.setTranslateY(y - node.getBoundsInLocal().getHeight() / 2);
     }
 
     // Reference: http://docs.oracle.com/javafx/2/layout/builtin_layouts.htm
@@ -107,46 +93,21 @@ public class GUI {
         grid.setVgap(10);
         grid.setPadding(new Insets(0, 10, 0, 10));
 
-        grid.add(canvas, 0, 0);
-        grid.add(console, 1, 1);
-        grid.add(editor, 1, 0);
-        grid.add(workspace, 0, 1);
+        grid.add(canvas.getCanvas(), 0, 0);
+        grid.add(console.getConsole(), 1, 1);
+        grid.add(editor.getTextArea(), 1, 0);
+        grid.add(workspace.getTableView(), 0, 1);
 
         return grid;
-    }
-
-    // TODO: remove
-    private void example (GridPane grid) {
-        // Right label in column 4 (top), row 3
-        Text servicesPercent = new Text("Services\n20%");
-        GridPane.setValignment(servicesPercent, VPos.TOP);
-        grid.add(servicesPercent, 3, 2);
     }
 
     private MyCanvas createCanvas (CanvasData data) {
         Group canvasNode = new Group();
         // TODO: GUI.setCenterPos(canvasNode, ...)?
         rootNodeChildren.add(canvasNode);
-        MyCanvas canvas = new MyCanvas(data, canvasNode.getChildren());
-        // TODO
+        MyCanvas canvas =
+                new MyCanvas(data, canvasNode.getChildren(), getScreenWidth() / 2,
+                             getScreenHeight() / 2);
         return canvas;
-    }
-
-    private CommandWindow createCommandWindow (Interpreter interpreter) {
-        CommandWindow console = new CommandWindow(interpreter);
-        // TODO
-        return console;
-    }
-
-    private ScriptWindow createScriptWindow () {
-        ScriptWindow scriptWindow = new ScriptWindow();
-        // TODO
-        return scriptWindow;
-    }
-
-    private Workspace createWorkspace (WorkspaceData data) {
-        Workspace workspace = new Workspace(data);
-        // TODO
-        return workspace;
     }
 }

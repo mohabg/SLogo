@@ -1,10 +1,9 @@
 package slogo;
 
-import java.util.Observable;
 import gui.CommandWindow;
 
 
-public class Interpreter extends Observable {
+public class Interpreter {
     private LogicController logicController;
     private SlogoManager manager;
 
