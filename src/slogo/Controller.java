@@ -10,14 +10,35 @@ import javafx.scene.shape.Line;
 
 public class Controller {
 	private List<Turtle> turtleList;
-
+	private Model model;
+	
 	public Controller () {
 		Turtle turtle = new Turtle();
 		turtleList = new ArrayList<Turtle>();
 		turtleList.add(turtle);
-
+		model = new Model();
 	}
-
+	public void addCommandToHistory(CommandNode command){
+		model.addCommandToHistory(command);
+	}
+	public void addVariableToMap(CommandNode variable, String variableName){
+		model.addVariableToMap(variable, variableName);
+	}
+	
+	public void addCommandToMap(CommandNode command, String functionName){
+		model.addCommandToMap(command, functionName);
+	}
+	public CommandNode getCommandForVariable(String variable){
+		return model.getCommandForVariable(variable);
+	}
+	
+	public CommandNode getCommandForFunction(String function){
+		return model.getCommandForFunction(function);
+	}
+	public List<CommandNode> getPastCommands(){
+		System.out.println("hash " + model.getPastCommands().hashCode());
+		return model.getPastCommands();
+	}
 	public Collection<Double> update (CommandNode command) {
 		ArrayList<Double> outputs = new ArrayList<Double>();
 		if (command.getUsesTurtle()){

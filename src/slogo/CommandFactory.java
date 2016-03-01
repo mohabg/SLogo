@@ -2,30 +2,26 @@ package slogo;
 
 import java.awt.List;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import commands.Command;
 import commands.CommandNode;
 import commands.Variable;
-import slogo.Model;
 
 public class CommandFactory {
 
 	private HashMap<String, String> CommandMap = new HashMap<String, String>();
-	private Model model;
+	private Controller controller;
 	
 	public CommandFactory() {
 		fillCommandMap();
-		model = Model.getModelInstance();
-		// TODO Auto-generated constructor stub
+		controller = new Controller();
 	}
-
+	
+	
 	public CommandNode getCommandNode(String commandName, String word){
 		double constant = 0;
-		// Gets correct command constructor through reflection, instatiates node
+		// Gets correct command constructor through reflection, instantiates node
 		try{
 			 constant = Integer.parseInt(word);
 			}catch (NumberFormatException e){
@@ -35,25 +31,8 @@ public class CommandFactory {
 			Constructor commConstructor = commClass.getConstructor(double.class);
 			CommandNode command =  (CommandNode) commConstructor.newInstance(constant);
 			command.setInput(word);
-			model.addCommandToHistory(command);
-			if(command instanceof Variable){
-				CommandNode storedCommandForVariable = model.getCommandForVariable(word);
-				if(storedCommandForVariable != null){
-					return storedCommandForVariable;
-				}
-				else{
-					model.addVariableToMap(command, word);
-				}
-			}
-			if(command instanceof Command){
-				CommandNode storedCommand = model.getCommandForFunction(word);
-				if(storedCommand != null){
-					return storedCommand;
-				}
-				else{
-					model.addCommandToMap(command, word);
-				}
-			}
+			controller.addCommandToHistory(command);
+			command = getVariableOrCommandFromModel(word, command);
 			return command;
 
 		} catch (Exception e){
@@ -61,6 +40,28 @@ public class CommandFactory {
 		}
 		return null;
 }
+
+	private CommandNode getVariableOrCommandFromModel(String word, CommandNode command) {
+		if(command instanceof Variable){
+			CommandNode storedCommandForVariable = controller.getCommandForVariable(word);
+			if(storedCommandForVariable != null){
+				return storedCommandForVariable;
+			}
+			else{
+				controller.addVariableToMap(command, word);
+			}
+		}
+		if(command instanceof Command){
+			CommandNode storedCommand = controller.getCommandForFunction(word);
+			if(storedCommand != null){
+				return storedCommand;
+			}
+			else{
+				controller.addCommandToMap(command, word);
+			}
+		}
+		return command;
+	}
 	private void fillCommandMap(){
 
 	}

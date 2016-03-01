@@ -21,6 +21,10 @@ public class SlogoManager {
 	}
 	public void update(CommandNode command){
 		controller.update(command);
+		List<CommandNode> past = controller.getPastCommands();
+		for(CommandNode c : past){
+			System.out.println(c.getInput() + " " + c);
+		}
 	}
 	public void compile (String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // called in every frame
 		currCommandTree = myParser.interpret(input);

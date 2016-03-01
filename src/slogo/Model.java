@@ -11,40 +11,33 @@ public class Model {
 	private Map<String, CommandNode> userFunctions;
 	private List<Double> consoleOutputs;
 	private List<CommandNode> pastCommands;
-	private static Model model;
 	
-	public static Model getModelInstance(){
-		if(model == null){
-			model = new Model();
-		}
-		return model;
-	}
-	
-	private Model() {
+	public Model() {
 		userVariables = new HashMap<String, CommandNode>();
 		userFunctions = new HashMap<String, CommandNode>();
 		consoleOutputs = new ArrayList<Double>();
 		pastCommands = new ArrayList<CommandNode>();
 	}
-	public void addCommandToHistory(CommandNode command){
+	protected void addCommandToHistory(CommandNode command){
+		System.out.println("adding to " + pastCommands.getClass().hashCode());
 		pastCommands.add(command);
 	}
-	public CommandNode getCommandForVariable(String variable){
+	protected CommandNode getCommandForVariable(String variable){
 		return userVariables.get(variable);
 	}
 	
-	public CommandNode getCommandForFunction(String function){
+	protected CommandNode getCommandForFunction(String function){
 		return userFunctions.get(function);
 	}
 	
-	public List<CommandNode> getPastCommands(){
+	protected List<CommandNode> getPastCommands(){
 		return pastCommands;
 	}
-	public void addVariableToMap(CommandNode variable, String variableName){
+	protected void addVariableToMap(CommandNode variable, String variableName){
 		userVariables.put(variableName, variable);;
 	}
 	
-	public void addCommandToMap(CommandNode command, String functionName){
+	protected void addCommandToMap(CommandNode command, String functionName){
 		userFunctions.put(functionName, command);
 	}
 	private void getCompileInfo(){
