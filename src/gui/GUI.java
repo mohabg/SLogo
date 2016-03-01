@@ -12,19 +12,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
-import javafx.stage.Stage;
-import slogo.Interpreter;
-import slogo.Resources;
 import slogo.ReturnData;
+import slogo.SlogoManager;
 
 
 public class GUI {
-    private Stage stage;
     private ObservableList<Node> rootNodeChildren;
+    private int width, height;
 
     // Data-transfer
     ReturnData data;
-    Interpreter interpreter;
+    SlogoManager manager;
 
     // Windows
     private MyCanvas canvas;
@@ -35,23 +33,20 @@ public class GUI {
     // Buttons
     Button runButton, languageButton, helpButton;
 
-    public GUI (Stage stage) {
-        this.stage = stage;
-
-        this.data = new ReturnData();
-
-        // TODO: design flaw? Interpreter and CommandWindow reference each other
-        this.interpreter = new Interpreter(commandWindow);
+    public GUI (SlogoManager manager) {
+        this.data = manager.initialize(commandWindow);
     }
 
-    public Scene init () {
+    public Scene init (int width, int height) {
         Group root = new Group();
-        Scene myScene = new Scene(root, Resources.WIDTH, Resources.HEIGHT);
+        Scene myScene = new Scene(root, width, height);
         rootNodeChildren = root.getChildren();
+        this.width = width;
+        this.height = height;
 
         // GUI elements
         this.canvas = createCanvas((CanvasData) data);
-        this.commandWindow = new CommandWindow(interpreter);
+        this.commandWindow = new CommandWindow(manager);
         this.scriptWindow = new ScriptWindow();
         this.workspace = new Workspace((WorkspaceData) data);
 
@@ -67,12 +62,12 @@ public class GUI {
         canvas.update();
     }
 
-    public int getScreenWidth () {
-        return Resources.WIDTH;
+    public int getWindowWidth () {
+        return width;
     }
 
-    public int getScreenHeight () {
-        return Resources.HEIGHT;
+    public int getWindowHeight () {
+        return height;
     }
 
     public static Point2D getScreenCenter () {
@@ -106,8 +101,8 @@ public class GUI {
         // TODO: GUI.setCenterPos(canvasNode, ...)?
         rootNodeChildren.add(canvasNode);
         MyCanvas canvas =
-                new MyCanvas(data, canvasNode.getChildren(), getScreenWidth() / 2,
-                             getScreenHeight() / 2);
+                new MyCanvas(data, canvasNode.getChildren(), getWindowWidth() / 2,
+                             getWindowHeight() / 2);
         return canvas;
     }
 }

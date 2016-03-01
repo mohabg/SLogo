@@ -1,13 +1,11 @@
 package slogo;
-import java.lang.reflect.InvocationTargetException;
 
+import java.lang.reflect.InvocationTargetException;
 import gui.GUI;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -22,26 +20,22 @@ public class Main extends Application {
 
     /**
      * Set things up at the beginning.
-     * @throws InvocationTargetException 
-     * @throws IllegalArgumentException 
-     * @throws IllegalAccessException 
-     * @throws InstantiationException 
+     * 
+     * @throws InvocationTargetException
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
      */
     @Override
-    public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    	myManager = new SlogoManager();
-    	myManager.update("fd 50");
-        myGUI = new GUI(stage);
+    public void start (Stage stage) throws InstantiationException, IllegalAccessException,
+                                    IllegalArgumentException, InvocationTargetException {
+        myManager = new SlogoManager();
+        myManager.update("fd 50");
+        myGUI = new GUI(myManager);
         // TODO: stage.setTitle();
 
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-        int screenWidth = (int) bounds.getWidth();
-        int screenHeight = (int) bounds.getHeight();
-
         // attach game to the stage and display it
-        Scene scene = myGUI.init();
-        // Scene scene = myGame.init(WIDTH, HEIGHT);
+        Scene scene = myGUI.init(Resources.WIDTH, Resources.HEIGHT);
         stage.setScene(scene);
         stage.show();
 

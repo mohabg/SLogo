@@ -3,208 +3,132 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="1428.4652777777778" y="66.0">slogo.CommandFactory</node>
-    <node x="0.0" y="785.0">gui.MyCanvas</node>
-    <node x="307.0" y="1321.0">resources.languages</node>
-    <node x="1151.4375" y="785.0">slogo.Interpreter</node>
-    <node x="303.2577160493827" y="353.0">observers.Data</node>
-    <node x="878.4375" y="552.0">gui.CommandWindow</node>
-    <node x="1028.2253086419753" y="0.0">slogo.Turtle</node>
-    <node x="144.0" y="719.0">observers.ReturnData</node>
-    <node x="668.75" y="596.0">slogo.Constant</node>
-    <node x="691.6527777777778" y="992.0">gui.GUI</node>
-    <node x="0.0" y="1321.0">slogo.Resources</node>
-    <node x="508.0" y="763.0">gui.Workspace</node>
-    <node x="369.75" y="574.0">observers.WorkspaceData</node>
-    <node x="1483.9652777777778" y="331.0">slogo.Parser</node>
-    <node x="1218.9027777777778" y="342.0">slogo.TurtleController</node>
-    <node x="768.75" y="596.0">slogo.Forward</node>
-    <node x="1309.6875" y="574.0">slogo.SlogoManager</node>
-    <node x="27.0" y="552.0">observers.CanvasData</node>
-    <node x="1174.6875" y="596.0">slogo.LogicController</node>
-    <node x="632.9799382716049" y="243.0">slogo.CommandNode</node>
-    <node x="997.5625" y="1203.0">slogo.Main</node>
-    <node x="951.4375" y="785.0">gui.ScriptWindow</node>
+    <node x="730.0" y="665.0">gui.MyCanvas</node>
+    <node x="199.40343567251466" y="66.0">slogo.CommandFactory</node>
+    <node x="347.0" y="1125.0">resources.languages</node>
+    <node x="256.0" y="665.0">gui.CommandWindow</node>
+    <node x="540.4034356725147" y="0.0">slogo.Turtle</node>
+    <node x="993.7784356725147" y="564.0">slogo.Constant</node>
+    <node x="340.884283625731" y="818.0">gui.GUI</node>
+    <node x="0.0" y="1125.0">slogo.Resources</node>
+    <node x="0.0" y="676.0">gui.Workspace</node>
+    <node x="247.86249999999995" y="321.0">slogo.Parser</node>
+    <node x="523.259283625731" y="332.0">slogo.TurtleController</node>
+    <node x="898.7784356725147" y="564.0">slogo.Forward</node>
+    <node x="355.99999999999994" y="542.0">slogo.SlogoManager</node>
+    <node x="753.259283625731" y="233.0">slogo.CommandNode</node>
+    <node x="611.634283625731" y="1007.0">slogo.Main</node>
+    <node x="509.99999999999994" y="665.0">gui.ScriptWindow</node>
   </nodes>
   <notes />
   <edges>
     <edge source="gui.GUI" target="gui.Workspace">
-      <point x="-30.75" y="-80.5" />
-      <point x="783.9027777777778" y="932.0" />
-      <point x="562.25" y="932.0" />
-      <point x="-54.25" y="47.5" />
+      <point x="-100.44444444444457" y="-69.5" />
+      <point x="353.4398391812864" y="798.0" />
+      <point x="59.0" y="798.0" />
+      <point x="-59.0" y="25.5" />
+    </edge>
+    <edge source="gui.CommandWindow" target="slogo.SlogoManager">
+      <point x="-58.25" y="-36.5" />
+      <point x="314.25" y="645.0" />
+      <point x="384.7" y="645.0" />
+      <point x="-114.79999999999995" y="36.5" />
+    </edge>
+    <edge source="slogo.SlogoManager" target="gui.CommandWindow">
+      <point x="-57.39999999999998" y="36.5" />
+      <point x="442.09999999999997" y="645.0" />
+      <point x="430.75" y="645.0" />
+      <point x="58.25" y="-36.5" />
     </edge>
     <edge source="slogo.CommandNode" target="slogo.Turtle">
       <point x="0.0" y="-124.5" />
-      <point x="811.9799382716049" y="223.0" />
-      <point x="1058.8503086419753" y="223.0" />
-      <point x="-91.875" y="91.5" />
+      <point x="932.259283625731" y="208.0" />
+      <point x="754.7784356725147" y="208.0" />
+      <point x="91.875" y="91.5" />
+    </edge>
+    <edge source="gui.GUI" target="slogo.SlogoManager">
+      <point x="0.0" y="-69.5" />
+      <point x="453.884283625731" y="758.0" />
+      <point x="499.49999999999994" y="758.0" />
+      <point x="0.0" y="36.5" />
     </edge>
     <edge source="slogo.Forward" target="slogo.CommandNode">
       <point x="0.0" y="-14.5" />
-      <point x="806.25" y="532.0" />
-      <point x="811.9799382716049" y="532.0" />
+      <point x="936.2784356725147" y="522.0" />
+      <point x="932.259283625731" y="522.0" />
       <point x="0.0" y="124.5" />
     </edge>
-    <edge source="slogo.Interpreter" target="slogo.TurtleController">
-      <point x="42.75" y="-25.5" />
-      <point x="1279.6875" y="699.0" />
-      <point x="1299.1875" y="699.0" />
-      <point x="1299.1875" y="532.0" />
-      <point x="1253.9027777777778" y="532.0" />
-      <point x="-70.0" y="25.5" />
-    </edge>
     <edge source="gui.GUI" target="gui.MyCanvas">
-      <point x="-112.75" y="-80.5" />
-      <point x="701.9027777777778" y="972.0" />
-      <point x="31.0" y="972.0" />
-      <point x="-31.0" y="25.5" />
-    </edge>
-    <edge source="gui.GUI" target="observers.ReturnData">
-      <point x="-51.25" y="-80.5" />
-      <point x="763.4027777777778" y="942.0" />
-      <point x="402.0" y="942.0" />
-      <point x="86.0" y="91.5" />
+      <point x="75.33333333333326" y="-69.5" />
+      <point x="529.2176169590642" y="788.0" />
+      <point x="774.25" y="788.0" />
+      <point x="-44.25" y="36.5" />
     </edge>
     <edge source="slogo.SlogoManager" target="slogo.CommandNode">
-      <point x="-60.0" y="-36.5" />
-      <point x="1324.6875" y="522.0" />
-      <point x="931.3132716049381" y="522.0" />
-      <point x="119.33333333333326" y="124.5" />
+      <point x="114.79999999999995" y="-36.5" />
+      <point x="614.3" y="522.0" />
+      <point x="812.9259502923976" y="522.0" />
+      <point x="-119.33333333333337" y="124.5" />
     </edge>
     <edge source="slogo.Main" target="slogo.SlogoManager">
       <point x="19.875" y="-36.5" />
-      <point x="1096.9375" y="1173.0" />
-      <point x="1386.1527777777778" y="1173.0" />
-      <point x="1386.1527777777778" y="699.0" />
-      <point x="1384.6875" y="699.0" />
-      <point x="0.0" y="36.5" />
+      <point x="711.009283625731" y="977.0" />
+      <point x="917.5" y="977.0" />
+      <point x="917.5" y="645.0" />
+      <point x="556.8999999999999" y="645.0" />
+      <point x="57.39999999999998" y="36.5" />
     </edge>
     <edge source="slogo.TurtleController" target="slogo.Turtle">
-      <point x="-70.0" y="-25.5" />
-      <point x="1253.9027777777778" y="223.0" />
-      <point x="1120.1003086419753" y="223.0" />
+      <point x="0.0" y="-25.5" />
+      <point x="628.259283625731" y="208.0" />
+      <point x="632.2784356725147" y="208.0" />
       <point x="-30.625" y="91.5" />
     </edge>
     <edge source="gui.GUI" target="gui.ScriptWindow">
-      <point x="51.25" y="-80.5" />
-      <point x="865.9027777777778" y="942.0" />
-      <point x="996.4375" y="942.0" />
-      <point x="-45.0" y="25.5" />
-    </edge>
-    <edge source="slogo.Interpreter" target="slogo.LogicController">
-      <point x="-14.25" y="-25.5" />
-      <point x="1222.6875" y="699.0" />
-      <point x="1203.1875" y="699.0" />
-      <point x="-28.5" y="14.5" />
+      <point x="50.22222222222217" y="-69.5" />
+      <point x="504.10650584795314" y="778.0" />
+      <point x="660.0" y="778.0" />
+      <point x="50.0" y="36.5" />
     </edge>
     <edge source="slogo.SlogoManager" target="slogo.TurtleController">
       <point x="0.0" y="-36.5" />
-      <point x="1384.6875" y="532.0" />
-      <point x="1393.9027777777778" y="532.0" />
-      <point x="70.0" y="25.5" />
-    </edge>
-    <edge source="observers.ReturnData" target="observers.WorkspaceData">
-      <point x="86.0" y="-91.5" />
-      <point x="402.0" y="699.0" />
-      <point x="439.5" y="699.0" />
-      <point x="-69.75" y="36.5" />
+      <point x="499.49999999999994" y="502.0" />
+      <point x="575.759283625731" y="502.0" />
+      <point x="-52.5" y="25.5" />
     </edge>
     <edge source="slogo.Constant" target="slogo.CommandNode">
       <point x="0.0" y="-14.5" />
-      <point x="708.75" y="532.0" />
-      <point x="692.6466049382715" y="532.0" />
-      <point x="-119.33333333333337" y="124.5" />
+      <point x="1033.7784356725147" y="522.0" />
+      <point x="1051.5926169590643" y="522.0" />
+      <point x="119.33333333333326" y="124.5" />
     </edge>
     <edge source="slogo.Parser" target="slogo.CommandFactory">
-      <point x="-52.5" y="-36.5" />
-      <point x="1536.4652777777778" y="223.0" />
-      <point x="1508.7152777777778" y="223.0" />
-      <point x="-80.25" y="25.5" />
-    </edge>
-    <edge source="observers.CanvasData" target="observers.Data">
-      <point x="0.0" y="-58.5" />
-      <point x="146.0" y="532.0" />
-      <point x="317.2577160493827" y="532.0" />
-      <point x="-14.0" y="14.5" />
-    </edge>
-    <edge source="gui.Workspace" target="observers.WorkspaceData">
-      <point x="0.0" y="-47.5" />
-      <point x="616.5" y="699.0" />
-      <point x="579.0" y="699.0" />
-      <point x="69.75" y="36.5" />
-    </edge>
-    <edge source="observers.WorkspaceData" target="observers.Data">
-      <point x="0.0" y="-36.5" />
-      <point x="509.25" y="532.0" />
-      <point x="345.2577160493827" y="532.0" />
-      <point x="14.0" y="14.5" />
+      <point x="52.5" y="-36.5" />
+      <point x="405.36249999999995" y="208.0" />
+      <point x="440.15343567251466" y="208.0" />
+      <point x="80.25" y="25.5" />
     </edge>
     <edge source="gui.GUI" target="gui.CommandWindow">
-      <point x="10.25" y="-80.5" />
-      <point x="824.9027777777778" y="922.0" />
-      <point x="906.6527777777778" y="922.0" />
-      <point x="-85.5" y="58.5" />
-    </edge>
-    <edge source="slogo.Interpreter" target="gui.CommandWindow">
-      <point x="-71.25" y="-25.5" />
-      <point x="1165.6875" y="699.0" />
-      <point x="1020.9375" y="699.0" />
-      <point x="28.5" y="58.5" />
-    </edge>
-    <edge source="slogo.Interpreter" target="slogo.SlogoManager">
-      <point x="71.25" y="-25.5" />
-      <point x="1308.1875" y="699.0" />
-      <point x="1334.6875" y="699.0" />
-      <point x="-50.0" y="36.5" />
-    </edge>
-    <edge source="gui.GUI" target="slogo.Interpreter">
-      <point x="92.25" y="-80.5" />
-      <point x="906.9027777777778" y="962.0" />
-      <point x="1194.1875" y="962.0" />
-      <point x="-42.75" y="25.5" />
+      <point x="-25.111111111111086" y="-69.5" />
+      <point x="428.7731725146199" y="798.0" />
+      <point x="430.75" y="798.0" />
+      <point x="58.25" y="36.5" />
     </edge>
     <edge source="slogo.SlogoManager" target="slogo.Parser">
-      <point x="30.0" y="-36.5" />
-      <point x="1414.6875" y="522.0" />
-      <point x="1536.4652777777778" y="522.0" />
-      <point x="-52.5" y="36.5" />
-    </edge>
-    <edge source="gui.CommandWindow" target="slogo.Interpreter">
-      <point x="85.5" y="58.5" />
-      <point x="1077.9375" y="689.0" />
-      <point x="1194.1875" y="689.0" />
-      <point x="-42.75" y="-25.5" />
-    </edge>
-    <edge source="slogo.LogicController" target="slogo.Interpreter">
-      <point x="28.5" y="14.5" />
-      <point x="1260.1875" y="699.0" />
-      <point x="1251.1875" y="699.0" />
-      <point x="14.25" y="-25.5" />
-    </edge>
-    <edge source="observers.ReturnData" target="observers.CanvasData">
-      <point x="-86.0" y="-91.5" />
-      <point x="230.0" y="699.0" />
-      <point x="205.5" y="699.0" />
-      <point x="59.5" y="58.5" />
+      <point x="-57.39999999999998" y="-36.5" />
+      <point x="442.09999999999997" y="522.0" />
+      <point x="405.36249999999995" y="522.0" />
+      <point x="52.5" y="36.5" />
     </edge>
     <edge source="slogo.Main" target="gui.GUI">
       <point x="-59.625" y="-36.5" />
-      <point x="1017.4375" y="1183.0" />
-      <point x="753.1527777777778" y="1183.0" />
-      <point x="-61.5" y="80.5" />
-    </edge>
-    <edge source="gui.MyCanvas" target="observers.CanvasData">
-      <point x="0.0" y="-25.5" />
-      <point x="62.0" y="699.0" />
-      <point x="86.5" y="699.0" />
-      <point x="-59.5" y="58.5" />
+      <point x="631.509283625731" y="987.0" />
+      <point x="397.384283625731" y="987.0" />
+      <point x="-56.5" y="69.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.3774966711051931" x="875.0" y="741.0" />
-  <SelectedNodes>
-    <node>slogo.CommandFactory</node>
-  </SelectedNodes>
+  <settings layout="Hierarchic Group" zoom="0.6207407407407407" x="779.0453460620525" y="913.5178997613366" />
+  <SelectedNodes />
   <Categories>
     <Category>Fields</Category>
     <Category>Methods</Category>

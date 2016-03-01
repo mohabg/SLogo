@@ -5,11 +5,11 @@ public class Resources {
     public static final int framesPerSecond = 60;
     public static final int millisecondDelay = 1000 / framesPerSecond;
     public static final double secondDelay = 1.0 / framesPerSecond;
+    public static final int WIDTH = 1000;
+    public static final int HEIGHT = 800;
 
     // GUI
     public static final String TITLE = "SLogo";
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 800;
 
     // CommandWindow
     public static final String ERROR_TEXT_STYLE = "-fx-text-fill: rgb(255,0,0)";
