@@ -1,21 +1,31 @@
 package slogo;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class TurtleController {
-	private ArrayList<Turtle> turtleList = new ArrayList<Turtle>();
+	private List<Turtle> turtleList;
+	private List<Double> turtleOutput;
 
 	public TurtleController () {
 		Turtle turtle = new Turtle();
+		turtleOutput = new ArrayList<Double>();
+		turtleList = new ArrayList<Turtle>();
 		turtleList.add(turtle);
+		
 	}
 
-	public void update (CommandNode command) {
+	public Collection<Double> update (CommandNode command) {
+		ArrayList<Double> outputs = new ArrayList<Double>();
 		for (Turtle turtle : turtleList){
 			command.setTurtle(turtle);
-			System.out.println("Running " + command);
-			command.run();
+			outputs.add(command.run());
 		}
+		return outputs;
+	}
+	public List getTurtleOutput(){
+		return turtleOutput;
 	}
 
 }

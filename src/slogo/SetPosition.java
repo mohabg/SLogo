@@ -12,6 +12,7 @@ public class SetPosition extends CommandNode{
 	double run() {
 		getTurtle().move(getChildren().get(0).getValue(), getChildren().get(1).getValue());
 		return 0;
+		
 	}
 
 	@Override

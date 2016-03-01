@@ -23,17 +23,27 @@ public abstract class CommandNode {
 		children.add(command);
 	}
 	abstract double run();
-	abstract void setParameters();
 	public Turtle getTurtle(){
 		return turtle;
 	}
 	public void setTurtle(Turtle turtle){
 		this.turtle = turtle;
+		for(int i = 0; i < getChildren().size(); i++){
+			CommandNode child = getChildren().get(i);
+			if(child.getUsesTurtle()){
+			child.setTurtle(getTurtle());
+			}
+		}
 	}
 	public void setUsesTurtle(Boolean usesTurtle){
 		this.usesTurtle = usesTurtle;
 	}
 	public boolean getUsesTurtle(){
+		for(CommandNode child : getChildren()){
+			if(child.getUsesTurtle()){
+				return true;
+			}
+		}
 		return usesTurtle;
 	}
 	public void setParametersNeeded(int parameters){

@@ -1,17 +1,21 @@
+
 package slogo;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class LogicController {
     private Interpreter interpreter;
-    private List<CommandNode> logicResults;
+    private List<Double> logicResults;
 
     public LogicController () {
-        // TODO Auto-generated constructor stub
+        logicResults = new ArrayList<Double>();
     }
 
-    public void update(CommandNode command){    	
-    	//logicResults.add(command.run());
-    	// Store all math results, return output
+    public Collection<Double> update(CommandNode command){    	
+    	ArrayList<Double> outputs = new ArrayList<Double>();
+    	outputs.add(command.run());
+    	return outputs;
     }
 }
