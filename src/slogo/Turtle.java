@@ -1,12 +1,11 @@
 package slogo;
 
 import java.util.List;
-import data.TurtleData;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 
-public class Turtle implements TurtleData {
+public class Turtle {
 
     // public static final Image DEFAULT_IMAGE
 

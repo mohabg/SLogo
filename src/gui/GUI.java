@@ -6,16 +6,15 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import slogo.Interpreter;
+import slogo.Resources;
 import slogo.ReturnData;
 
 
@@ -28,8 +27,6 @@ public class GUI {
     Interpreter interpreter;
 
     // Windows
-    private final int WIDTH = 1000;
-    private final int HEIGHT = 800;
     private MyCanvas canvas;
     private CommandWindow commandWindow;
     private ScriptWindow scriptWindow;
@@ -49,7 +46,7 @@ public class GUI {
 
     public Scene init () {
         Group root = new Group();
-        Scene myScene = new Scene(root, WIDTH, HEIGHT);
+        Scene myScene = new Scene(root, Resources.WIDTH, Resources.HEIGHT);
         rootNodeChildren = root.getChildren();
 
         // GUI elements
@@ -67,16 +64,15 @@ public class GUI {
     }
 
     public void step (double millisecondDelay) {
-        // TODO: data.update()?
         canvas.update();
     }
 
     public int getScreenWidth () {
-        return WIDTH;
+        return Resources.WIDTH;
     }
 
     public int getScreenHeight () {
-        return HEIGHT;
+        return Resources.HEIGHT;
     }
 
     public static Point2D getScreenCenter () {
@@ -105,14 +101,6 @@ public class GUI {
         return grid;
     }
 
-    // TODO: remove
-    private void example (GridPane grid) {
-        // Right label in column 4 (top), row 3
-        Text servicesPercent = new Text("Services\n20%");
-        GridPane.setValignment(servicesPercent, VPos.TOP);
-        grid.add(servicesPercent, 3, 2);
-    }
-
     private MyCanvas createCanvas (CanvasData data) {
         Group canvasNode = new Group();
         // TODO: GUI.setCenterPos(canvasNode, ...)?
@@ -120,7 +108,6 @@ public class GUI {
         MyCanvas canvas =
                 new MyCanvas(data, canvasNode.getChildren(), getScreenWidth() / 2,
                              getScreenHeight() / 2);
-        // TODO
         return canvas;
     }
 }

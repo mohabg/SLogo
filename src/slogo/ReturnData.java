@@ -23,6 +23,10 @@ public class ReturnData implements CanvasData, WorkspaceData {
         return null;
     }
 
+    public void setTurtleImage () {
+        // TODO
+    }
+
     public Point2D getTurtlePos () {
         // TODO empty function
         return new Point2D(0, 0);

@@ -11,21 +11,31 @@ public class Workspace {
     public Workspace (WorkspaceData data) {
         tableView = new TableView<String>();
         this.data = data;
+        initContextMenu();
+        initControls();
     }
 
     public TableView<String> getTableView () {
         return tableView;
     }
 
-    public void handleReturnKey () {
+    private void initContextMenu () {
 
     }
 
-    public void handleLeftClick () {
+    private void initControls () {
 
     }
 
-    public void handleRightClick () {
+    private void handleReturnKey () {
+
+    }
+
+    private void handleLeftClick () {
+
+    }
+
+    private void handleRightClick () {
 
     }
 
