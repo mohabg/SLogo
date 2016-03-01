@@ -14,9 +14,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import observers.CanvasData;
-import observers.ReturnData;
 import observers.WorkspaceData;
 import slogo.Interpreter;
+import slogo.ReturnData;
 
 public class GUI {
 	private Stage stage;

@@ -15,6 +15,6 @@ public interface CanvasData extends Data {
 
     public List<Line> getLines ();
 
-    public Color gerBackgroundColor ();
+    public Color getBackgroundColor ();
 
 }

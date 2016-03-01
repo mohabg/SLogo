@@ -1,4 +1,4 @@
-package observers;
+package slogo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import observers.CanvasData;
+import observers.WorkspaceData;
 
 public class ReturnData implements CanvasData, WorkspaceData {
 
@@ -44,7 +46,7 @@ public class ReturnData implements CanvasData, WorkspaceData {
 		return lines;
 	}
 
-	public Color gerBackgroundColor() {
+	public Color getBackgroundColor() {
 		// TODO
 		return null;
 	}
