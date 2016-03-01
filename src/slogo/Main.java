@@ -40,7 +40,7 @@ public class Main extends Application {
         int screenHeight = (int) bounds.getHeight();
 
         // attach game to the stage and display it
-        Scene scene = myGUI.init(screenWidth, screenHeight);
+        Scene scene = myGUI.init();
         // Scene scene = myGame.init(WIDTH, HEIGHT);
         stage.setScene(scene);
         stage.show();
