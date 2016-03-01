@@ -12,6 +12,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 
@@ -30,6 +31,7 @@ public class MyCanvas {
         this.data = data;
         this.canvasNodeChildren = canvasNodeChildren;
         initContextMenu();
+        initControls();
     }
 
     public Canvas getCanvas () {
@@ -81,13 +83,26 @@ public class MyCanvas {
         });
     }
 
+    private void initControls () {
+        canvas.setOnMouseClicked(e -> handleMouseClicked(e));
+    }
+
+    private void handleMouseClicked (MouseEvent e) {
+        if (e.getButton() == MouseButton.PRIMARY) {
+            handleLeftClick();
+        }
+        else if (e.getButton() == MouseButton.SECONDARY) {
+            handleRightClick(e);
+        }
+    }
+
     private void handleLeftClick () {
         contextMenu.hide();
     }
 
     private void handleRightClick (MouseEvent e) {
-        double x = e.getX();
-        double y = e.getY();
+        double x = e.getScreenX();
+        double y = e.getScreenY();
         contextMenu.show(canvas, x, y);
     }
 
