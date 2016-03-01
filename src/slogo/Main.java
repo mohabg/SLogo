@@ -30,7 +30,7 @@ public class Main extends Application {
     @Override
     public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	myManager = new SlogoManager();
-    	myManager.compile("repeat 2 [ fd fd fd 5 repeat quotient 3 1 [ fd 1 ] ]");
+    	myManager.compile("ifelse quotient 1 1 [ repeat 2 [ fd 50 ] ] [ fd 100 ]");
         myGUI = new GUI(stage);
         // TODO: stage.setTitle();
 

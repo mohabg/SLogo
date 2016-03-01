@@ -72,7 +72,7 @@ public class Parser{
 				commandList.add(command);
 			}
 		}
-		
+		//System.out.println(commandList);
 		return commandList;
 	}
 	

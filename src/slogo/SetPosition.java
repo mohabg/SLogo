@@ -15,10 +15,4 @@ public class SetPosition extends CommandNode{
 		
 	}
 
-	@Override
-	void setParameters() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
