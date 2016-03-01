@@ -26,7 +26,9 @@ public class Model {
 		consoleOutputs = new ArrayList<Double>();
 		pastCommands = new ArrayList<CommandNode>();
 	}
-	
+	public void addCommandToHistory(CommandNode command){
+		pastCommands.add(command);
+	}
 	public CommandNode getCommandForVariable(String variable){
 		return userVariables.get(variable);
 	}
@@ -35,8 +37,10 @@ public class Model {
 		return userFunctions.get(function);
 	}
 	
+	public List<CommandNode> getPastCommands(){
+		return pastCommands;
+	}
 	public void addVariableToMap(CommandNode variable, String variableName){
-		System.out.println("Adding " + variable +  " " + variableName + " to map");
 		userVariables.put(variableName, variable);;
 	}
 	

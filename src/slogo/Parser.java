@@ -15,12 +15,10 @@ public class Parser{
 
 	private CommandFactory commandFactory;
 	private List<Entry<String, Pattern>> mySymbols;
-	private Model model;
 	
 	public Parser () {
 		commandFactory = new CommandFactory();
 		mySymbols = new ArrayList<>();
-		model = Model.getModelInstance();
 		addLanguage("English");
 		addLanguage("Syntax");
 	}
@@ -83,26 +81,7 @@ public class Parser{
 	private CommandNode getCommandForWord(String[] text, int index){
 			String word = text[index];
 			String symbol = getSymbol(word);
-			CommandNode command = commandFactory.getCommandNode(symbol, word);
-			if(command instanceof Variable){
-				CommandNode storedCommandForVariable = model.getCommandForVariable(word);
-				if(storedCommandForVariable != null){
-					return storedCommandForVariable;
-				}
-				else{
-					model.addVariableToMap(command, word);
-				}
-			}
-			if(command instanceof Command){
-				CommandNode storedCommand = model.getCommandForFunction(word);
-				if(storedCommand != null){
-					return storedCommand;
-				}
-				else{
-					model.addCommandToMap(command, word);
-				}
-			}
-			return command;
+			return commandFactory.getCommandNode(symbol, word);
 	}
 	
 	private int createChildren(List<CommandNode> commandList, int currentIndex) {

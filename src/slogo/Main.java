@@ -32,7 +32,7 @@ public class Main extends Application {
     @Override
     public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	myManager = new SlogoManager();
-    	myManager.compile("to poly [ :length :angle ] [ fd :length fd :angle ] poly 3 4");
+    	myManager.compile("make :q 3 to poly [ :n :l ] [ repeat :n [ fd :l fd quotient 5 1 ] ] poly 3 4 if :n [ fd :q ] ");
         myGUI = new GUI(stage);
         // TODO: stage.setTitle();
 
