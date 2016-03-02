@@ -12,10 +12,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+
 
 public class MyCanvas {
 	Canvas canvas;
@@ -125,5 +126,4 @@ public class MyCanvas {
 		node.setTranslateX(newCenterPos.getX());
 		node.setTranslateY(newCenterPos.getY());
 	}*/
-
 }

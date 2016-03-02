@@ -11,12 +11,11 @@ import javafx.util.Duration;
 
 
 /**
- * This is the main program, which runs Cell Society.
+ * This is the main program, which runs SLogo.
  */
 public class Main extends Application {
 
     private GUI myGUI;
-    private Model myModel;
     private Controller myController;
 
     /**
