@@ -69,6 +69,7 @@ public class Parser{
 	private List<CommandNode> createCommandNodes(String[] text){
 		List<CommandNode> commandList = new ArrayList<>();
 		for(int i = 0; i < text.length; i++){
+			System.out.println("word " + text[i]);
 			if(text[i].trim().length() > 0){
 				CommandNode command = getCommandForWord(text, i);
 				commandList.add(command);
@@ -124,6 +125,7 @@ public class Parser{
 	private String getSymbol (String text) {
 		final String ERROR = "NO MATCH";
 		for (Entry<String, Pattern> e : mySymbols) {
+			System.out.println("Matching " + text + " with " + e.getValue());
 			if (match(text, e.getValue())) {
 				return e.getKey();
 			}
@@ -138,6 +140,7 @@ public class Parser{
 	}
 	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		final String WHITESPACE = "\\p{Space}";
+		System.out.println("command " + command);
 		return parseText(command.split(WHITESPACE));
 	}
 

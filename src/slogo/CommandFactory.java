@@ -27,6 +27,7 @@ public class CommandFactory {
 			}catch (NumberFormatException e){
 			}
 		try {
+			System.out.println("Trying " + word + " " + commandName);
 			Class commClass = Class.forName("commands." + commandName);
 			Constructor commConstructor = commClass.getConstructor(double.class);
 			CommandNode command =  (CommandNode) commConstructor.newInstance(constant);
