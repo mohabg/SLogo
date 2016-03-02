@@ -15,15 +15,16 @@ public class Parser{
 
 	private CommandFactory commandFactory;
 	private List<Entry<String, Pattern>> mySymbols;
-	
-	public Parser () {
-		commandFactory = new CommandFactory();
+	private String language;
+
+	public Parser (String language, SaveInputs model) {
+		commandFactory = new CommandFactory(model);
 		mySymbols = new ArrayList<>();
-		addLanguage("English");
+		addLanguage(language);
 		addLanguage("Syntax");
 	}
 
-	public void addLanguage(String language){
+	private void addLanguage(String language){
 		addPatterns(language);
 	}
 	private void addPatterns (String language) {
@@ -43,12 +44,12 @@ public class Parser{
 		List<CommandNode> commandList = createCommandNodes(text);
 		List<CommandNode> commandHeads = new ArrayList<>();
 		List<Integer> headCommandIndices = new ArrayList<>();
-		
+
 		for(int i = 0; i < commandList.size(); i++){
 			headCommandIndices.add(i);
 			i = createChildren(commandList, i);
 		}
-		
+
 		for(int i = 0; i < headCommandIndices.size(); i++){
 			int headCommandIndex = headCommandIndices.get(i);
 			commandHeads.add(commandList.get(headCommandIndex));
@@ -61,9 +62,9 @@ public class Parser{
 	private void printCommandHeads(List<CommandNode> commandHeads) {
 		for(int i = 0; i < commandHeads.size(); i++){
 			System.out.println(commandHeads.get(i) + " children " + commandHeads.get(i).getChildren());
-				printCommandHeads(commandHeads.get(i).getChildren());
+			printCommandHeads(commandHeads.get(i).getChildren());
 		}
-		
+
 	}
 
 	private List<CommandNode> createCommandNodes(String[] text){
@@ -78,13 +79,13 @@ public class Parser{
 		System.out.println(commandList);
 		return commandList;
 	}
-	
+
 	private CommandNode getCommandForWord(String[] text, int index){
-			String word = text[index];
-			String symbol = getSymbol(word);
-			return commandFactory.getCommandNode(symbol, word);
+		String word = text[index];
+		String symbol = getSymbol(word);
+		return commandFactory.getCommandNode(symbol, word);
 	}
-	
+
 	private int createChildren(List<CommandNode> commandList, int currentIndex) {
 		CommandNode currentCommand = commandList.get(currentIndex);
 		int counter = 0;

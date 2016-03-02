@@ -1,50 +1,42 @@
 package slogo;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
+import java.lang.reflect.InvocationTargetException;
 import gui.GUI;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
 /**
- * This is the main program, which runs Cell Society.
+ * This is the main program, which runs SLogo.
  */
 public class Main extends Application {
 
     private GUI myGUI;
-    private SlogoManager myManager;
+    private Controller myController;
 
     /**
      * Set things up at the beginning.
-     * @throws InvocationTargetException 
-     * @throws IllegalArgumentException 
-     * @throws IllegalAccessException 
-     * @throws InstantiationException 
-     * @throws  
+     * @throws InvocationTargetException
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     * @throws
      */
     @Override
-    public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    	myManager = new SlogoManager();
-    	StringBuilder s = new StringBuilder();
-    	myManager.compile("# fd 50 " + "\n" + " # fd 30 ");
-        myGUI = new GUI(stage);
+    public void start (Stage stage) throws InstantiationException, IllegalAccessException,
+                                    IllegalArgumentException, InvocationTargetException {
+        myController = new Controller();
+        myController
+                .compile("make :q 3 to poly [ :n :l ] [ repeat :n [ fd :l fd quotient 5 1 ] ] poly 3 4 if :n [ fd :q ] ");
+        myGUI = new GUI(myController);
         // TODO: stage.setTitle();
 
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-        int screenWidth = (int) bounds.getWidth();
-        int screenHeight = (int) bounds.getHeight();
-
         // attach game to the stage and display it
-        Scene scene = myGUI.init(screenWidth, screenHeight);
-        // Scene scene = myGame.init(WIDTH, HEIGHT);
+        Scene scene = myGUI.init(Resources.WIDTH, Resources.HEIGHT);
         stage.setScene(scene);
         stage.show();
 
