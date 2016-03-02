@@ -1,18 +1,20 @@
 package gui;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import slogo.Interpreter;
+import slogo.Controller;
 import slogo.Model;
 import slogo.Resources;
 
 
 public class CommandWindow extends TextArea {
-    Model interpreter;
+    Controller interpreter;
 
-    public CommandWindow (Model interpreter) {
+    public CommandWindow (Controller interpreter) {
         this.interpreter = interpreter;
         print(Resources.CONSOLE_PROMPT_STR); // TODO: hack!
         initControls();
@@ -43,7 +45,14 @@ public class CommandWindow extends TextArea {
         String command =
                 text.substring(text.lastIndexOf(Resources.CONSOLE_PROMPT_STR) + ignoreLength)
                         .trim();
-        String retStr = interpreter.compile(command);
+        String retStr = null;
+		try {
+			retStr = interpreter.compile(command);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         print(retStr);
 
         print(Resources.CONSOLE_PROMPT_STR);

@@ -28,7 +28,7 @@ public class MyCanvas extends Canvas {
 
     private void drawTurtle () {
         Image image = data.getTurtleImage();
-        Point2D pos = data.getTurtlePos();
+        List<Point2D> pos = data.getTurtlePosition();
         // TODO: color, pen, etc.
         ImageView turtle = new ImageView(image);
         // TODO: GUI.setCenterPos(turtle, pos);

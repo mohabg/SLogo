@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import observers.CanvasData;
 import observers.ReturnData;
 import observers.WorkspaceData;
-import slogo.Interpreter;
+import slogo.Controller;
 
 
 public class GUI {
@@ -25,7 +25,7 @@ public class GUI {
 
     // Data-transfer
     ReturnData data;
-    Interpreter interpreter;
+//    Interpreter interpreter;
 
     // Windows
     private MyCanvas canvas;
@@ -42,8 +42,8 @@ public class GUI {
         this.data = new ReturnData();
 
         // TODO: design flaw? Interpreter and CommandWindow reference each other
-        this.interpreter = new Interpreter(commandWindow);
-        interpreter.addObserver(data);
+//        this.interpreter = new Interpreter(commandWindow);
+//        interpreter.addObserver(data);
     }
 
     public Scene init (int width, int height) {
@@ -53,7 +53,7 @@ public class GUI {
 
         // GUI elements
         this.canvas = createCanvas((CanvasData) data);
-        this.commandWindow = createCommandWindow(interpreter);
+//        this.commandWindow = createCommandWindow(interpreter);
         this.scriptWindow = createScriptWindow();
         this.workspace = createWorkspace((WorkspaceData) data);
 
@@ -132,7 +132,7 @@ public class GUI {
         return canvas;
     }
 
-    private CommandWindow createCommandWindow (Interpreter interpreter) {
+    private CommandWindow createCommandWindow (Controller interpreter) {
         CommandWindow console = new CommandWindow(interpreter);
         // TODO
         return console;

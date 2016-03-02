@@ -48,10 +48,13 @@ public class Model implements SaveInputs{
 	public void setCompileInfo(){
 		returnData.addLines(lineList);
 		returnData.addTurtlePosition(getTurtlePosition());
+		//returnData.addVariables()
 		//returnData.addTurtleImage(.getTurtleImage());
 		//returnData.addBackgroundColor();
 	}
-	
+	//private Map<String, String> makeVariableOutputs(){
+		
+	//}
 	public void setLines(List<Line> lines){
 		lineList = lines;
 	}
