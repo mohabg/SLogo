@@ -1,3 +1,4 @@
+
 package gui;
 
 import data.CanvasData;
@@ -14,6 +15,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
+import data.CanvasData;
+import data.WorkspaceData;
 import slogo.Controller;
 import slogo.Resources;
 

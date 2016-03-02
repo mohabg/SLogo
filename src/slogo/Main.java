@@ -30,7 +30,7 @@ public class Main extends Application {
     public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	myController = new Controller();
     	myController.initialize();
-    	myController.compile("make :q 3 to poly [ :n :l ] [ repeat :n [ fd :l fd quotient 5 1 ] ] poly 3 4 if :n [ fd :q ] ");
+    	myController.compile(" ");
         myGUI = new GUI(myController);
         // TODO: stage.setTitle();
 

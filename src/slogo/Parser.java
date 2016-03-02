@@ -27,6 +27,7 @@ public class Parser{
 	private void addLanguage(String language){
 		addPatterns(language);
 	}
+	
 	private void addPatterns (String language) {
 		String filePath = String.format("resources/languages/%s", language);
 		ResourceBundle resources = ResourceBundle.getBundle(filePath);
@@ -34,10 +35,12 @@ public class Parser{
 		while (iter.hasMoreElements()) {
 			String key = iter.nextElement();
 			String regex = resources.getString(key);
+			
 			mySymbols.add(new SimpleEntry<>(key,
-					Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
+					Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)));
 		}
 	}
+	
 	private List<CommandNode> parseText(String[] text) throws InstantiationException, IllegalAccessException,
 	IllegalArgumentException, InvocationTargetException{
 
@@ -68,6 +71,7 @@ public class Parser{
 	private List<CommandNode> createCommandNodes(String[] text){
 		List<CommandNode> commandList = new ArrayList<>();
 		for(int i = 0; i < text.length; i++){
+			System.out.println("word " + text[i]);
 			if(text[i].trim().length() > 0){
 				CommandNode command = getCommandForWord(text, i);
 				commandList.add(command);

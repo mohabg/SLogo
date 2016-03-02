@@ -20,7 +20,7 @@ public class ReturnData implements CanvasData, WorkspaceData {
 	private Map<String, String> userVariables;
 	private Set<String> userFunctions;
 	private Color penColor;
-	private Boolean penBoolean;
+	private double penBoolean;
 
 	public ReturnData () {
 		// TODO Auto-generated constructor stub
@@ -89,8 +89,8 @@ public class ReturnData implements CanvasData, WorkspaceData {
 
 	}
 
-	public void addPenBoolean(Boolean penBoolean) {
-		this.penBoolean = penBoolean;
+	public void addPenBoolean(double d) {
+		this.penBoolean = d;
 
 	}
 

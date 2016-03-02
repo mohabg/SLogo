@@ -52,7 +52,7 @@ public class Model implements SaveInputs{
 		returnData.setVariables(makeVariableOutputs());
 		returnData.setFunctions(makeFunctionOutputs());
 		returnData.setTurtleImage(getTurtleList().get(0).getImage());
-		returnData.addPenBoolean(getTurtleList().get(0).getPenBoolean());
+		returnData.addPenBoolean(getTurtleList().get(0).isPenDown());
 		//returnData.addBackgroundColor();
 	}
 	private Map<String, String> makeVariableOutputs(){
