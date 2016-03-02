@@ -10,7 +10,7 @@ public class Cosine extends CommandNode{
 	@Override
 	public double run() {
 		double degrees = getChildren().get(0).run();
-		setValue(Math.cos(degrees));
+		setValue(Math.cos(Math.toRadians(degrees)));
 		return getValue();
 	}
 
