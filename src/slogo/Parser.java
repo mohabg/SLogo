@@ -117,14 +117,17 @@ public class Parser{
 
 	// returns the language's type associated with the given text if one exists 
 	private String getSymbol (String text) {
-		final String ERROR = "NO MATCH";
+		try{
 		for (Entry<String, Pattern> e : mySymbols) {
 			if (match(text, e.getValue())) {
 				return e.getKey();
 			}
 		}
+		}catch (Exception e){
+			new SlogoException(Controller.errorBundle.getString("SyntaxError"));
+		}
 		// Indicates syntax error
-		return ERROR;
+		return null;
 	}
 
 	// returns true if the given text matches the given regular expression pattern

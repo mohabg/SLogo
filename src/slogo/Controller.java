@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import commands.CommandNode;
 import commands.MakeUserInstruction;
@@ -14,6 +15,7 @@ public class Controller {
 
 	private Model myModel;
 	private Parser myParser;
+	protected static ResourceBundle errorBundle = ResourceBundle.getBundle("resources/Errors");
 
 	public Controller () {
 		myModel = new Model();
