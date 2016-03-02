@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 
@@ -10,10 +11,11 @@ public class Turtle {
 
 	//public static final Image DEFAULT_IMAGE
 
+	public static final String DEFAULT = "resources/turtle.png";
 	private double xCord;
 	private double yCord;
 	private double orientation;
-	private ImageView myImage;
+	private Image myImage;
 	private boolean visible;
 	private boolean penDown;
 	private String penColor;
@@ -24,6 +26,7 @@ public class Turtle {
 	//private double width;
 
 	public Turtle() {
+		myImage = new Image(getClass().getClassLoader().getResourceAsStream(DEFAULT));
 		xCord = 0;
 		yCord = 0;
 		orientation = 0;
@@ -46,7 +49,7 @@ public class Turtle {
 	public double getOrientation(){
 		return orientation;
 	}
-	public ImageView getImage(){
+	public Image getImage(){
 		return myImage;
 	}
 	private void setX(Double x){
@@ -60,5 +63,8 @@ public class Turtle {
 	}
 	public List<Point2D> getPoints(){
 		return points;
+	}
+	public Boolean getPenBoolean() {
+		return penDown;
 	}
 }

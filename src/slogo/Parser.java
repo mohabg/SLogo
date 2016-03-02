@@ -18,10 +18,10 @@ public class Parser{
 	private String language;
 
 	public Parser (String language, SaveInputs model) {
+		mySymbols = new ArrayList<>();
 		addLanguage(language);
 		addLanguage("Syntax");
 		commandFactory = new CommandFactory(model);
-		mySymbols = new ArrayList<>();
 	}
 
 	private void addLanguage(String language){
@@ -54,14 +54,12 @@ public class Parser{
 			int headCommandIndex = headCommandIndices.get(i);
 			commandHeads.add(commandList.get(headCommandIndex));
 		}
-		System.out.println(commandHeads);
 		printCommandHeads(commandHeads);
 		return commandHeads;
 	}
 
 	private void printCommandHeads(List<CommandNode> commandHeads) {
 		for(int i = 0; i < commandHeads.size(); i++){
-			System.out.println(commandHeads.get(i) + " children " + commandHeads.get(i).getChildren());
 			printCommandHeads(commandHeads.get(i).getChildren());
 		}
 
@@ -75,7 +73,6 @@ public class Parser{
 				commandList.add(command);
 			}
 		}
-		System.out.println(commandList);
 		return commandList;
 	}
 
@@ -91,7 +88,6 @@ public class Parser{
 		while(counter++ < currentCommand.parametersNeeded()){
 			CommandNode nextCommand = commandList.get(++currentIndex);
 			currentCommand.addToChildren(nextCommand);
-			//System.out.println("Adding " + nextCommand + " to " + currentCommand);
 			if(nextCommand instanceof ListStart){
 				currentIndex = setChildrenForList(commandList, currentIndex);
 			}
@@ -109,12 +105,10 @@ public class Parser{
 		CommandNode startOfList = commandList.get(currentIndex);
 		currentIndex++;
 		while(true){
-			//System.out.println("Adding " + commandList.get(currentIndex) + " to " + startOfList);
 			startOfList.addToChildren(commandList.get(currentIndex));
 			currentIndex = createChildren(commandList, currentIndex) + 1;
 			if(commandList.get(currentIndex) instanceof ListEnd){
 				startOfList.addToChildren(commandList.get(currentIndex));
-				//System.out.println("Adding " + commandList.get(currentIndex) + " to " + startOfList);
 				break;
 			}
 		}

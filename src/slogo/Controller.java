@@ -7,6 +7,7 @@ import java.util.List;
 
 import commands.CommandNode;
 import commands.MakeUserInstruction;
+import data.ReturnData;
 import javafx.scene.shape.Line;
 
 public class Controller {
@@ -18,7 +19,9 @@ public class Controller {
 		myModel = new Model();
 		myParser = new Parser("English", myModel);
 	}
-
+	public void initialize(){
+		updateModel();
+	}
 	public String compile (String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // called in every frame
 		List<CommandNode> currCommandTree = myParser.interpret(input);
 		for (CommandNode command: currCommandTree){
@@ -56,5 +59,8 @@ public class Controller {
 			}
 		}
 		return lines;
+	}
+	public ReturnData getReturnData(){
+		return myModel.getReturnData();
 	}
 }

@@ -39,7 +39,7 @@ public class GUI {
     public GUI (Controller controller) {
         this.controller = controller;
 
-        this.data = new ReturnData();
+        this.data = controller.getReturnData();
 
         // TODO: design flaw? Interpreter and CommandWindow reference each other
 //        this.interpreter = new Interpreter(commandWindow);
