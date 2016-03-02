@@ -19,4 +19,8 @@ public interface CanvasData {
 
     public Color getBackgroundColor ();
 
+    public boolean getPenDown ();
+
+    public Color getPenColor ();
+
 }

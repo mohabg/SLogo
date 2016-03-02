@@ -84,13 +84,19 @@ update language, another to execute scripts, and another to display the help pag
 The UML diagrams generated from the backend and frontend APIs are shown below.
 
 ![Front End](https://github.com/duke-compsci308-spring2016/slogo_team10/blob/master/plans/FrontEndUML.png)
-![Back End] (https://github.com/duke-compsci308-spring2016/slogo_team10/blob/master/plans/uml.png)
+![Comprehensive](https://github.com/duke-compsci308-spring2016/slogo_team10/blob/master/plans/uml.png)
 
 API Example Code
 ===============
 Executing the command ‘fd 50’ requires CommandWindow.handleReturnKey() to be called when the user presses return after entering this 
 text. Then, the command is passed into Interpreter.interpret() as a String, which returns a ReturnData object that contains all the 
 information required to display the turtle’s position, lines on the canvas, etc.
+
+If the user types in a syntactically incorrect command, such as '50 fd', then the interpreter, which has a copy of CommandWindow, calls CommandWindow.printError(), and the console prints out the error immediately.
+
+The command 'pu fd 50 pd fd 50' is passed into the interpreter per usual, and the function 'pd' makes sure that Turtle.penDown() is called (and 'pu' for Turtle.penUp()). That information is passed into ReturnData, which exposes an accessor to the front-end indicating whether the turtle's pen is currently down so that the pen is up for the 50 steps and down for the latter.
+
+The user can only change the background via a context menu, so a private method inside the MyCanvas class is called to allow the user to select the new color.
 
 Design Considerations
 ===================
