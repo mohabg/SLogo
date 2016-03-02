@@ -18,16 +18,18 @@ public class ScriptWindow {
         this.commandWindow = commandWindow;
     }
 
-    public void handleRunButton () {
+    public void handleRunButton () { // TODO: redundant
         String text = myTextArea.getText();
         String[] commands = text.split("\n");
         ConsoleTextArea console = commandWindow.getConsole();
-        console.appendText("script\n");
+        console.appendText("script");
         for (String command : commands) {
             try {
-                String out = controller.compile(command);
-                // System.out.println("******" + out + "******");
-                console.appendText(out);
+                if (!command.isEmpty()) {
+                    String out = controller.compile(command);
+                    // System.out.println("******" + out + "******");
+                    console.appendText("\n" + out);
+                }
             }
             catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException e) {

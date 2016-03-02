@@ -2,11 +2,9 @@ package gui;
 
 import java.util.List;
 import data.CanvasData;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
@@ -20,18 +18,15 @@ import javafx.scene.shape.Line;
 public class MyCanvas {
     Canvas canvas;
     CanvasData data;
-    ObservableList<Node> canvasNodeChildren;
     private ContextMenu contextMenu;
     private int width;
     private int height;
 
     public MyCanvas (CanvasData data,
-                     ObservableList<Node> canvasNodeChildren,
                      int width,
                      int height) {
         this.canvas = new Canvas(width, height);
         this.data = data;
-        this.canvasNodeChildren = canvasNodeChildren;
         this.width = width;
         this.height = height;
         initContextMenu();
@@ -52,22 +47,27 @@ public class MyCanvas {
 
     private void drawTurtle (GraphicsContext gc) {
         Image image = data.getTurtleImage();
-        List<Point2D> pos = data.getTurtlePosition();
-
-        double x = (pos.get(0).getX() + 1) * width / 2 - image.getWidth() / 2;
-        double y = (pos.get(0).getY() + 1) * height / 2 - image.getHeight() / 2;
-
-        gc.drawImage(image, x, y);
+        List<Point2D> posList = data.getTurtlePosition();
+        Point2D pos = getCenterPos(image, posList.get(0));
+        gc.drawImage(image, pos.getX(), pos.getY());
     }
 
     private void drawLines (GraphicsContext gc) {
         List<Line> lines = data.getLines();
 
-        for (Line l : lines) {
-
+        for (Line l : lines) { // TODO: stream
+            // gc.line
+            double startX = l.getStartX();
+            double startY = l.getStartY();
+            Point2D startPoint = getCartesianPos(new Point2D(startX, startY));
+            double endX = l.getEndX();
+            double endY = l.getEndY();
+            Point2D endPoint = getCartesianPos(new Point2D(endX, endY));
+            // TODO: width?
+            gc.setStroke(l.getStroke());
+            gc.moveTo(startPoint.getX(), startPoint.getY());
+            gc.lineTo(endPoint.getX(), endPoint.getY());
         }
-
-        // TODO: color, canvasNodeChildren.addAll(lines);
     }
 
     private void initContextMenu () {
@@ -121,13 +121,10 @@ public class MyCanvas {
         return newPos;
     }
 
-    /*
-     * private void setCenterPos(Node node, Point2D centerPos) {
-     * double x = centerPos.getX() - node.getBoundsInLocal().getWidth() / 2;
-     * double y = centerPos.getY() - node.getBoundsInLocal().getHeight() / 2;
-     * Point2D newCenterPos = getCartesianPos(new Point2D(x, y));
-     * node.setTranslateX(newCenterPos.getX());
-     * node.setTranslateY(newCenterPos.getY());
-     * }
-     */
+    private Point2D getCenterPos (Image image, Point2D centerPos) {
+        double x = centerPos.getX() - image.getWidth() / 2;
+        double y = centerPos.getY() - image.getHeight() / 2;
+        return getCartesianPos(new Point2D(x, y));
+    }
+
 }

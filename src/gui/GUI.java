@@ -52,7 +52,8 @@ public class GUI {
         this.height = height;
 
         // GUI elements
-        this.canvas = createCanvas((CanvasData) data);
+        this.canvas = new MyCanvas((CanvasData) data, getWindowWidth() / 2,
+                                   getWindowHeight() / 2);
         this.commandWindow = new CommandWindow(controller);
         this.scriptWindow = new ScriptWindow(controller, commandWindow);
         this.workspace = new Workspace((WorkspaceData) data);
@@ -115,15 +116,5 @@ public class GUI {
         hbox.getChildren().addAll(runButton);
 
         return hbox;
-    }
-
-    private MyCanvas createCanvas (CanvasData data) {
-        Group canvasNode = new Group();
-        // TODO: GUI.setCenterPos(canvasNode, ...)?
-        rootNodeChildren.add(canvasNode);
-        MyCanvas canvas =
-                new MyCanvas(data, canvasNode.getChildren(), getWindowWidth() / 2,
-                             getWindowHeight() / 2);
-        return canvas;
     }
 }
