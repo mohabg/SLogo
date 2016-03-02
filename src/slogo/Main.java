@@ -16,7 +16,6 @@ import javafx.util.Duration;
 public class Main extends Application {
 
     private GUI myGUI;
-    private Model myModel;
     private Controller myController;
 
     /**
@@ -28,9 +27,11 @@ public class Main extends Application {
      * @throws
      */
     @Override
-    public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    	myController = new Controller();
-    	myController.compile("make :q 3 to poly [ :n :l ] [ repeat :n [ fd :l fd quotient 5 1 ] ] poly 3 4 if :n [ fd :q ] ");
+    public void start (Stage stage) throws InstantiationException, IllegalAccessException,
+                                    IllegalArgumentException, InvocationTargetException {
+        myController = new Controller();
+        myController
+                .compile("make :q 3 to poly [ :n :l ] [ repeat :n [ fd :l fd quotient 5 1 ] ] poly 3 4 if :n [ fd :q ] ");
         myGUI = new GUI(myController);
         // TODO: stage.setTitle();
 

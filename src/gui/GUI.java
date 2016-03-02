@@ -13,9 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
-import javafx.stage.Stage;
-import data.CanvasData;
-import data.WorkspaceData;
 import slogo.Controller;
 
 
@@ -38,12 +35,7 @@ public class GUI {
 
     public GUI (Controller controller) {
         this.controller = controller;
-
         this.data = new ReturnData();
-
-        // TODO: design flaw? Interpreter and CommandWindow reference each other
-//        this.interpreter = new Interpreter(commandWindow);
-//        interpreter.addObserver(data);
     }
 
     public Scene init (int width, int height) {
