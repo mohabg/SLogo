@@ -1,14 +1,12 @@
 package gui;
 
 import java.lang.reflect.InvocationTargetException;
-
-import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import slogo.Controller;
-import slogo.Model;
 import slogo.Resources;
+
 
 public class CommandWindow {
     private ConsoleTextArea console;
@@ -47,22 +45,23 @@ public class CommandWindow {
     }
 
     private void handleReturnKey () {
-        print("\n");
+        // print("\n");
 
         String text = console.getText();
         int ignoreLength = Resources.CONSOLE_PROMPT_STR.length();
         String command =
                 text.substring(text.lastIndexOf(Resources.CONSOLE_PROMPT_STR) + ignoreLength)
                         .trim();
-        String retStr = null;
-		try {
-			retStr = interpreter.compile(command);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        print(retStr);
+        try {
+            String out = interpreter.compile(command);
+            // System.out.println("******" + out + "******");
+            print(out);
+        }
+        catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException e) {
+            // TODO
+            printError("Error");
+        }
 
         print(Resources.CONSOLE_PROMPT_STR);
     }

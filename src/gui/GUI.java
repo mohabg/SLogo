@@ -12,8 +12,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
 import slogo.Controller;
+import slogo.Resources;
 
 
 public class GUI {
@@ -36,6 +38,10 @@ public class GUI {
     public GUI (Controller controller) {
         this.controller = controller;
         this.data = controller.getReturnData();
+
+        // Buttons
+        runButton = new Button(Resources.RUN_BUTTON_LABEL);
+        runButton.setOnMouseClicked(e -> scriptWindow.handleRunButton());
     }
 
     public Scene init (int width, int height) {
@@ -48,13 +54,15 @@ public class GUI {
         // GUI elements
         this.canvas = createCanvas((CanvasData) data);
         this.commandWindow = new CommandWindow(controller);
-        this.scriptWindow = new ScriptWindow();
+        this.scriptWindow = new ScriptWindow(controller, commandWindow);
         this.workspace = new Workspace((WorkspaceData) data);
 
         // Root node and grid layout
         GridPane grid =
                 createGridPane(this.canvas, this.commandWindow, this.scriptWindow, this.workspace);
         rootNodeChildren.add(grid);
+        HBox buttons = createHBox();
+        rootNodeChildren.add(buttons);
 
         return myScene;
     }
@@ -95,6 +103,18 @@ public class GUI {
         grid.add(workspace.getTableView(), 0, 1);
 
         return grid;
+    }
+
+    private HBox createHBox () {
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        hbox.setStyle("-fx-background-color: #336699;");
+
+        runButton.setPrefSize(100, 20);
+        hbox.getChildren().addAll(runButton);
+
+        return hbox;
     }
 
     private MyCanvas createCanvas (CanvasData data) {
