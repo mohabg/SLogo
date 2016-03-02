@@ -4,9 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import commands.CommandNode;
+import data.ReturnData;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Line;
-import observers.ReturnData;
 import sun.reflect.generics.tree.Tree;
 
 public class Model implements SaveInputs{

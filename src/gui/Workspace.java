@@ -1,25 +1,41 @@
 package gui;
 
+import data.WorkspaceData;
 import javafx.scene.control.TableView;
-import observers.WorkspaceData;
 
 
-public class Workspace extends TableView<String> {
+public class Workspace {
+    private TableView<String> tableView;
     private WorkspaceData data;
 
     public Workspace (WorkspaceData data) {
+        tableView = new TableView<String>();
         this.data = data;
+        initContextMenu();
+        initControls();
     }
 
-    public void handleReturnKey () {
+    public TableView<String> getTableView () {
+        return tableView;
+    }
+
+    private void initContextMenu () {
 
     }
 
-    public void handleLeftClick () {
+    private void initControls () {
 
     }
 
-    public void handleRightClick () {
+    private void handleReturnKey () {
+
+    }
+
+    private void handleLeftClick () {
+
+    }
+
+    private void handleRightClick () {
 
     }
 

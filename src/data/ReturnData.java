@@ -1,10 +1,11 @@
-package observers;
+package data;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
+
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -20,12 +21,6 @@ public class ReturnData implements CanvasData, WorkspaceData {
 
     public ReturnData () {
         // TODO Auto-generated constructor stub
-    }
-
-    @Override
-    public void update (Observable o, Object arg) {
-        // TODO Auto-generated method stub
-
     }
 
     public Image getTurtleImage () {
@@ -72,5 +67,29 @@ public void setUserVariables(){
 	public void addTurtlePosition(List<Point2D> turtlePosition) {
 		this.turtlePosition = turtlePosition;
 		
+	}
+
+	@Override
+	public void setTurtleImage() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Point2D getTurtlePos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean getPenDown() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Color getPenColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
