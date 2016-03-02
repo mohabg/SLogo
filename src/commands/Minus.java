@@ -9,7 +9,8 @@ public class Minus extends CommandNode {
 
     @Override
     public double run () {
-        return -getChildren().get(0).run();
+        setValue(-1 * getChildren().get(0).run());
+        return getValue();
     }
 
 }

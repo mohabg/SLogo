@@ -7,7 +7,6 @@ import commands.CommandNode;
 import data.ReturnData;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Line;
-import sun.reflect.generics.tree.Tree;
 
 public class Model implements SaveInputs{
 
@@ -18,6 +17,7 @@ public class Model implements SaveInputs{
 	private Map<String, CommandNode> userFunctions;
 	private List<Double> consoleOutputs;
 	private List<CommandNode> pastCommands;
+	private String BackgroundColor;
 
 
 	public Model() {
@@ -26,6 +26,7 @@ public class Model implements SaveInputs{
 		userFunctions = new HashMap<String, CommandNode>();
 		consoleOutputs = new ArrayList<Double>();
 		pastCommands = new ArrayList<CommandNode>();
+		lineList = new ArrayList<Line>();
 		Turtle turtle = new Turtle();
 		turtleList = new ArrayList<Turtle>();
 		turtleList.add(turtle);
@@ -40,7 +41,7 @@ public class Model implements SaveInputs{
 	private List<Point2D> getTurtlePosition(){
 		List<Point2D> turtlePositions = new ArrayList<Point2D>();
 		for(Turtle turtle : turtleList){
-			turtlePositions.add(turtle.getPoints().get(turtle.getPoints().size() - 1));
+			turtlePositions.add(new Point2D(turtle.getX(), turtle.getY()));
 		}
 		return turtlePositions;
 	}
@@ -48,13 +49,26 @@ public class Model implements SaveInputs{
 	public void setCompileInfo(){
 		returnData.addLines(lineList);
 		returnData.addTurtlePosition(getTurtlePosition());
-		//returnData.addVariables()
-		//returnData.addTurtleImage(.getTurtleImage());
+		returnData.setVariables(makeVariableOutputs());
+		returnData.setFunctions(makeFunctionOutputs());
+		returnData.setTurtleImage(getTurtleList().get(0).getImage());
+		returnData.addPenBoolean(getTurtleList().get(0).isPenDown());
 		//returnData.addBackgroundColor();
 	}
-	//private Map<String, String> makeVariableOutputs(){
-		
-	//}
+	private Map<String, String> makeVariableOutputs(){
+		Map<String, String> variableStringOutputs = new TreeMap<String, String>();
+		for (String variable : userVariables.keySet()){
+			variableStringOutputs.put(variable, String.valueOf(userVariables.get(variable).getValue()));
+		}
+		return variableStringOutputs;
+	}
+	private Set<String> makeFunctionOutputs(){
+		Set<String> functionOutputs = new TreeSet<String>();
+		for (String fnName : userFunctions.keySet()){
+			functionOutputs.add(fnName);
+		}
+		return functionOutputs;
+	}
 	public void setLines(List<Line> lines){
 		lineList = lines;
 	}
@@ -63,7 +77,6 @@ public class Model implements SaveInputs{
 	}
 	
 	public void addCommandToHistory(CommandNode command){
-		System.out.println("adding to " + pastCommands.getClass().hashCode());
 		pastCommands.add(command);
 	}
 	
@@ -86,6 +99,8 @@ public class Model implements SaveInputs{
 	public List<CommandNode> getPastCommands(){
 		return pastCommands;
 	}
-	
+	public ReturnData getReturnData(){
+		return returnData;
+	}
 
 }

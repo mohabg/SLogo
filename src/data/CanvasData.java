@@ -11,9 +11,7 @@ public interface CanvasData {
 
     public Image getTurtleImage ();
     public List<Point2D> getTurtlePosition ();
-    public void setTurtleImage ();
-
-    public Point2D getTurtlePos ();
+    public void setTurtleImage (Image image);
     public List<Line> getLines ();
 
     public Color getBackgroundColor ();

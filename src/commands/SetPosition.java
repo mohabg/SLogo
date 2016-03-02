@@ -10,8 +10,11 @@ public class SetPosition extends CommandNode{
 
 	@Override
 	public double run() {
+		double oldX = getTurtle().getX();
+		double oldY = getTurtle().getY();
 		getTurtle().move(getChildren().get(0).getValue(), getChildren().get(1).getValue());
-		return 0;
+		double distanceMoved = Math.sqrt(Math.pow((getTurtle().getX() - oldX), 2) + Math.pow((getTurtle().getY() - oldY), 2));
+		return distanceMoved;
 		
 	}
 

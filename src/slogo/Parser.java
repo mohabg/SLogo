@@ -18,15 +18,16 @@ public class Parser{
 	private String language;
 
 	public Parser (String language, SaveInputs model) {
-		commandFactory = new CommandFactory(model);
 		mySymbols = new ArrayList<>();
 		addLanguage(language);
 		addLanguage("Syntax");
+		commandFactory = new CommandFactory(model);
 	}
 
 	private void addLanguage(String language){
 		addPatterns(language);
 	}
+	
 	private void addPatterns (String language) {
 		String filePath = String.format("resources/languages/%s", language);
 		ResourceBundle resources = ResourceBundle.getBundle(filePath);
@@ -34,10 +35,12 @@ public class Parser{
 		while (iter.hasMoreElements()) {
 			String key = iter.nextElement();
 			String regex = resources.getString(key);
+			
 			mySymbols.add(new SimpleEntry<>(key,
-					Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
+					Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)));
 		}
 	}
+	
 	private List<CommandNode> parseText(String[] text) throws InstantiationException, IllegalAccessException,
 	IllegalArgumentException, InvocationTargetException{
 
@@ -54,14 +57,12 @@ public class Parser{
 			int headCommandIndex = headCommandIndices.get(i);
 			commandHeads.add(commandList.get(headCommandIndex));
 		}
-		System.out.println(commandHeads);
 		printCommandHeads(commandHeads);
 		return commandHeads;
 	}
 
 	private void printCommandHeads(List<CommandNode> commandHeads) {
 		for(int i = 0; i < commandHeads.size(); i++){
-			System.out.println(commandHeads.get(i) + " children " + commandHeads.get(i).getChildren());
 			printCommandHeads(commandHeads.get(i).getChildren());
 		}
 
@@ -76,7 +77,6 @@ public class Parser{
 				commandList.add(command);
 			}
 		}
-		System.out.println(commandList);
 		return commandList;
 	}
 
@@ -92,7 +92,6 @@ public class Parser{
 		while(counter++ < currentCommand.parametersNeeded()){
 			CommandNode nextCommand = commandList.get(++currentIndex);
 			currentCommand.addToChildren(nextCommand);
-			//System.out.println("Adding " + nextCommand + " to " + currentCommand);
 			if(nextCommand instanceof ListStart){
 				currentIndex = setChildrenForList(commandList, currentIndex);
 			}
@@ -110,12 +109,10 @@ public class Parser{
 		CommandNode startOfList = commandList.get(currentIndex);
 		currentIndex++;
 		while(true){
-			//System.out.println("Adding " + commandList.get(currentIndex) + " to " + startOfList);
 			startOfList.addToChildren(commandList.get(currentIndex));
 			currentIndex = createChildren(commandList, currentIndex) + 1;
 			if(commandList.get(currentIndex) instanceof ListEnd){
 				startOfList.addToChildren(commandList.get(currentIndex));
-				//System.out.println("Adding " + commandList.get(currentIndex) + " to " + startOfList);
 				break;
 			}
 		}
@@ -126,7 +123,6 @@ public class Parser{
 	private String getSymbol (String text) {
 		final String ERROR = "NO MATCH";
 		for (Entry<String, Pattern> e : mySymbols) {
-			System.out.println("Matching " + text + " with " + e.getValue());
 			if (match(text, e.getValue())) {
 				return e.getKey();
 			}
@@ -141,7 +137,6 @@ public class Parser{
 	}
 	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		final String WHITESPACE = "\\p{Space}";
-		System.out.println("command " + command);
 		return parseText(command.split(WHITESPACE));
 	}
 
