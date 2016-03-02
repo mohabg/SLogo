@@ -20,6 +20,7 @@ public class Main extends Application {
 
     private GUI myGUI;
     private Model myModel;
+    private Controller myController;
 
     /**
      * Set things up at the beginning.
@@ -31,8 +32,8 @@ public class Main extends Application {
      */
     @Override
     public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    	myModel = new Model();
-    	myModel.compile("to poly [ :length :angle ] [ fd :length fd :angle ] poly 3 4");
+    	myController = new Controller();
+    	myController.compile("make :q 3 to poly [ :n :l ] [ repeat :n [ fd :l fd quotient 5 1 ] ] poly 3 4 if :n [ fd :q ] ");
         myGUI = new GUI(stage);
         // TODO: stage.setTitle();
 

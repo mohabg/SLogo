@@ -2,28 +2,26 @@ package slogo;
 
 import java.awt.List;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
 
+import commands.Command;
 import commands.CommandNode;
+import commands.Variable;
 
 public class CommandFactory {
 
 	private HashMap<String, String> CommandMap = new HashMap<String, String>();
-	private ResourceBundle myResources;
 
-	public CommandFactory(String language) {
-		myResources = ResourceBundle.getBundle(language);
-		//fillCommandMap();
-		// TODO Auto-generated constructor stub
+	private Controller controller;
+	private SaveInputs inputSaver;
+
+	public CommandFactory(SaveInputs model) {
+		inputSaver = model;
 	}
 
 	public CommandNode getCommandNode(String commandName, String word){
 		double constant = 0;
-		// Gets correct command constructor through reflection, instatiates node
+		// Gets correct command constructor through reflection, instantiates node
 		try{
 			constant = Integer.parseInt(word);
 		}catch (NumberFormatException e){
@@ -31,23 +29,37 @@ public class CommandFactory {
 		try {
 			Class commClass = Class.forName("commands." + commandName);
 			Constructor commConstructor = commClass.getConstructor(double.class);
-			CommandNode commCalled =  (CommandNode) commConstructor.newInstance(constant);
-			return commCalled;
+			CommandNode command =  (CommandNode) commConstructor.newInstance(constant);
+			command.setInput(word);
+			inputSaver.addCommandToHistory(command);
+			command = getVariableOrCommandFromModel(word, command);
+			return command;
 
 		} catch (Exception e){
 			e.printStackTrace();
 		}
 		return null;
 	}
-	private void fillCommandMap(){
-		for (String resourceKey : myResources.keySet()){
-			String[] values = myResources.getString(resourceKey).split("[|?\\]+");
-			for (int i = 0; i < values.length; i++){
-				CommandMap.put(values[i], resourceKey);
+
+	private CommandNode getVariableOrCommandFromModel(String word, CommandNode command) {
+		if(command instanceof Variable){
+			CommandNode storedCommandForVariable = inputSaver.getCommandForVariable(word);
+			if(storedCommandForVariable != null){
+				return storedCommandForVariable;
+			}
+			else{
+				inputSaver.addVariableToMap(command, word);
 			}
 		}
-	}
-	private void addToCommandMap(String commandName, List steps){
-
+		if(command instanceof Command){
+			CommandNode storedCommand = inputSaver.getCommandForFunction(word);
+			if(storedCommand != null){
+				return storedCommand;
+			}
+			else{
+				inputSaver.addCommandToMap(command, word);
+			}
+		}
+		return command;
 	}
 }

@@ -4,71 +4,85 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import commands.CommandNode;
+import javafx.geometry.Point2D;
+import javafx.scene.shape.Line;
 import observers.ReturnData;
 import sun.reflect.generics.tree.Tree;
 
-public class Model {
+public class Model implements SaveInputs{
 
-	private Parser myParser;
-	private Controller myController;
 	private ReturnData returnData;
+	private List<Turtle> turtleList;
+	private List<Line> lineList;
 	private Map<String, CommandNode> userVariables;
 	private Map<String, CommandNode> userFunctions;
 	private List<Double> consoleOutputs;
 	private List<CommandNode> pastCommands;
-	private static Model model;
-	
-	public static Model getModelInstance(){
-		if(model == null){
-			model = new Model();
-		}
-		return model;
-	}
-	
+
+
 	public Model() {
-		// make this set from user input, along with syntax
-		myParser = new Parser("English");
-		myController = new Controller();
 		returnData = new ReturnData();
 		userVariables = new HashMap<String, CommandNode>();
 		userFunctions = new HashMap<String, CommandNode>();
 		consoleOutputs = new ArrayList<Double>();
 		pastCommands = new ArrayList<CommandNode>();
+		Turtle turtle = new Turtle();
+		turtleList = new ArrayList<Turtle>();
+		turtleList.add(turtle);
+	}
+	public String getConsoleOutput() {
+		StringBuilder consoleOutput = new StringBuilder();
+		for(Double output : consoleOutputs){
+			consoleOutput.append(output.toString() + ", ");
+		}
+		return consoleOutput.toString();
+	}
+	private List<Point2D> getTurtlePosition(){
+		List<Point2D> turtlePositions = new ArrayList<Point2D>();
+		for(Turtle turtle : turtleList){
+			turtlePositions.add(turtle.getPoints().get(turtle.getPoints().size() - 1));
+		}
+		return turtlePositions;
 	}
 	
-	public CommandNode getCommandForVariable(String variable){
-		return userVariables.get(variable);
+	public void setCompileInfo(){
+		returnData.addLines(lineList);
+		returnData.addTurtlePosition(getTurtlePosition());
+		//returnData.addTurtleImage(.getTurtleImage());
+		//returnData.addBackgroundColor();
 	}
 	
-	public CommandNode getCommandForFunction(String function){
-		return userFunctions.get(function);
+	public void setLines(List<Line> lines){
+		lineList = lines;
+	}
+	public List<Turtle> getTurtleList(){
+		return turtleList;
+	}
+	
+	public void addCommandToHistory(CommandNode command){
+		System.out.println("adding to " + pastCommands.getClass().hashCode());
+		pastCommands.add(command);
 	}
 	
 	public void addVariableToMap(CommandNode variable, String variableName){
-		System.out.println("Adding " + variable +  " " + variableName + " to map");
-		userVariables.put(variableName, variable);;
-	}
-	public void compile (String input) {
-		try {
-			List<CommandNode> currCommandTree = myParser.interpret(input);
-			for (CommandNode command: currCommandTree){
-				consoleOutputs.addAll(myController.update(command));
-			}
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		userVariables.put(variableName, variable);
 	}
 	
 	public void addCommandToMap(CommandNode command, String functionName){
 		userFunctions.put(functionName, command);
 	}
-	private void getCompileInfo(){
-		returnData.addLines(myController.makeLines());
-		returnData.addTurtlePosition(myController.getTurtlePosition());
-		//returnData.addTurtleImage(myController.getTurtleImage());
-		//returnData.addBackgroundColor();
+	
+	public CommandNode getCommandForVariable(String variable){
+		return userVariables.get(variable);
+	}
+
+	public CommandNode getCommandForFunction(String function){
+		return userFunctions.get(function);
+	}
+
+	public List<CommandNode> getPastCommands(){
+		return pastCommands;
 	}
 	
+
 }

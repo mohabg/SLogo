@@ -1,31 +1,36 @@
 package slogo;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import javafx.geometry.Point2D;
 
 import commands.CommandNode;
 import commands.MakeUserInstruction;
 import javafx.scene.shape.Line;
 
 public class Controller {
-	private List<Turtle> turtleList;
-	private List<Line> returnLines;
+
+	private Model myModel;
+	private Parser myParser;
 
 	public Controller () {
-		Turtle turtle = new Turtle();
-		returnLines = new ArrayList<Line>();
-		turtleList = new ArrayList<Turtle>();
-		turtleList.add(turtle);
-
+		myModel = new Model();
+		myParser = new Parser("English", myModel);
 	}
 
+	public String compile (String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // called in every frame
+		List<CommandNode> currCommandTree = myParser.interpret(input);
+		for (CommandNode command: currCommandTree){
+			update(command);
+		}
+		updateModel();
+		return myModel.getConsoleOutput();
+	}
 	public Collection<Double> update (CommandNode command) {
 		ArrayList<Double> outputs = new ArrayList<Double>();
 		if (command.getUsesTurtle()){
-			for (Turtle turtle : turtleList){
+			for (Turtle turtle : myModel.getTurtleList()){
 				command.setTurtle(turtle);
 				outputs.add(command.run());
 			}
@@ -33,12 +38,17 @@ public class Controller {
 		else{
 			outputs.add(command.run());
 		}
+
 		return outputs;
 	}
 
+	private void updateModel(){
+		myModel.setLines(makeLines());
+		myModel.setCompileInfo();
+	}
 	public List<Line> makeLines(){
 		ArrayList<Line> lines = new ArrayList<Line>();
-		for (Turtle turtle : turtleList){
+		for (Turtle turtle : myModel.getTurtleList()){
 			for (int i = 0; i< turtle.getPoints().size() - 1; i++){
 				Line line = new Line(turtle.getPoints().get(i).getX(), turtle.getPoints().get(i).getY(), 
 						turtle.getPoints().get(i+1).getX(), turtle.getPoints().get(i+1).getY());
@@ -46,12 +56,5 @@ public class Controller {
 			}
 		}
 		return lines;
-	}
-	public List<Point2D> getTurtlePosition(){
-		List<Point2D> turtlePositions = new ArrayList<Point2D>();
-		for(Turtle turtle : turtleList){
-			turtlePositions.add(turtle.getPoints().get(turtle.getPoints().size() - 1));
-		}
-		return turtlePositions;
 	}
 }

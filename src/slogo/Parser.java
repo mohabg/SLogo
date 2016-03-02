@@ -15,15 +15,13 @@ public class Parser{
 
 	private CommandFactory commandFactory;
 	private List<Entry<String, Pattern>> mySymbols;
-	private Model model;
 	private String language;
-	
-	public Parser (String language) {
+
+	public Parser (String language, SaveInputs model) {
 		addLanguage(language);
-		addLanguage("syntax");
-		commandFactory = new CommandFactory(language);
+		addLanguage("Syntax");
+		commandFactory = new CommandFactory(model);
 		mySymbols = new ArrayList<>();
-		model = Model.getModelInstance();
 	}
 
 	private void addLanguage(String language){
@@ -46,12 +44,12 @@ public class Parser{
 		List<CommandNode> commandList = createCommandNodes(text);
 		List<CommandNode> commandHeads = new ArrayList<>();
 		List<Integer> headCommandIndices = new ArrayList<>();
-		
+
 		for(int i = 0; i < commandList.size(); i++){
 			headCommandIndices.add(i);
 			i = createChildren(commandList, i);
 		}
-		
+
 		for(int i = 0; i < headCommandIndices.size(); i++){
 			int headCommandIndex = headCommandIndices.get(i);
 			commandHeads.add(commandList.get(headCommandIndex));
@@ -64,9 +62,9 @@ public class Parser{
 	private void printCommandHeads(List<CommandNode> commandHeads) {
 		for(int i = 0; i < commandHeads.size(); i++){
 			System.out.println(commandHeads.get(i) + " children " + commandHeads.get(i).getChildren());
-				printCommandHeads(commandHeads.get(i).getChildren());
+			printCommandHeads(commandHeads.get(i).getChildren());
 		}
-		
+
 	}
 
 	private List<CommandNode> createCommandNodes(String[] text){
@@ -80,32 +78,13 @@ public class Parser{
 		System.out.println(commandList);
 		return commandList;
 	}
-	
+
 	private CommandNode getCommandForWord(String[] text, int index){
-			String word = text[index];
-			String symbol = getSymbol(word);
-			CommandNode command = commandFactory.getCommandNode(symbol, word);
-			if(command instanceof Variable){
-				CommandNode storedCommandForVariable = model.getCommandForVariable(word);
-				if(storedCommandForVariable != null){
-					return storedCommandForVariable;
-				}
-				else{
-					model.addVariableToMap(command, word);
-				}
-			}
-			if(command instanceof Command){
-				CommandNode storedCommand = model.getCommandForFunction(word);
-				if(storedCommand != null){
-					return storedCommand;
-				}
-				else{
-					model.addCommandToMap(command, word);
-				}
-			}
-			return command;
+		String word = text[index];
+		String symbol = getSymbol(word);
+		return commandFactory.getCommandNode(symbol, word);
 	}
-	
+
 	private int createChildren(List<CommandNode> commandList, int currentIndex) {
 		CommandNode currentCommand = commandList.get(currentIndex);
 		int counter = 0;

@@ -5,13 +5,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import slogo.Interpreter;
+import slogo.Model;
 import slogo.Resources;
 
 
 public class CommandWindow extends TextArea {
-    Interpreter interpreter;
+    Model interpreter;
 
-    public CommandWindow (Interpreter interpreter) {
+    public CommandWindow (Model interpreter) {
         this.interpreter = interpreter;
         print(Resources.CONSOLE_PROMPT_STR); // TODO: hack!
         initControls();
@@ -42,7 +43,7 @@ public class CommandWindow extends TextArea {
         String command =
                 text.substring(text.lastIndexOf(Resources.CONSOLE_PROMPT_STR) + ignoreLength)
                         .trim();
-        String retStr = interpreter.interpret(command);
+        String retStr = interpreter.compile(command);
         print(retStr);
 
         print(Resources.CONSOLE_PROMPT_STR);
