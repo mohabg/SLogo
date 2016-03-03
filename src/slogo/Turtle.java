@@ -8,11 +8,12 @@ import javafx.scene.image.Image;
 
 public class Turtle {
 	public static final String DEFAULT_IMAGE = "resources/turtle.png";
-	private Point pos = new Point(0, 0, 0);
+	private Point position = new Point(0, 0, 0);
 	private Image myImage;
 	private double visible;
 	private double penDown;
 	private String penColor;
+	private String shape;
 	private List<Point> points = new ArrayList<Point>();
 
 	private final int TURTLE_WIDTH = 30;
@@ -24,7 +25,7 @@ public class Turtle {
 
 	public Turtle() {
 		setImage(DEFAULT_IMAGE);
-		points.add(pos.clone());
+		points.add(position.clone());
 		penDown = 1;
 		visible = 1;
 	}
@@ -33,7 +34,7 @@ public class Turtle {
 		System.out.println("turtle " + x + " " + y);
 		setX(x);
 		setY(y);
-		points.add(pos.clone());
+		points.add(position.clone());
 	}
 
 	public void setImage(String path) {
@@ -41,23 +42,23 @@ public class Turtle {
 	}
 
 	public Point getPos() {
-		return pos.clone();
+		return position.clone();
 	}
 
 	public double getX() {
-		return pos.getX();
+		return position.getX();
 	}
 
 	public double getY() {
-		return pos.getY();
+		return position.getY();
 	}
 
 	public double getOrientation() {
-		return pos.getTheta();
+		return position.getTheta();
 	}
 
 	public void setOrientation(double orientationToSet) {
-		pos.setTheta(orientationToSet);
+		position.setTheta(orientationToSet);
 	}
 
 	public Image getImage() {
@@ -65,15 +66,15 @@ public class Turtle {
 	}
 
 	private void setX(double x) {
-		pos.setX(x);
+		position.setX(x);
 	}
 
 	private void setY(double y) {
-		pos.setY(y);
+		position.setY(y);
 	}
 
 	public void turn(Double angle) {
-		pos.setTheta(pos.getTheta() + angle);
+		position.setTheta(position.getTheta() + angle);
 	}
 
 	public List<Point> getPoints() {
