@@ -4,11 +4,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import commands.CommandNode;
+import data.Line;
+import data.Point;
 import data.ReturnData;
-import javafx.geometry.Point2D;
-import javafx.scene.shape.Line;
 
-public class Model implements SaveInputs{
+public class Model implements SaveInputs {
 
 	private ReturnData returnData;
 	private List<Turtle> turtleList;
@@ -18,7 +18,6 @@ public class Model implements SaveInputs{
 	private List<Double> consoleOutputs;
 	private List<CommandNode> pastCommands;
 	private String BackgroundColor;
-
 
 	public Model() {
 		returnData = new ReturnData();
@@ -31,75 +30,82 @@ public class Model implements SaveInputs{
 		turtleList = new ArrayList<Turtle>();
 		turtleList.add(turtle);
 	}
+
 	public String getConsoleOutput() {
 		StringBuilder consoleOutput = new StringBuilder();
-		for(Double output : consoleOutputs){
+		for (Double output : consoleOutputs) {
 			consoleOutput.append(output.toString() + ", ");
 		}
 		return consoleOutput.toString();
 	}
-	private List<Point2D> getTurtlePosition(){
-		List<Point2D> turtlePositions = new ArrayList<Point2D>();
-		for(Turtle turtle : turtleList){
-			turtlePositions.add(new Point2D(turtle.getX(), turtle.getY()));
+
+	private List<Point> getTurtlePosition() {
+		List<Point> turtlePositions = new ArrayList<Point>();
+		for (Turtle turtle : turtleList) {
+			turtlePositions.add(turtle.getPos());
 		}
 		return turtlePositions;
 	}
-	
-	public void setCompileInfo(){
+
+	public void setCompileInfo() {
 		returnData.addLines(lineList);
 		returnData.addTurtlePosition(getTurtlePosition());
 		returnData.setVariables(makeVariableOutputs());
 		returnData.setFunctions(makeFunctionOutputs());
 		returnData.setTurtleImage(getTurtleList().get(0).getImage());
 		returnData.addPenBoolean(getTurtleList().get(0).isPenDown());
-		//returnData.addBackgroundColor();
+		// returnData.addBackgroundColor();
 	}
-	private Map<String, String> makeVariableOutputs(){
+
+	private Map<String, String> makeVariableOutputs() {
 		Map<String, String> variableStringOutputs = new TreeMap<String, String>();
-		for (String variable : userVariables.keySet()){
+		for (String variable : userVariables.keySet()) {
 			variableStringOutputs.put(variable, String.valueOf(userVariables.get(variable).getValue()));
 		}
 		return variableStringOutputs;
 	}
-	private Set<String> makeFunctionOutputs(){
+
+	private Set<String> makeFunctionOutputs() {
 		Set<String> functionOutputs = new TreeSet<String>();
-		for (String fnName : userFunctions.keySet()){
+		for (String fnName : userFunctions.keySet()) {
 			functionOutputs.add(fnName);
 		}
 		return functionOutputs;
 	}
-	public void setLines(List<Line> lines){
+
+	public void setLines(List<Line> lines) {
 		lineList = lines;
 	}
-	public List<Turtle> getTurtleList(){
+
+	public List<Turtle> getTurtleList() {
 		return turtleList;
 	}
-	
-	public void addCommandToHistory(CommandNode command){
+
+	public void addCommandToHistory(CommandNode command) {
 		pastCommands.add(command);
 	}
-	
-	public void addVariableToMap(CommandNode variable, String variableName){
+
+	public void addVariableToMap(CommandNode variable, String variableName) {
 		userVariables.put(variableName, variable);
 	}
-	
-	public void addCommandToMap(CommandNode command, String functionName){
+
+	public void addCommandToMap(CommandNode command, String functionName) {
 		userFunctions.put(functionName, command);
 	}
-	
-	public CommandNode getCommandForVariable(String variable){
+
+	public CommandNode getCommandForVariable(String variable) {
 		return userVariables.get(variable);
 	}
 
-	public CommandNode getCommandForFunction(String function){
+	public CommandNode getCommandForFunction(String function) {
 		return userFunctions.get(function);
 	}
 
-	public List<CommandNode> getPastCommands(){
+	public List<CommandNode> getPastCommands() {
 		return pastCommands;
 	}
-	public ReturnData getReturnData(){
+
+	public ReturnData getReturnData() {
 		return returnData;
 	}
 

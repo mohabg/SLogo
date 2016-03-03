@@ -5,114 +5,99 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javafx.geometry.Point2D;
+
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import slogo.Turtle;
-
 
 public class ReturnData implements CanvasData, WorkspaceData {
 
-    private List<Line> lines = new ArrayList<Line>();
-    private List<Point2D> turtlePosition = new ArrayList<Point2D>();
-    private Image turtleImage;
-    private Map<String, String> userVariables;
-    private Set<String> userFunctions;
-    private Color penColor;
-    private double penBoolean;
+	private List<Line> lines = new ArrayList<Line>();
+	private List<Point> turtlePositions = new ArrayList<Point>();
+	private Image turtleImage;
+	private Map<String, String> userVariables;
+	private Set<String> userFunctions;
+	private Color penColor;
+	private double penBoolean;
 
-    public ReturnData () {
-        // TODO Auto-generated constructor stub
-    }
+	public ReturnData() {
+		// TODO Auto-generated constructor stub
+	}
 
-    public Collection<Turtle> getTurtles () {
-        // TODO
-        return null;
-    }
+	public Image getTurtleImage() {
+		// TODO
+		return turtleImage;
+	}
 
-    // public Collection<Stamp> getStamps() {
-    // }
+	@Override
+	public List<Point> getTurtlePosition() {
+		// TODO
+		return turtlePositions;
+	}
 
-    @Deprecated
-    public Image getTurtleImage () {
-        // TODO
-        return turtleImage;
-    }
+	public List<Line> getLines() {
+		// TODO
+		return lines;
+	}
 
-    @Override
-    @Deprecated
-    public List<Point2D> getTurtlePosition () {
-        // TODO
-        return turtlePosition;
-    }
+	public void addLines(List<Line> lines) {
+		this.lines = lines;
+	}
 
-    public List<Line> getLines () {
-        // TODO
-        return lines;
-    }
+	public Color getBackgroundColor() {
+		// TODO
+		return null;
+	}
 
-    public Color getBackgroundColor () {
-        // TODO
-        return null;
-    }
+	public Map<String, String> getUserVariables() {
+		// TODO
+		return userVariables;
+	}
 
-    public Map<String, String> getUserVariables () {
-        // TODO
-        return userVariables;
-    }
+	public Set<String> getUserFunctions() {
+		// TODO
+		return userFunctions;
+	}
 
-    public Set<String> getUserFunctions () {
-        // TODO
-        return userFunctions;
-    }
+	public void addTurtlePosition(List<Point> turtlePositions) {
+		this.turtlePositions = turtlePositions;
+	}
 
-    public void addLines (List<Line> lines) {
-        this.lines = lines;
+	public void setVariables(Map<String, String> variables) {
+		this.userVariables = variables;
 
-    }
+	}
 
-    @Deprecated
-    public void addTurtlePosition (List<Point2D> turtlePosition) {
-        this.turtlePosition = turtlePosition;
+	@Override
+	public void setTurtleImage(Image image) {
+		this.turtleImage = image;
+	}
 
-    }
+	public void addPenBoolean(double d) {
+		this.penBoolean = d;
 
-    @Override
-    @Deprecated
-    public boolean getPenDown () {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	}
 
-    @Override
-    @Deprecated
-    public Color getPenColor () {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public void setFunctions(Set<String> functionOutputs) {
+		this.userFunctions = functionOutputs;
 
-    public void setVariables (Map<String, String> variables) {
-        this.userVariables = variables;
+	}
 
-    }
+	@Override
+	public boolean getPenDown() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-    @Override
-    @Deprecated
-    public void setTurtleImage (Image image) {
+	@Override
+	public Color getPenColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-        this.turtleImage = image;
-
-    }
-
-    @Deprecated
-    public void addPenBoolean (double d) {
-        this.penBoolean = d;
-
-    }
-
-    public void setFunctions (Set<String> functionOutputs) {
-        this.userFunctions = functionOutputs;
-
-    }
+	@Override
+	public Collection<Turtle> getTurtles() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
