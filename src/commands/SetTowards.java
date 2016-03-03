@@ -1,9 +1,11 @@
 package commands;
 
-public class Comment extends CommandNode{
+public class SetTowards extends CommandNode{
 
-	public Comment(double val) {
+	public SetTowards(double val) {
 		super(val);
+		setParametersNeeded(2);
+		setUsesTurtle(true);
 	}
 
 	@Override

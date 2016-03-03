@@ -1,3 +1,4 @@
+
 package gui;
 
 import data.CanvasData;
@@ -7,13 +8,16 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 import slogo.Controller;
+import slogo.Resources;
 
 
 public class GUI {
@@ -30,31 +34,30 @@ public class GUI {
     private ScriptWindow scriptWindow;
     private Workspace workspace;
 
-    // Buttons
-    Button runButton, languageButton, helpButton;
-
     public GUI (Controller controller) {
         this.controller = controller;
         this.data = controller.getReturnData();
     }
 
     public Scene init (int width, int height) {
-        Group root = new Group();
+        BorderPane root = new BorderPane();
         Scene myScene = new Scene(root, width, height);
         rootNodeChildren = root.getChildren();
         this.width = width;
         this.height = height;
 
+        root.setTop(createMenuBar());
+
         // GUI elements
-        this.canvas = createCanvas((CanvasData) data);
+        this.canvas = new MyCanvas((CanvasData) data, getWindowWidth() / 2, getWindowHeight() / 2);
         this.commandWindow = new CommandWindow(controller);
-        this.scriptWindow = new ScriptWindow();
+        this.scriptWindow = new ScriptWindow(controller, commandWindow);
         this.workspace = new Workspace((WorkspaceData) data);
 
         // Root node and grid layout
         GridPane grid =
                 createGridPane(this.canvas, this.commandWindow, this.scriptWindow, this.workspace);
-        rootNodeChildren.add(grid);
+        root.setCenter(grid);
 
         return myScene;
     }
@@ -94,16 +97,21 @@ public class GUI {
         grid.add(editor.getTextArea(), 1, 0);
         grid.add(workspace.getTableView(), 0, 1);
 
+        // TODO: remove hack
+        console.getConsole().setMaxHeight(GUI.getScreenCenter().getY() * 0.7);
+
         return grid;
     }
 
-    private MyCanvas createCanvas (CanvasData data) {
-        Group canvasNode = new Group();
-        // TODO: GUI.setCenterPos(canvasNode, ...)?
-        rootNodeChildren.add(canvasNode);
-        MyCanvas canvas =
-                new MyCanvas(data, canvasNode.getChildren(), getWindowWidth() / 2,
-                             getWindowHeight() / 2);
-        return canvas;
+    private MenuBar createMenuBar () {
+        MenuBar menuBar = new MenuBar();
+        Menu scriptMenu = new Menu("Script");
+        MenuItem runMenuItem = new MenuItem(Resources.RUN_MENU_LABEL);
+
+        scriptMenu.getItems().add(runMenuItem);
+        runMenuItem.setOnAction(e -> scriptWindow.handleRunButton());
+        menuBar.getMenus().add(scriptMenu);
+
+        return menuBar;
     }
 }

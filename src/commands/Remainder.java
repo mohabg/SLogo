@@ -9,7 +9,8 @@ public class Remainder extends CommandNode {
 
     @Override
     public double run () {
-        return getChildren().get(0).run() % getChildren().get(1).run();
+        setValue(getChildren().get(0).run() % getChildren().get(1).run());
+        return getValue();
     }
 
 }
