@@ -24,6 +24,7 @@ public class Controller {
 	}
 	public String compile (String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // called in every frame
 		List<CommandNode> currCommandTree = myParser.interpret(input);
+		System.out.println(" tree " + currCommandTree);
 		for (CommandNode command: currCommandTree){
 			update(command);
 		}

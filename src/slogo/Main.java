@@ -30,7 +30,6 @@ public class Main extends Application {
     public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	myController = new Controller();
     	myController.initialize();
-    	myController.compile(" ");
         myGUI = new GUI(myController);
         // TODO: stage.setTitle();
 

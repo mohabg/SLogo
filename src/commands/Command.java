@@ -26,7 +26,11 @@ public class Command extends CommandNode{
 			variables.get(variableIndex++).setValue(variableValue);
 		}
 		CommandNode commandsToExecute = getChildren().get(0);
-		return commandsToExecute.run();
+		double lastExecutedCommandValue = commandsToExecute.run();
+		//Reset variables
+		getChildren().clear();
+		getChildren().add(commandsToExecute);
+		return lastExecutedCommandValue;
 	}
 
 }

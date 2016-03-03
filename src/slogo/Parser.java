@@ -45,6 +45,7 @@ public class Parser{
 	IllegalArgumentException, InvocationTargetException{
 
 		List<CommandNode> commandList = createCommandNodes(text);
+		System.out.println(" command list " + commandList);
 		List<CommandNode> commandHeads = new ArrayList<>();
 		List<Integer> headCommandIndices = new ArrayList<>();
 
@@ -57,13 +58,17 @@ public class Parser{
 			int headCommandIndex = headCommandIndices.get(i);
 			commandHeads.add(commandList.get(headCommandIndex));
 		}
-		printCommandHeads(commandHeads);
+		printCommandHeads(commandHeads, 0);
 		return commandHeads;
 	}
 
-	private void printCommandHeads(List<CommandNode> commandHeads) {
+	private void printCommandHeads(List<CommandNode> commandHeads, int count) {
+		if(count == 20){
+			return;
+		}
 		for(int i = 0; i < commandHeads.size(); i++){
-			printCommandHeads(commandHeads.get(i).getChildren());
+			System.out.println(commandHeads.get(i) + " children " + commandHeads.get(i).getChildren());
+			printCommandHeads(commandHeads.get(i).getChildren(), count + 1);
 		}
 
 	}
@@ -71,7 +76,7 @@ public class Parser{
 	private List<CommandNode> createCommandNodes(String[] text){
 		List<CommandNode> commandList = new ArrayList<>();
 		for(int i = 0; i < text.length; i++){
-			System.out.println("word " + text[i]);
+			//System.out.println("Input " + text[i]);
 			if(text[i].trim().length() > 0){
 				CommandNode command = getCommandForWord(text, i);
 				commandList.add(command);
@@ -137,7 +142,9 @@ public class Parser{
 	}
 	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		final String WHITESPACE = "\\p{Space}";
-		return parseText(command.split(WHITESPACE));
+		System.out.println("Inputted script " + command);
+		List<CommandNode> commandHeads = parseText(command.split(WHITESPACE));
+		return commandHeads;
 	}
 
 }
