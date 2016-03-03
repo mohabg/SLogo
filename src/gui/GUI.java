@@ -15,9 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
-import javafx.stage.Stage;
-import data.CanvasData;
-import data.WorkspaceData;
 import slogo.Controller;
 import slogo.Resources;
 
@@ -102,6 +99,9 @@ public class GUI {
         grid.setVgap(10);
         grid.setPadding(new Insets(0, 10, 0, 10));
 
+        // TODO: remove hack
+        console.getConsole().setMaxHeight(GUI.getScreenCenter().getY() * 0.6);
+
         grid.add(canvas.getCanvas(), 0, 0);
         grid.add(console.getConsole(), 1, 1);
         grid.add(editor.getTextArea(), 1, 0);
@@ -114,7 +114,7 @@ public class GUI {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
-        hbox.setStyle("-fx-background-color: #336699;");
+        hbox.setStyle(Resources.HBOX_BACKGROUND_COLOR);
 
         runButton.setPrefSize(100, 20);
         hbox.getChildren().addAll(runButton);
