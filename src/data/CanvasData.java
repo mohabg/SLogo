@@ -1,5 +1,6 @@
 package data;
 
+import java.util.Collection;
 import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -20,10 +21,12 @@ public interface CanvasData {
 
     public Color getPenColor ();
 
-    public List<Turtle> getTurtles ();
+    public Collection<Turtle> getTurtles ();
 
     public List<Line> getLines ();
 
     public Color getBackgroundColor ();
+
+    // public Collection<Stamp> getStamps ();
 
 }

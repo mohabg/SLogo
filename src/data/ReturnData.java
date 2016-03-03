@@ -31,6 +31,9 @@ public class ReturnData implements CanvasData, WorkspaceData {
         return null;
     }
 
+    // public Collection<Stamp> getStamps() {
+    // }
+
     @Deprecated
     public Image getTurtleImage () {
         // TODO
