@@ -98,7 +98,7 @@ public class GUI {
         grid.add(workspace.getTableView(), 0, 1);
 
         // TODO: remove hack
-        console.getConsole().setMaxHeight(GUI.getScreenCenter().getY() * 0.6);
+        console.getConsole().setMaxHeight(GUI.getScreenCenter().getY() * 0.7);
 
         return grid;
     }

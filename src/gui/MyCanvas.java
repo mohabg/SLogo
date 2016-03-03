@@ -12,7 +12,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 
@@ -65,7 +64,7 @@ public class MyCanvas {
             double endY = l.getEndY();
             Point2D end = getCartesianPos(new Point2D(endX, endY));
             // TODO: width?
-            gc.setStroke(Color.BLACK);
+            gc.setStroke(data.getPenColor());
             gc.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
         }
     }
@@ -123,7 +122,7 @@ public class MyCanvas {
 
     private Point2D getCenterPos (Image image, Point2D centerPos) {
         double x = centerPos.getX() - image.getWidth() / 2;
-        double y = centerPos.getY() - image.getHeight() / 2;
+        double y = centerPos.getY() + image.getHeight() / 2;
         return getCartesianPos(new Point2D(x, y));
     }
 
