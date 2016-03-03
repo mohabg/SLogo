@@ -16,7 +16,8 @@ public class CommandWindow {
         this.console = new ConsoleTextArea();
         this.interpreter = interpreter;
         initControls();
-        print(Resources.CONSOLE_PROMPT_STR);
+        print("Yesterday it worked\n" + "Today it is not working\n" + "Windows is like that" +
+              Resources.CONSOLE_PROMPT_STR);
     }
 
     public ConsoleTextArea getConsole () {

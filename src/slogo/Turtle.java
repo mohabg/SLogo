@@ -2,20 +2,19 @@ package slogo;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.geometry.Point2D;
+
+import data.Point;
 import javafx.scene.image.Image;
 
 public class Turtle {
 	public static final String DEFAULT_IMAGE = "resources/turtle.png";
-	private double xCord;
-	private double yCord;
-	private double orientation;
+	private Point pos = new Point(0, 0, 0);
 	private Image myImage;
 	private double visible;
 	private double penDown;
 	private String penColor;
-	private List<Point2D> points = new ArrayList<Point2D>();
-	
+	private List<Point> points = new ArrayList<Point>();
+
 	private final int TURTLE_WIDTH = 30;
 	private final int TURTLE_HEIGHT = 30;
 
@@ -25,10 +24,7 @@ public class Turtle {
 
 	public Turtle() {
 		setImage(DEFAULT_IMAGE);
-		xCord = 0;
-		yCord = 0;
-		orientation = 0;
-		points.add(new Point2D(xCord, yCord));
+		points.add(pos.clone());
 		penDown = 1;
 		visible = 1;
 	}
@@ -37,49 +33,50 @@ public class Turtle {
 		System.out.println("turtle " + x + " " + y);
 		setX(x);
 		setY(y);
-		points.add(new Point2D(xCord, yCord));
+		points.add(pos.clone());
 	}
-	
-	public void setImage(String path)
-	{
+
+	public void setImage(String path) {
 		myImage = new Image(path, TURTLE_WIDTH, TURTLE_HEIGHT, true, true);
 	}
-	
+
+	public Point getPos() {
+		return pos.clone();
+	}
+
 	public double getX() {
-		return xCord;
+		return pos.getX();
 	}
 
 	public double getY() {
-		return yCord;
+		return pos.getY();
 	}
 
 	public double getOrientation() {
-		return orientation;
+		return pos.getTheta();
 	}
 
 	public void setOrientation(double orientationToSet) {
-		orientation = orientationToSet;
+		pos.setTheta(orientationToSet);
 	}
 
 	public Image getImage() {
 		return myImage;
 	}
 
-	private void setX(Double x) {
-		xCord = x;
+	private void setX(double x) {
+		pos.setX(x);
 	}
 
-	private void setY(Double y) {
-		yCord = y;
+	private void setY(double y) {
+		pos.setY(y);
 	}
 
 	public void turn(Double angle) {
-		orientation += angle;
-		orientation = orientation % 360;
-
+		pos.setTheta(pos.getTheta() + angle);
 	}
 
-	public List<Point2D> getPoints() {
+	public List<Point> getPoints() {
 		return points;
 	}
 

@@ -3,18 +3,15 @@ package data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
 import java.util.Set;
 
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 
 public class ReturnData implements CanvasData, WorkspaceData {
 
 	private List<Line> lines = new ArrayList<Line>();
-	private List<Point2D> turtlePosition = new ArrayList<Point2D>();
+	private List<Point> turtlePositions = new ArrayList<Point>();
 	private Image turtleImage;
 	private Map<String, String> userVariables;
 	private Set<String> userFunctions;
@@ -31,9 +28,9 @@ public class ReturnData implements CanvasData, WorkspaceData {
 	}
 
 	@Override
-	public List<Point2D> getTurtlePosition() {
+	public List<Point> getTurtlePosition() {
 		// TODO
-		return turtlePosition;
+		return turtlePositions;
 	}
 
 	public List<Line> getLines() {
@@ -61,8 +58,8 @@ public class ReturnData implements CanvasData, WorkspaceData {
 
 	}
 
-	public void addTurtlePosition(List<Point2D> turtlePosition) {
-		this.turtlePosition = turtlePosition;
+	public void addTurtlePosition(List<Point> turtlePositions) {
+		this.turtlePositions = turtlePositions;
 
 	}
 
