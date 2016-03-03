@@ -1,101 +1,115 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
 import java.util.Set;
-
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import slogo.Turtle;
 
 
 public class ReturnData implements CanvasData, WorkspaceData {
 
-	private List<Line> lines = new ArrayList<Line>();
-	private List<Point2D> turtlePosition = new ArrayList<Point2D>();
-	private Image turtleImage;
-	private Map<String, String> userVariables;
-	private Set<String> userFunctions;
-	private Color penColor;
-	private double penBoolean;
+    private List<Line> lines = new ArrayList<Line>();
+    private List<Point2D> turtlePosition = new ArrayList<Point2D>();
+    private Image turtleImage;
+    private Map<String, String> userVariables;
+    private Set<String> userFunctions;
+    private Color penColor;
+    private double penBoolean;
 
-	public ReturnData () {
-		// TODO Auto-generated constructor stub
-	}
+    public ReturnData () {
+        // TODO Auto-generated constructor stub
+    }
 
-	public Image getTurtleImage () {
-		// TODO
-		return turtleImage;
-	}
-	@Override
-	public List<Point2D> getTurtlePosition () {
-		// TODO
-		return turtlePosition;
-	}
+    public Collection<Turtle> getTurtles () {
+        // TODO
+        return null;
+    }
 
-	public List<Line> getLines () {
-		// TODO
-		return lines;
-	}
+    @Deprecated
+    public Image getTurtleImage () {
+        // TODO
+        return turtleImage;
+    }
 
-	public Color getBackgroundColor () {
-		// TODO
-		return null;
-	}
+    @Override
+    @Deprecated
+    public List<Point2D> getTurtlePosition () {
+        // TODO
+        return turtlePosition;
+    }
 
-	public Map<String, String> getUserVariables () {
-		// TODO
-		return userVariables;
-	}
+    public List<Line> getLines () {
+        // TODO
+        return lines;
+    }
 
-	public Set<String> getUserFunctions () {
-		// TODO
-		return userFunctions;
-	}
+    public Color getBackgroundColor () {
+        // TODO
+        return null;
+    }
 
-	public void addLines(List<Line> lines) {
-		this.lines = lines;
+    public Map<String, String> getUserVariables () {
+        // TODO
+        return userVariables;
+    }
 
-	}
+    public Set<String> getUserFunctions () {
+        // TODO
+        return userFunctions;
+    }
 
-	public void addTurtlePosition(List<Point2D> turtlePosition) {
-		this.turtlePosition = turtlePosition;
+    public void addLines (List<Line> lines) {
+        this.lines = lines;
 
-	}
+    }
 
-	@Override
-	public boolean getPenDown() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Deprecated
+    public void addTurtlePosition (List<Point2D> turtlePosition) {
+        this.turtlePosition = turtlePosition;
 
-	@Override
-	public Color getPenColor() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    }
 
-	public void setVariables(Map<String, String> variables) {
-		this.userVariables = variables;
+    @Override
+    @Deprecated
+    public boolean getPenDown () {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	}
-	@Override
-	public void setTurtleImage(Image image) {
+    @Override
+    @Deprecated
+    public Color getPenColor () {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-		this.turtleImage = image;
+    public void setVariables (Map<String, String> variables) {
+        this.userVariables = variables;
 
-	}
+    }
 
-	public void addPenBoolean(double d) {
-		this.penBoolean = d;
+    @Override
+    @Deprecated
+    public void setTurtleImage (Image image) {
 
-	}
+        this.turtleImage = image;
 
-	public void setFunctions(Set<String> functionOutputs) {
-		this.userFunctions = functionOutputs;
+    }
 
-	}
+    @Deprecated
+    public void addPenBoolean (double d) {
+        this.penBoolean = d;
+
+    }
+
+    public void setFunctions (Set<String> functionOutputs) {
+        this.userFunctions = functionOutputs;
+
+    }
 }
