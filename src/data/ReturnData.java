@@ -1,12 +1,14 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import slogo.Turtle;
 
 public class ReturnData implements CanvasData, WorkspaceData {
 
@@ -38,6 +40,10 @@ public class ReturnData implements CanvasData, WorkspaceData {
 		return lines;
 	}
 
+	public void addLines(List<Line> lines) {
+		this.lines = lines;
+	}
+
 	public Color getBackgroundColor() {
 		// TODO
 		return null;
@@ -53,26 +59,8 @@ public class ReturnData implements CanvasData, WorkspaceData {
 		return userFunctions;
 	}
 
-	public void addLines(List<Line> lines) {
-		this.lines = lines;
-
-	}
-
 	public void addTurtlePosition(List<Point> turtlePositions) {
 		this.turtlePositions = turtlePositions;
-
-	}
-
-	@Override
-	public boolean getPenDown() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Color getPenColor() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public void setVariables(Map<String, String> variables) {
@@ -93,5 +81,23 @@ public class ReturnData implements CanvasData, WorkspaceData {
 	public void setFunctions(Set<String> functionOutputs) {
 		this.userFunctions = functionOutputs;
 
+	}
+
+	@Override
+	public boolean getPenDown() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Color getPenColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<Turtle> getTurtles() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
