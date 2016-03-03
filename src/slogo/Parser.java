@@ -42,7 +42,7 @@ public class Parser{
 	}
 	
 	private List<CommandNode> parseText(String[] text) throws InstantiationException, IllegalAccessException,
-	IllegalArgumentException, InvocationTargetException{
+	IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{
 
 		List<CommandNode> commandList = createCommandNodes(text);
 		List<CommandNode> commandHeads = new ArrayList<>();
@@ -68,7 +68,7 @@ public class Parser{
 
 	}
 
-	private List<CommandNode> createCommandNodes(String[] text){
+	private List<CommandNode> createCommandNodes(String[] text) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		List<CommandNode> commandList = new ArrayList<>();
 		for(int i = 0; i < text.length; i++){
 			System.out.println("word " + text[i]);
@@ -80,7 +80,7 @@ public class Parser{
 		return commandList;
 	}
 
-	private CommandNode getCommandForWord(String[] text, int index){
+	private CommandNode getCommandForWord(String[] text, int index) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		String word = text[index];
 		String symbol = getSymbol(word);
 		return commandFactory.getCommandNode(symbol, word);
@@ -138,7 +138,7 @@ public class Parser{
 	private boolean match (String text, Pattern regex) {
 		return regex.matcher(text).matches();
 	}
-	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
 		final String WHITESPACE = "\\p{Space}";
 		return parseText(command.split(WHITESPACE));
 	}

@@ -19,6 +19,9 @@ public class Main extends Application {
     private Controller myController;
 
     /**
+     * @throws SecurityException 
+     * @throws NoSuchMethodException 
+     * @throws ClassNotFoundException 
      * Set things up at the beginning.
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
@@ -27,11 +30,11 @@ public class Main extends Application {
      * @throws
      */
     @Override
-    public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
     	myController = new Controller();
     	myController.initialize();
     	//myController.compile("cat 3");
-    	myController.compile("make :q 3 to poly [ :n :l ] [ repeat :n [ fd :l fd quotient 5 1 ] ] poly 3 4 if :n [ fd :q ] ");
+    	myController.compile("fd 50");
         myGUI = new GUI(myController);
         // TODO: stage.setTitle();
 

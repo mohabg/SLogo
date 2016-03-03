@@ -29,19 +29,38 @@ public class Controller {
 		updateModel();
 	}
 
-	public String compile(String input)
-			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // called
-																															// in
-																															// every
-																															// frame
-		List<CommandNode> currCommandTree = myParser.interpret(input);
-		for (CommandNode command : currCommandTree) {
-			update(command);
-		}
-		updateModel();
-		return myModel.getConsoleOutput();
+	public String compile(String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{// frame
+		List<CommandNode> currCommandTree;
+		List<Double> outputs = new ArrayList<Double>();
+		
+		//try {
+			currCommandTree = myParser.interpret(input);
+			for (CommandNode command : currCommandTree) {
+				outputs.addAll(update(command));
+			}
+			updateModel();
+		/*} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+			return getConsoleOutput(outputs);
 	}
-
+	public String getConsoleOutput(List<Double> consoleOutputs) {
+		StringBuilder consoleOutput = new StringBuilder();
+		for (Double output : consoleOutputs) {
+			consoleOutput.append(output.toString() + ", ");
+		}
+		return consoleOutput.toString();
+	}
 	public Collection<Double> update(CommandNode command) {
 		ArrayList<Double> outputs = new ArrayList<Double>();
 		if (command.getUsesTurtle()) {
