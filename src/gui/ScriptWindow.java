@@ -19,6 +19,8 @@ public class ScriptWindow {
     }
 
     public void handleRunButton () { // TODO: redundant
+    	System.out.println("Run button!");
+    	
         String text = myTextArea.getText();
         String[] commands = text.split("\n");
         ConsoleTextArea console = commandWindow.getConsole();

@@ -1,10 +1,13 @@
 
 package gui;
 
+
 import data.CanvasData;
 import data.ReturnData;
 import data.WorkspaceData;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -12,6 +15,10 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
@@ -36,25 +43,20 @@ public class GUI {
     private ScriptWindow scriptWindow;
     private Workspace workspace;
 
-    // Buttons
-    Button runButton, languageButton, helpButton;
-
     public GUI (Controller controller) {
         this.controller = controller;
         this.data = controller.getReturnData();
-
-        // Buttons
-        runButton = new Button(Resources.RUN_BUTTON_LABEL);
-        runButton.setOnMouseClicked(e -> scriptWindow.handleRunButton());
     }
 
     public Scene init (int width, int height) {
-        Group root = new Group();
-        Scene myScene = new Scene(root, width, height);
+        BorderPane root = new BorderPane();
+        Scene myScene = new Scene(root, width, height);        
         rootNodeChildren = root.getChildren();
         this.width = width;
         this.height = height;
-
+        
+        root.setTop(createMenuBar());
+        
         // GUI elements
         this.canvas = new MyCanvas((CanvasData) data, getWindowWidth() / 2,
                                    getWindowHeight() / 2);
@@ -65,9 +67,7 @@ public class GUI {
         // Root node and grid layout
         GridPane grid =
                 createGridPane(this.canvas, this.commandWindow, this.scriptWindow, this.workspace);
-        rootNodeChildren.add(grid);
-        HBox buttons = createHBox();
-        rootNodeChildren.add(buttons);
+        root.setCenter(grid);
 
         return myScene;
     }
@@ -109,16 +109,17 @@ public class GUI {
 
         return grid;
     }
-
-    private HBox createHBox () {
-        HBox hbox = new HBox();
-        hbox.setPadding(new Insets(15, 12, 15, 12));
-        hbox.setSpacing(10);
-        hbox.setStyle("-fx-background-color: #336699;");
-
-        runButton.setPrefSize(100, 20);
-        hbox.getChildren().addAll(runButton);
-
-        return hbox;
+    
+    private MenuBar createMenuBar()
+    {
+        MenuBar menuBar = new MenuBar();
+        Menu scriptMenu = new Menu("Script");
+        MenuItem runMenuItem = new MenuItem(Resources.RUN_MENU_LABEL);
+        
+        scriptMenu.getItems().add(runMenuItem);
+        runMenuItem.setOnAction(e -> scriptWindow.handleRunButton());
+        menuBar.getMenus().add(scriptMenu);
+        
+        return menuBar;
     }
 }
