@@ -50,7 +50,11 @@ public class MyCanvas {
         Image image = data.getTurtleImage();
         List<Point2D> posList = data.getTurtlePosition();
         Point2D pos = getCenterPos(image, posList.get(0));
-        gc.drawImage(image, pos.getX(), pos.getY());
+        
+        double x = pos.getX();
+        double y = pos.getY() - image.getHeight();
+        
+        gc.drawImage(image, x, y);
     }
 
     private void drawLines (GraphicsContext gc) {

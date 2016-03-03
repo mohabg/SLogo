@@ -27,7 +27,7 @@ public class ScriptWindow {
 				if (!command.isEmpty()) {
 					String out = controller.compile(command);
 					// System.out.println("******" + out + "******");
-					console.appendText(out);
+					console.appendText("\n" + out);
 				}
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {

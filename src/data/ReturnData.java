@@ -11,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-
 public class ReturnData implements CanvasData, WorkspaceData {
 
 	private List<Line> lines = new ArrayList<Line>();
@@ -22,36 +21,37 @@ public class ReturnData implements CanvasData, WorkspaceData {
 	private Color penColor;
 	private double penBoolean;
 
-	public ReturnData () {
+	public ReturnData() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Image getTurtleImage () {
+	public Image getTurtleImage() {
 		// TODO
 		return turtleImage;
 	}
+
 	@Override
-	public List<Point2D> getTurtlePosition () {
+	public List<Point2D> getTurtlePosition() {
 		// TODO
 		return turtlePosition;
 	}
 
-	public List<Line> getLines () {
+	public List<Line> getLines() {
 		// TODO
 		return lines;
 	}
 
-	public Color getBackgroundColor () {
+	public Color getBackgroundColor() {
 		// TODO
 		return null;
 	}
 
-	public Map<String, String> getUserVariables () {
+	public Map<String, String> getUserVariables() {
 		// TODO
 		return userVariables;
 	}
 
-	public Set<String> getUserFunctions () {
+	public Set<String> getUserFunctions() {
 		// TODO
 		return userFunctions;
 	}
@@ -82,11 +82,10 @@ public class ReturnData implements CanvasData, WorkspaceData {
 		this.userVariables = variables;
 
 	}
+
 	@Override
 	public void setTurtleImage(Image image) {
-
 		this.turtleImage = image;
-
 	}
 
 	public void addPenBoolean(double d) {
