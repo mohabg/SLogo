@@ -8,12 +8,13 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
 import slogo.Controller;
 import slogo.Resources;
@@ -33,28 +34,22 @@ public class GUI {
     private ScriptWindow scriptWindow;
     private Workspace workspace;
 
-    // Buttons
-    Button runButton, languageButton, helpButton;
-
     public GUI (Controller controller) {
         this.controller = controller;
         this.data = controller.getReturnData();
-
-        // Buttons
-        runButton = new Button(Resources.RUN_BUTTON_LABEL);
-        runButton.setOnMouseClicked(e -> scriptWindow.handleRunButton());
     }
 
     public Scene init (int width, int height) {
-        Group root = new Group();
+        BorderPane root = new BorderPane();
         Scene myScene = new Scene(root, width, height);
         rootNodeChildren = root.getChildren();
         this.width = width;
         this.height = height;
 
+        root.setTop(createMenuBar());
+
         // GUI elements
-        this.canvas = new MyCanvas((CanvasData) data, getWindowWidth() / 2,
-                                   getWindowHeight() / 2);
+        this.canvas = new MyCanvas((CanvasData) data, getWindowWidth() / 2, getWindowHeight() / 2);
         this.commandWindow = new CommandWindow(controller);
         this.scriptWindow = new ScriptWindow(controller, commandWindow);
         this.workspace = new Workspace((WorkspaceData) data);
@@ -62,9 +57,7 @@ public class GUI {
         // Root node and grid layout
         GridPane grid =
                 createGridPane(this.canvas, this.commandWindow, this.scriptWindow, this.workspace);
-        rootNodeChildren.add(grid);
-        HBox buttons = createHBox();
-        rootNodeChildren.add(buttons);
+        root.setCenter(grid);
 
         return myScene;
     }
@@ -99,26 +92,26 @@ public class GUI {
         grid.setVgap(10);
         grid.setPadding(new Insets(0, 10, 0, 10));
 
-        // TODO: remove hack
-        console.getConsole().setMaxHeight(GUI.getScreenCenter().getY() * 0.6);
-
         grid.add(canvas.getCanvas(), 0, 0);
         grid.add(console.getConsole(), 1, 1);
         grid.add(editor.getTextArea(), 1, 0);
         grid.add(workspace.getTableView(), 0, 1);
 
+        // TODO: remove hack
+        console.getConsole().setMaxHeight(GUI.getScreenCenter().getY() * 0.6);
+
         return grid;
     }
 
-    private HBox createHBox () {
-        HBox hbox = new HBox();
-        hbox.setPadding(new Insets(15, 12, 15, 12));
-        hbox.setSpacing(10);
-        hbox.setStyle(Resources.HBOX_BACKGROUND_COLOR);
+    private MenuBar createMenuBar () {
+        MenuBar menuBar = new MenuBar();
+        Menu scriptMenu = new Menu("Script");
+        MenuItem runMenuItem = new MenuItem(Resources.RUN_MENU_LABEL);
 
-        runButton.setPrefSize(100, 20);
-        hbox.getChildren().addAll(runButton);
+        scriptMenu.getItems().add(runMenuItem);
+        runMenuItem.setOnAction(e -> scriptWindow.handleRunButton());
+        menuBar.getMenus().add(scriptMenu);
 
-        return hbox;
+        return menuBar;
     }
 }

@@ -12,6 +12,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 
@@ -59,14 +60,13 @@ public class MyCanvas {
             // gc.line
             double startX = l.getStartX();
             double startY = l.getStartY();
-            Point2D startPoint = getCartesianPos(new Point2D(startX, startY));
+            Point2D start = getCartesianPos(new Point2D(startX, startY));
             double endX = l.getEndX();
             double endY = l.getEndY();
-            Point2D endPoint = getCartesianPos(new Point2D(endX, endY));
+            Point2D end = getCartesianPos(new Point2D(endX, endY));
             // TODO: width?
-            gc.setStroke(l.getStroke());
-            gc.moveTo(startPoint.getX(), startPoint.getY());
-            gc.lineTo(endPoint.getX(), endPoint.getY());
+            gc.setStroke(Color.BLACK);
+            gc.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
         }
     }
 

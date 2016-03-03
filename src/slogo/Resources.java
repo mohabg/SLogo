@@ -10,8 +10,7 @@ public class Resources {
 
     // GUI
     public static final String TITLE = "SLogo";
-    public static final String RUN_BUTTON_LABEL = "Run";
-    public static final String HBOX_BACKGROUND_COLOR = "-fx-background-color: #336699;";
+    public static final String RUN_MENU_LABEL = "Run";
 
     // CommandWindow
     public static final String ERROR_TEXT_STYLE = "-fx-text-fill: rgb(255,0,0)";
