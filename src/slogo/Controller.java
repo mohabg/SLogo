@@ -32,13 +32,13 @@ public class Controller {
 	public String compile(String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{// frame
 		List<CommandNode> currCommandTree;
 		List<Double> outputs = new ArrayList<Double>();
-		
+
 		//try {
-			currCommandTree = myParser.interpret(input);
-			for (CommandNode command : currCommandTree) {
-				outputs.addAll(update(command));
-			}
-			updateModel();
+		currCommandTree = myParser.interpret(input);
+		for (CommandNode command : currCommandTree) {
+			outputs.addAll(update(command));
+		}
+		updateModel();
 		/*} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,12 +52,17 @@ public class Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-			return getConsoleOutput(outputs);
+		return getConsoleOutput(outputs);
 	}
 	public String getConsoleOutput(List<Double> consoleOutputs) {
 		StringBuilder consoleOutput = new StringBuilder();
 		for (Double output : consoleOutputs) {
-			consoleOutput.append(output.toString() + ", ");
+			if (consoleOutput.length() == 0){
+				consoleOutput.append("\n" + output.toString());
+			}
+			else{
+				consoleOutput.append(", \n" + output.toString());
+			}
 		}
 		return consoleOutput.toString();
 	}
