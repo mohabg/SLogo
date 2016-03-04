@@ -44,20 +44,20 @@ public class CommandFactory {
 
 	private CommandNode getVariableOrCommandFromModel(String word, CommandNode command) {
 		if(command instanceof Variable){
-			CommandNode storedCommandForVariable = inputSaver.getCommandForVariable(word);
-			if(storedCommandForVariable != null){
-				return storedCommandForVariable;
+			CommandNode storedCommandNodeForVariable = inputSaver.getCommandForVariable(word);
+			if(storedCommandNodeForVariable != null){
+				//Return Stored Variable
+				return storedCommandNodeForVariable;
 			}
 			else{
 				inputSaver.addVariableToMap(command, word);
 			}
 		}
 		if(command instanceof Command){
-			CommandNode storedCommand = inputSaver.getCommandForFunction(word);
-			if(storedCommand != null){
-				return storedCommand;
-			}
-			else{
+			//Do Not Return Stored Command From Map
+			Command storedCommand = (Command) inputSaver.getCommandForFunction(word);
+			if(storedCommand == null){
+				//Adds only the first definition for a function
 				inputSaver.addCommandToMap(command, word);
 			}
 		}

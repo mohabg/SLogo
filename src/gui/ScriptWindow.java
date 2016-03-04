@@ -27,7 +27,7 @@ public class ScriptWindow {
         	controller.compile(text);
         }
         catch(Exception e){
-        	
+        	e.printStackTrace();
         }
        /* for (String command : commands) {
             try {

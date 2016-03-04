@@ -15,10 +15,11 @@ public class Parser{
 
 	private CommandFactory commandFactory;
 	private List<Entry<String, Pattern>> mySymbols;
-	private String language;
+	private SaveInputs inputSaver;
 
 	public Parser (String language, SaveInputs model) {
 		mySymbols = new ArrayList<>();
+		inputSaver = model;
 		addLanguage(language);
 		addLanguage("Syntax");
 		commandFactory = new CommandFactory(model);
@@ -47,30 +48,12 @@ public class Parser{
 		List<CommandNode> commandList = createCommandNodes(text);
 		System.out.println(" command list " + commandList);
 		List<CommandNode> commandHeads = new ArrayList<>();
-		List<Integer> headCommandIndices = new ArrayList<>();
 
 		for(int i = 0; i < commandList.size(); i++){
-			headCommandIndices.add(i);
+			commandHeads.add(commandList.get(i));
 			i = createChildren(commandList, i);
 		}
-
-		for(int i = 0; i < headCommandIndices.size(); i++){
-			int headCommandIndex = headCommandIndices.get(i);
-			commandHeads.add(commandList.get(headCommandIndex));
-		}
-		printCommandHeads(commandHeads, 0);
 		return commandHeads;
-	}
-
-	private void printCommandHeads(List<CommandNode> commandHeads, int count) {
-		if(count == 20){
-			return;
-		}
-		for(int i = 0; i < commandHeads.size(); i++){
-			System.out.println(commandHeads.get(i) + " children " + commandHeads.get(i).getChildren());
-			printCommandHeads(commandHeads.get(i).getChildren(), count + 1);
-		}
-
 	}
 
 	private List<CommandNode> createCommandNodes(String[] text) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
@@ -94,26 +77,39 @@ public class Parser{
 	private int createChildren(List<CommandNode> commandList, int currentIndex) {
 		CommandNode currentCommand = commandList.get(currentIndex);
 		int counter = 0;
+		if(currentCommand instanceof Command){
+			setVariablesAndCommands(currentCommand);
+		}
 		while(counter++ < currentCommand.parametersNeeded()){
 			CommandNode nextCommand = commandList.get(++currentIndex);
 			currentCommand.addToChildren(nextCommand);
 			if(nextCommand instanceof ListStart){
+				if(currentCommand instanceof MakeUserInstruction && counter == 3){
+					//Sets the parameters for the Command
+					currentCommand.run();
+				}
 				currentIndex = setChildrenForList(commandList, currentIndex);
 			}
 			if(nextCommand.parametersNeeded() > 0 && nextCommand.getChildren().size() == 0){
 				currentIndex = createChildren(commandList, currentIndex) ;
 			}
 		}
-		if(currentCommand instanceof MakeUserInstruction){
-			currentCommand.run();
-		}
 		return currentIndex;
+	}
+
+	private void setVariablesAndCommands(CommandNode currentCommand) {
+		Command currentFunction = (Command) currentCommand;
+		String input = currentFunction.getInput();
+		Command storedFunction = (Command) inputSaver.getCommandForFunction(input);
+		CommandNode commandsToExecute = storedFunction.getChildren().get(0);
+		currentFunction.setVariables(storedFunction.getVariables());
+		currentFunction.addToChildren(commandsToExecute);
 	}
 
 	private int setChildrenForList(List<CommandNode> commandList, int currentIndex) {
 		CommandNode startOfList = commandList.get(currentIndex);
 		currentIndex++;
-		while(true){
+		while(currentIndex < commandList.size()){
 			startOfList.addToChildren(commandList.get(currentIndex));
 			if(commandList.get(currentIndex) instanceof ListEnd){
 				break;

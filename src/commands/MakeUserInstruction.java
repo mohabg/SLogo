@@ -24,8 +24,6 @@ public class MakeUserInstruction extends CommandNode {
 				((Command) command).setVariables(variables.subList(0, variables.size() - 1));
 			}
 			CommandNode commandsToExecute = getChildren().get(2);
-			System.out.println("commands to execute " + commandsToExecute);
-			System.out.println(this + " my children " + getChildren());
 			command.addToChildren(commandsToExecute);
 		}
 		return 1;
