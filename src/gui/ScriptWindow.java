@@ -32,7 +32,14 @@ public class ScriptWindow {
        /* for (String command : commands) {
             try {
                 if (!command.isEmpty()) {
-                    String out = controller.compile(command);
+                    String out = "";
+                    try {
+                        out = controller.compile(command);
+                    }
+                    catch (ClassNotFoundException | NoSuchMethodException | SecurityException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                     // System.out.println("******" + out + "******");
                     console.appendText("\n" + out);
                 }

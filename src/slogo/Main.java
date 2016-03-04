@@ -19,6 +19,9 @@ public class Main extends Application {
     private Controller myController;
 
     /**
+     * @throws SecurityException 
+     * @throws NoSuchMethodException 
+     * @throws ClassNotFoundException 
      * Set things up at the beginning.
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
@@ -27,7 +30,7 @@ public class Main extends Application {
      * @throws
      */
     @Override
-    public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
     	myController = new Controller();
     	myController.initialize();
         myGUI = new GUI(myController);

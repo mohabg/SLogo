@@ -30,7 +30,7 @@ public class CommandFactory {
 			//System.out.println("Creating " + word + " " + commandName);
 			Class commClass = Class.forName("commands." + commandName);
 			Constructor commConstructor = commClass.getConstructor(double.class);
-			CommandNode command =  (CommandNode) commConstructor.newInstance(constant);
+						CommandNode command =  (CommandNode) commConstructor.newInstance(constant);
 			command.setInput(word);
 			inputSaver.addCommandToHistory(command);
 			command = getVariableOrCommandFromModel(word, command);

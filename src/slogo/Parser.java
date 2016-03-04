@@ -42,7 +42,7 @@ public class Parser{
 	}
 	
 	private List<CommandNode> parseText(String[] text) throws InstantiationException, IllegalAccessException,
-	IllegalArgumentException, InvocationTargetException{
+	IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{
 
 		List<CommandNode> commandList = createCommandNodes(text);
 		System.out.println(" command list " + commandList);
@@ -73,7 +73,7 @@ public class Parser{
 
 	}
 
-	private List<CommandNode> createCommandNodes(String[] text){
+	private List<CommandNode> createCommandNodes(String[] text) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		List<CommandNode> commandList = new ArrayList<>();
 		for(int i = 0; i < text.length; i++){
 			//System.out.println("Input " + text[i]);
@@ -85,7 +85,7 @@ public class Parser{
 		return commandList;
 	}
 
-	private CommandNode getCommandForWord(String[] text, int index){
+	private CommandNode getCommandForWord(String[] text, int index) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		String word = text[index];
 		String symbol = getSymbol(word);
 		return commandFactory.getCommandNode(symbol, word);
@@ -100,7 +100,7 @@ public class Parser{
 			if(nextCommand instanceof ListStart){
 				currentIndex = setChildrenForList(commandList, currentIndex);
 			}
-			if(nextCommand.parametersNeeded() > 0){
+			if(nextCommand.parametersNeeded() > 0 && nextCommand.getChildren().size() == 0){
 				currentIndex = createChildren(commandList, currentIndex) ;
 			}
 		}
@@ -115,32 +115,34 @@ public class Parser{
 		currentIndex++;
 		while(true){
 			startOfList.addToChildren(commandList.get(currentIndex));
-			currentIndex = createChildren(commandList, currentIndex) + 1;
 			if(commandList.get(currentIndex) instanceof ListEnd){
-				startOfList.addToChildren(commandList.get(currentIndex));
 				break;
 			}
+			currentIndex = createChildren(commandList, currentIndex) + 1;
 		}
 		return currentIndex;
 	}
 
 	// returns the language's type associated with the given text if one exists 
 	private String getSymbol (String text) {
-		final String ERROR = "NO MATCH";
+		try{
 		for (Entry<String, Pattern> e : mySymbols) {
 			if (match(text, e.getValue())) {
 				return e.getKey();
 			}
 		}
+		}catch (Exception e){
+			new SlogoException(Controller.errorBundle.getString("SyntaxError"));
+		}
 		// Indicates syntax error
-		return ERROR;
+		return null;
 	}
 
 	// returns true if the given text matches the given regular expression pattern
 	private boolean match (String text, Pattern regex) {
 		return regex.matcher(text).matches();
 	}
-	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
 		final String WHITESPACE = "\\p{Space}";
 		System.out.println("Inputted script " + command);
 		List<CommandNode> commandHeads = parseText(command.split(WHITESPACE));
