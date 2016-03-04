@@ -23,7 +23,13 @@ public class ScriptWindow {
         String[] commands = text.split("\n");
         ConsoleTextArea console = commandWindow.getConsole();
         console.appendText("script");
-        for (String command : commands) {
+        try {
+        	controller.compile(text);
+        }
+        catch(Exception e){
+        	
+        }
+       /* for (String command : commands) {
             try {
                 if (!command.isEmpty()) {
                     String out = "";
@@ -43,7 +49,7 @@ public class ScriptWindow {
                 // TODO
                 commandWindow.printError("Error");
             }
-        }
+        }*/
 
         console.appendText(Resources.CONSOLE_PROMPT_STR);
     }

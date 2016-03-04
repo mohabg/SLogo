@@ -10,7 +10,7 @@ public class Tangent extends CommandNode{
 	@Override
 	public double run() {
 		double degrees = getChildren().get(0).run();
-		setValue(Math.tan(degrees));
+		setValue(Math.tan(Math.toRadians(degrees)));
 		return getValue();
 	}
 

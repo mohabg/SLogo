@@ -18,19 +18,17 @@ public class MakeUserInstruction extends CommandNode {
 		if (!ranOnce) {
 			ranOnce = true;
 			List<CommandNode> variables = getChildren().get(1).getChildren();
-			// Remove the ListEnd
-			variables.remove(variables.size() - 1);
 			CommandNode command = getChildren().get(0);
 			if (command instanceof Command) {
-				((Command) command).setVariables(variables);
+				//Add everything except ListEnd to command's variables
+				((Command) command).setVariables(variables.subList(0, variables.size() - 1));
 			}
 			CommandNode commandsToExecute = getChildren().get(2);
+			System.out.println("commands to execute " + commandsToExecute);
+			System.out.println(this + " my children " + getChildren());
 			command.addToChildren(commandsToExecute);
-			if (commandsToExecute.getChildren().size() > 0) {
-				return 1;
-			}
 		}
-		return 0;
+		return 1;
 	}
 
 }

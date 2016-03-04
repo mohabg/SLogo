@@ -1,8 +1,8 @@
 package commands;
 
-public class isPenDown extends CommandNode{
+public class IsPenDown extends CommandNode{
 
-	public isPenDown(double val) {
+	public IsPenDown(double val) {
 		super(val);
 		setParametersNeeded(0);
 		setUsesTurtle(true);
