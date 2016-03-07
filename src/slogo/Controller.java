@@ -19,14 +19,24 @@ public class Controller {
 	private Parser myParser;
 	private List<Color> myPalette;
 	protected static ResourceBundle errorBundle = ResourceBundle.getBundle("resources/Errors");
+	private String language = null;
 
-	public Controller() {
-		myModel = new Model();
-		myParser = new Parser("English", myModel);
+	public Controller(String language) {
+		this.language = language;
+		reset();		
 	}
-
-	public void initialize() {
+	
+	public void reset()
+	{
+		myModel = new Model();
+		myParser = new Parser(language, myModel);
 		updateModel();
+	}
+	
+	public void setLanguage(String language)
+	{
+		this.language = language;
+		reset();
 	}
 
 	public String compile(String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{// frame

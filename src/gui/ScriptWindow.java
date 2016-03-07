@@ -1,6 +1,5 @@
 package gui;
 
-import java.lang.reflect.InvocationTargetException;
 import javafx.scene.control.TextArea;
 import slogo.Controller;
 import slogo.Resources;
@@ -16,6 +15,8 @@ public class ScriptWindow {
         myTextArea = new TextArea();
         this.controller = controller;
         this.commandWindow = commandWindow;
+        
+        myTextArea.setText("fd 50 rt 90 fd 50 rt 90 fd 50");
     }
 
     public void handleRunButton () { // TODO: redundant
@@ -24,8 +25,7 @@ public class ScriptWindow {
         console.appendText("script");
         try {
         	//clear the screen
-        	controller.compile("");
-        	
+        	controller.reset();
         	controller.compile(text);
         }
         catch(Exception e){
