@@ -20,10 +20,12 @@ public class ScriptWindow {
 
     public void handleRunButton () { // TODO: redundant
         String text = myTextArea.getText();
-        String[] commands = text.split("\n");
         ConsoleTextArea console = commandWindow.getConsole();
         console.appendText("script");
         try {
+        	//clear the screen
+        	controller.compile("");
+        	
         	controller.compile(text);
         }
         catch(Exception e){
