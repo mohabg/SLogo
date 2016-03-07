@@ -13,7 +13,7 @@ import javafx.stage.Screen;
 import slogo.Controller;
 
 public class GUI {
-	//private ObservableList<Node> rootNodeChildren;
+	// private ObservableList<Node> rootNodeChildren;
 	private int width, height;
 
 	// Data-transfer
@@ -32,17 +32,17 @@ public class GUI {
 	public Scene init(int width, int height) {
 		BorderPane root = new BorderPane();
 		Scene myScene = new Scene(root, width, height);
-		//rootNodeChildren = root.getChildren();
+		// rootNodeChildren = root.getChildren();
 		this.width = width;
 		this.height = height;
-
-		root.setTop(MenuFactory.createMenuBar(scriptWindow, controller));
 
 		// GUI elements
 		this.canvas = new MyCanvas(getWindowWidth() / 2, getWindowHeight() / 2);
 		this.commandWindow = new CommandWindow(controller);
 		this.scriptWindow = new ScriptWindow(controller, commandWindow);
 		this.workspace = new Workspace();
+
+		root.setTop(MenuFactory.createMenuBar(scriptWindow, controller));
 
 		// Root node and grid layout
 		GridPane grid = createGridPane(this.canvas, this.commandWindow, this.scriptWindow, this.workspace);
