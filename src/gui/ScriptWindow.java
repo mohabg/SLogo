@@ -15,43 +15,45 @@ public class ScriptWindow {
         myTextArea = new TextArea();
         this.controller = controller;
         this.commandWindow = commandWindow;
-        
+
         myTextArea.setText("fd 50 rt 90 fd 50 rt 90 fd 50");
     }
 
     public void handleRunButton () { // TODO: redundant
         String text = myTextArea.getText();
         ConsoleTextArea console = commandWindow.getConsole();
-        console.appendText("script");
+        console.appendText("[script]");
         try {
-        	//clear the screen
-        	controller.reset();
-        	controller.compile(text);
+            // clear the screen
+            controller.reset();
+            controller.compile(text);
         }
-        catch(Exception e){
-        	e.printStackTrace();
+        catch (Exception e) {
+            e.printStackTrace();
         }
-       /* for (String command : commands) {
-            try {
-                if (!command.isEmpty()) {
-                    String out = "";
-                    try {
-                        out = controller.compile(command);
-                    }
-                    catch (ClassNotFoundException | NoSuchMethodException | SecurityException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    // System.out.println("******" + out + "******");
-                    console.appendText("\n" + out);
-                }
-            }
-            catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e) {
-                // TODO
-                commandWindow.printError("Error");
-            }
-        }*/
+        /*
+         * for (String command : commands) {
+         * try {
+         * if (!command.isEmpty()) {
+         * String out = "";
+         * try {
+         * out = controller.compile(command);
+         * }
+         * catch (ClassNotFoundException | NoSuchMethodException | SecurityException e) {
+         * // TODO Auto-generated catch block
+         * e.printStackTrace();
+         * }
+         * // System.out.println("******" + out + "******");
+         * console.appendText("\n" + out);
+         * }
+         * }
+         * catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+         * | InvocationTargetException e) {
+         * // TODO
+         * commandWindow.printError("Error");
+         * }
+         * }
+         */
 
         console.appendText(Resources.CONSOLE_PROMPT_STR);
     }

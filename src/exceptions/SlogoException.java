@@ -1,4 +1,4 @@
-package slogo;
+package exceptions;
 
 public class SlogoException extends RuntimeException {
 
