@@ -45,7 +45,7 @@ public class Model implements SaveInputs {
 	private List<Point> getTurtlePosition() {
 		List<Point> turtlePositions = new ArrayList<Point>();
 		for (Turtle turtle : turtleList) {
-			turtlePositions.add(turtle.getPos());
+			turtlePositions.add(turtle.getPosition());
 		}
 		return turtlePositions;
 	}
@@ -110,6 +110,12 @@ public class Model implements SaveInputs {
 
 	public ReturnData getReturnData() {
 		return returnData;
+	}
+
+	@Override
+	public void clearStamps() {
+		stamps.clear();
+		
 	}
 
 }

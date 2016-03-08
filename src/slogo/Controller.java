@@ -15,43 +15,36 @@ import javafx.scene.paint.Color;
 
 public class Controller {
 
-	private Model myModel;
-	private Parser myParser;
+	private String language = "English";
+	private List<Model> myModels;
+	private List<Parser> myParsers;
 	private List<Color> myPalette;
 	protected static ResourceBundle errorBundle = ResourceBundle.getBundle("resources/Errors");
 
 	public Controller() {
-		myModel = new Model();
-		myParser = new Parser("English", myModel);
+		myModels = new ArrayList<Model>();
+		Model model1 = new Model();
+		Parser parser1 = new Parser(language, model1);
+		myModels.add(model1);
+		myParsers.add(parser1);
+
 	}
 
 	public void initialize() {
-		updateModel();
+		updateModel(myModels.get(0));
 	}
-
-	public String compile(String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{// frame
+	public void addModel(){
+		Model newModel = new Model();
+		Parser newParser = new Parser(language, newModel);
+	}
+	public String compile(String input, int modelNum) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {// frame
 		List<CommandNode> currCommandTree;
 		List<Double> outputs = new ArrayList<Double>();
-
-		//try {
-		currCommandTree = myParser.interpret(input);
+		currCommandTree = myParsers.get(modelNum).interpret(input);
 		for (CommandNode command : currCommandTree) {
-			outputs.addAll(update(command));
+			outputs.addAll(update(command, myModels.get(modelNum)));
 		}
-		updateModel();
-		/*} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+		updateModel(myModels.get(modelNum));
 		return getConsoleOutput(outputs);
 	}
 	public String getConsoleOutput(List<Double> consoleOutputs) {
@@ -66,10 +59,10 @@ public class Controller {
 		}
 		return consoleOutput.toString();
 	}
-	public Collection<Double> update(CommandNode command) {
+	public Collection<Double> update(CommandNode command, Model model) {
 		ArrayList<Double> outputs = new ArrayList<Double>();
 		if (command.getUsesTurtle()) {
-			for (Turtle turtle : myModel.getTurtleList()) {
+			for (Turtle turtle : model.getTurtleList()) {
 				command.setTurtle(turtle);
 				outputs.add(command.run());
 			}
@@ -80,14 +73,14 @@ public class Controller {
 		return outputs;
 	}
 
-	private void updateModel() {
-		myModel.setLines(makeLines());
-		myModel.setCompileInfo();
+	private void updateModel(Model model) {
+		model.setLines(makeLines(model));
+		model.setCompileInfo();
 	}
 
-	public List<Line> makeLines() {
+	public List<Line> makeLines(Model model) {
 		ArrayList<Line> lines = new ArrayList<Line>();
-		for (Turtle turtle : myModel.getTurtleList()) {
+		for (Turtle turtle : model.getTurtleList()) {
 			for (int i = 0; i < turtle.getPoints().size() - 1; i++) {
 				Point next = turtle.getPoints().get(i + 1);
 				Point cur = turtle.getPoints().get(i);
@@ -98,7 +91,7 @@ public class Controller {
 		return lines;
 	}
 
-	public ReturnData getReturnData() {
-		return myModel.getReturnData();
+	public ReturnData getReturnData(Model model) {
+		return model.getReturnData();
 	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import data.Point;
 import javafx.scene.image.Image;
 
-public class Turtle {
+public class Turtle implements TurtleInfo{
 	public static final String DEFAULT_IMAGE = "resources/turtle.png";
 	private Point position = new Point(0, 0, 0);
 	private Image myImage;
@@ -41,7 +41,7 @@ public class Turtle {
 		myImage = new Image(path, TURTLE_WIDTH, TURTLE_HEIGHT, true, true);
 	}
 
-	public Point getPos() {
+	public Point getPosition() {
 		return position.clone();
 	}
 
@@ -107,5 +107,17 @@ public class Turtle {
 
 	public double isVisible() {
 		return visible;
+	}
+
+	@Override
+	public String getShape() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPenColor() {
+		// TODO Auto-generated method stub
+		return penColor;
 	}
 }

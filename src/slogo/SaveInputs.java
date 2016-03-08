@@ -17,5 +17,7 @@ public interface SaveInputs {
 	public void addVariableToMap(CommandNode variable, String variableName);
 	
 	public void addCommandToMap(CommandNode command, String functionName);
+	
+	public void clearStamps();
 
 }
