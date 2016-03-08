@@ -24,26 +24,18 @@ public class ScriptWindow {
         ConsoleTextArea console = commandWindow.getConsole();
         console.appendText("script");
         for (String command : commands) {
-            try {
                 if (!command.isEmpty()) {
                     String out = "";
                     try {
                         out = controller.compile(command);
                     }
-                    catch (ClassNotFoundException | NoSuchMethodException | SecurityException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    catch (Exception e) {
+                        commandWindow.printError(e.getMessage());
                     }
                     // System.out.println("******" + out + "******");
                     console.appendText("\n" + out);
                 }
             }
-            catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e) {
-                // TODO
-                commandWindow.printError("Error");
-            }
-        }
 
         console.appendText(Resources.CONSOLE_PROMPT_STR);
     }

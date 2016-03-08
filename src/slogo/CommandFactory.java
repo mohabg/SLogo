@@ -19,7 +19,7 @@ public class CommandFactory {
 		inputSaver = model;
 	}
 
-	public CommandNode getCommandNode(String commandName, String word){
+	public CommandNode getCommandNode(String commandName, String word) {
 		double constant = 0;
 		// Gets correct command constructor through reflection, instantiates node
 		try{
@@ -37,9 +37,8 @@ public class CommandFactory {
 			return command;
 
 		} catch (Exception e){
-			e.printStackTrace();
+			throw new SlogoException(String.format(Controller.errorBundle.getString("CommandNameError"), commandName));
 		}
-		return null;
 	}
 
 	private CommandNode getVariableOrCommandFromModel(String word, CommandNode command) {

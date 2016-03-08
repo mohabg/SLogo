@@ -2,8 +2,8 @@ package commands;
 
 public class Stamp extends CommandNode{
 
-	public Stamp() {
-		
+	public Stamp(int val) {
+		super(val);
 		// TODO Auto-generated constructor stub
 	}
 

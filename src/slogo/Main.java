@@ -34,7 +34,7 @@ public class Main extends Application {
     	myController = new Controller();
     	myController.initialize();
     	//myController.compile("cat 3");
-    	myController.compile("fd 50");
+    	//myController.compile("fd 50");
         myGUI = new GUI(myController);
         // TODO: stage.setTitle();
 
