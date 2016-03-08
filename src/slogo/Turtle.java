@@ -9,7 +9,7 @@ import javafx.scene.shape.Shape;
 
 
 public class Turtle implements TurtleData {
-    public static final String DEFAULT_IMAGE = "resources/turtle.png";
+    public static final String DEFAULT_IMAGE = "resources/turtle.png"; // TODO: make non-constant
     private Point position = new Point(0, 0, 0);
     private Image myImage;
     private double visible;
@@ -25,9 +25,18 @@ public class Turtle implements TurtleData {
     // private double height;
     // private double width;
 
+    @Deprecated
     public Turtle () {
         setImage(DEFAULT_IMAGE);
         points.add(position.clone());
+        penDown = 1;
+        visible = 1;
+    }
+
+    public Turtle (Image image, Point pos, String shape) {
+        this.myImage = image;
+        this.position = pos;
+        this.shape = shape;
         penDown = 1;
         visible = 1;
     }
@@ -109,12 +118,6 @@ public class Turtle implements TurtleData {
 
     public double isVisible () {
         return visible;
-    }
-
-    @Override
-    public int getID () {
-        // TODO Auto-generated method stub
-        return 0;
     }
 
     @Override

@@ -23,12 +23,14 @@ public interface CanvasData {
     @Deprecated
     public Color getPenColor ();
 
-    public Collection<TurtleData> getTurtles ();
+    public List<TurtleData> getTurtles ();
 
-    public List<Line> getLines ();
+    public Collection<Line> getLines ();
 
     public Color getBackgroundColor ();
 
     public Collection<StampData> getStamps ();
+
+    public List<Color> getPalette ();
 
 }

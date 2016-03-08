@@ -11,7 +11,7 @@ public interface TurtleData {
 
     public double isVisible ();
 
-    public int getID ();
+    // public int getID ();
 
     public Shape getShape ();
 }

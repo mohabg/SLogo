@@ -1,5 +1,6 @@
 package gui;
 
+import java.util.Collection;
 import java.util.List;
 import data.CanvasData;
 import data.Line;
@@ -65,7 +66,7 @@ public class MyCanvas {
     }
 
     private void drawLines (GraphicsContext gc, CanvasData data) {
-        List<Line> lines = data.getLines();
+        Collection<Line> lines = data.getLines();
 
         for (Line l : lines) { // TODO: stream
             Point a = getCartesianPos(l.getA());

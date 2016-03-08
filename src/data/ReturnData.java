@@ -1,7 +1,6 @@
 package data;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -102,13 +101,19 @@ public class ReturnData implements CanvasData, WorkspaceData {
     }
 
     @Override
-    public Collection<TurtleData> getTurtles () {
+    public List<TurtleData> getTurtles () {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Collection<StampData> getStamps () {
+    public List<StampData> getStamps () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Color> getPalette () {
         // TODO Auto-generated method stub
         return null;
     }
