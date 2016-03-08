@@ -6,11 +6,9 @@ import javafx.scene.control.TableView;
 
 public class Workspace {
     private TableView<String> tableView;
-    private WorkspaceData data;
 
-    public Workspace (WorkspaceData data) {
+    public Workspace () {
         tableView = new TableView<String>();
-        this.data = data;
         initContextMenu();
         initControls();
     }

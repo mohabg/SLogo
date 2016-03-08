@@ -16,17 +16,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import slogo.Controller;
 
 public class MyCanvas {
 	Canvas canvas;
-	CanvasData data;
 	private ContextMenu contextMenu;
 	private int width;
 	private int height;
 
-	public MyCanvas(CanvasData data, int width, int height) {
+	public MyCanvas(int width, int height) {
 		this.canvas = new Canvas(width, height);
-		this.data = data;
 		this.width = width;
 		this.height = height;
 		initContextMenu();
@@ -37,15 +36,15 @@ public class MyCanvas {
 		return canvas;
 	}
 
-	public void update() {
+	public void update(CanvasData data) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		gc.clearRect(0, 0, width, height);
 
-		drawTurtle(gc);
-		drawLines(gc);
+		drawTurtle(gc, data);
+		drawLines(gc, data);
 	}
 
-	private void drawTurtle(GraphicsContext gc) {
+	private void drawTurtle(GraphicsContext gc, CanvasData data) {
 		Image image = data.getTurtleImage();
 
 		List<Point> posList = data.getTurtlePosition();
@@ -65,7 +64,7 @@ public class MyCanvas {
 		}
 	}
 
-	private void drawLines(GraphicsContext gc) {
+	private void drawLines(GraphicsContext gc, CanvasData data) {
 		List<Line> lines = data.getLines();
 
 		for (Line l : lines) { // TODO: stream
