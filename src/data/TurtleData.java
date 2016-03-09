@@ -14,4 +14,6 @@ public interface TurtleData {
     // public int getID ();
 
     public Shape getShape ();
+
+    public boolean containsPoint (Point pos);
 }

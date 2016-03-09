@@ -1,6 +1,7 @@
 package gui;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -17,9 +18,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import slogo.Controller;
+import slogo.Resources;
 
 
 public class MyCanvas {
@@ -28,16 +29,19 @@ public class MyCanvas {
     private List<Color> palette;
     private ContextMenu backgroundContextMenu, turtleContextMenu;
     // private Color backgroundColor;
-    // private List<TurtleData> turtles, selectedTurtles;
+    private List<TurtleData> turtles, selectedTurtles;
 
     public MyCanvas (int width, int height, Controller controller) {
         this.controller = controller;
         this.canvas = new Canvas(width, height);
         this.palette = Arrays.asList(new Color[] { Color.ALICEBLUE, Color.ANTIQUEWHITE }); // TODO:
                                                                                            // empty
-        this.backgroundContextMenu = createBackgroundContextMenu();
-        this.turtleContextMenu = createTurtleContextMenu();
+        this.backgroundContextMenu = new ContextMenu();
+        this.turtleContextMenu = new ContextMenu();
         initControls();
+
+        this.turtles = new ArrayList<TurtleData>();
+        this.selectedTurtles = new ArrayList<TurtleData>();
     }
 
     public Canvas getCanvas () {
@@ -50,13 +54,11 @@ public class MyCanvas {
 
         drawTurtle(gc, data);
         drawLines(gc, data);
+        Resources.debugPrint(selectedTurtles.toString());
         Color backgroundColor = data.getBackgroundColor();
-        List<TurtleData> turtles = data.getTurtles();
+        turtles = data.getTurtles();
 
         // palette = data.getPalette();
-        // TODO: duplicate
-        this.backgroundContextMenu = createBackgroundContextMenu();
-        this.turtleContextMenu = createTurtleContextMenu();
     }
 
     private void drawTurtle (GraphicsContext gc, CanvasData data) {
@@ -98,7 +100,8 @@ public class MyCanvas {
         return submenu;
     }
 
-    private ContextMenu createTurtleContextMenu () {
+    // TODO: refactor, combine with background
+    private void updateTurtleContextMenu () {
         // TODO: place in resources
         Menu penColorSubmenu = createColorSubmenu("Select background color", palette);
         MenuItem turtleImageSubmenu = new MenuItem("Select turtle image");
@@ -107,12 +110,11 @@ public class MyCanvas {
         }
         // selectTurtleImage.setOnAction(e -> handleSelectTurtleImage());
 
-        ContextMenu contextMenu = new ContextMenu();
-        contextMenu.getItems().addAll(penColorSubmenu, turtleImageSubmenu);
-        return contextMenu;
+        turtleContextMenu.getItems().clear();
+        turtleContextMenu.getItems().addAll(penColorSubmenu, turtleImageSubmenu);
     }
 
-    private ContextMenu createBackgroundContextMenu () {
+    private void updateBackgroundContextMenu () {
         // TODO: place in resources
         Menu backgroundColorSubmenu = createColorSubmenu("Select background color", palette);
         for (MenuItem backgroundColorItem : backgroundColorSubmenu.getItems()) {
@@ -121,9 +123,8 @@ public class MyCanvas {
         }
         // selectBackgroundColor.setOnAction(e -> handleSelectBackgroundColor());
 
-        ContextMenu contextMenu = new ContextMenu();
-        contextMenu.getItems().addAll(backgroundColorSubmenu);
-        return contextMenu;
+        backgroundContextMenu.getItems().clear();
+        backgroundContextMenu.getItems().addAll(backgroundColorSubmenu);
     }
 
     private void handleSelectBackgroundColor (String hex) {
@@ -178,7 +179,7 @@ public class MyCanvas {
     // }
 
     private Color hex2Color (String hex) {
-        return Color.AQUA;
+        return Color.web(hex);
     }
 
     private void handleSelectPenColor (String hex) {
@@ -201,23 +202,43 @@ public class MyCanvas {
 
     private void initControls () {
         canvas.setOnMouseClicked(e -> {
+            double x = e.getScreenX();
+            double y = e.getScreenY();
+            Point mousePos = new Point(x, y, 0);
+
             if (e.getButton() == MouseButton.PRIMARY) {
-                handleLeftClick();
+                handleLeftClick(mousePos);
             }
             else if (e.getButton() == MouseButton.SECONDARY) {
-                handleRightClick(e);
+                handleRightClick(mousePos);
             }
         });
     }
 
-    private void handleLeftClick () {
-        backgroundContextMenu.hide();
-        turtleContextMenu.hide();
+    private void attemptToSelectOrDeselectTurtle (Point mousePos) {
+        for (TurtleData turtle : turtles) { // TODO: stream
+            if (turtle.containsPoint(mousePos)) {
+                if (!selectedTurtles.remove(turtle)) {
+                    selectedTurtles.add(turtle);
+                }
+            }
+        }
     }
 
-    private void handleRightClick (MouseEvent e) {
-        double x = e.getScreenX();
-        double y = e.getScreenY();
+    private void handleLeftClick (Point mousePos) {
+        backgroundContextMenu.hide();
+        turtleContextMenu.hide();
+
+        attemptToSelectOrDeselectTurtle(mousePos);
+    }
+
+    private void handleRightClick (Point mousePos) {
+        double x = mousePos.getX();
+        double y = mousePos.getY();
+
+        // TODO: duplicate
+        updateBackgroundContextMenu();
+        updateTurtleContextMenu();
         backgroundContextMenu.show(canvas, x, y);
         // TODO: turtles
     }
