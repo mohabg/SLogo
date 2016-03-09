@@ -19,7 +19,7 @@ public class ScriptWindow {
         myTextArea.setText("fd 50 rt 90 fd 50 rt 90 fd 50");
     }
 
-    public void handleRunButton () { // TODO: redundant
+    public void handleRunButton () {
         String text = myTextArea.getText();
         ConsoleTextArea console = commandWindow.getConsole();
         console.appendText("[script]");

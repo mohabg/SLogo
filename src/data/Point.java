@@ -22,17 +22,14 @@ public class Point {
         return theta % DEGREES;
     }
 
-    @Deprecated
     public void setX (double x) {
         this.x = x;
     }
 
-    @Deprecated
     public void setY (double y) {
         this.y = y;
     }
 
-    @Deprecated
     public void setTheta (double theta) {
         this.theta = theta;
     }
