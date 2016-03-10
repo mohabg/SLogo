@@ -43,14 +43,19 @@ public class Model implements SaveInputs {
 		return consoleOutput.toString();
 	}
 
-	private List<Point> getTurtlePosition() {
+	/*private List<Point> getTurtlePosition() {
 		List<Point> turtlePositions = new ArrayList<Point>();
 		for (Turtle turtle : turtleList) {
 			turtlePositions.add(turtle.getPosition());
 		}
 		return turtlePositions;
+	}*/
+	
+	public void addTurtle(){
+		Turtle turtle = new Turtle(turtleList.size());
+		turtleList.add(turtle);
 	}
-
+	
 	public void setCompileInfo() {
 		returnData.addLines(lineList);
 		returnData.setVariables(makeVariableOutputs());
@@ -116,7 +121,7 @@ public class Model implements SaveInputs {
 	@Override
 	public void clearStamps() {
 		stamps.clear();
-		
+
 	}
 
 }
