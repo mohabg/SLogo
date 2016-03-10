@@ -15,7 +15,6 @@ public class ScriptWindow {
         myTextArea = new TextArea();
         this.controller = controller;
         this.commandWindow = commandWindow;
-
     }
 
     public void handleRunButton () {
@@ -23,36 +22,12 @@ public class ScriptWindow {
         ConsoleTextArea console = commandWindow.getConsole();
         console.appendText("[script]");
         try {
-            // clear the screen
             controller.reset();
             controller.compile(text);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        /*
-         * for (String command : commands) {
-         * try {
-         * if (!command.isEmpty()) {
-         * String out = "";
-         * try {
-         * out = controller.compile(command);
-         * }
-         * catch (ClassNotFoundException | NoSuchMethodException | SecurityException e) {
-         * // TODO Auto-generated catch block
-         * e.printStackTrace();
-         * }
-         * // System.out.println("******" + out + "******");
-         * console.appendText("\n" + out);
-         * }
-         * }
-         * catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-         * | InvocationTargetException e) {
-         * // TODO
-         * commandWindow.printError("Error");
-         * }
-         * }
-         */
 
         console.appendText(Resources.CONSOLE_PROMPT_STR);
     }

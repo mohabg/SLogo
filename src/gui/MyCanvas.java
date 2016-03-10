@@ -54,7 +54,10 @@ public class MyCanvas {
 
         drawTurtle(gc, data);
         drawLines(gc, data);
-        Resources.debugPrint(selectedTurtles.toString());
+        
+        if(selectedTurtles.size() > 0)
+        	Resources.debugPrint(selectedTurtles.toString());
+        
         Color backgroundColor = data.getBackgroundColor();
         turtles = data.getTurtles();
 
@@ -216,7 +219,7 @@ public class MyCanvas {
     }
 
     private void attemptToSelectOrDeselectTurtle (Point mousePos) {
-        for (TurtleData turtle : turtles) { // TODO: stream
+        for (TurtleData turtle : turtles) {
             if (turtle.containsPoint(mousePos)) {
                 if (!selectedTurtles.remove(turtle)) {
                     selectedTurtles.add(turtle);
