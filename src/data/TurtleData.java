@@ -5,15 +5,15 @@ import javafx.scene.shape.Shape;
 
 
 public interface TurtleData {
-    public Point getPos ();
+    public Point getPosition ();
 
     public Image getImage ();
 
     public double isVisible ();
 
-    // public int getID ();
+    public int getID ();
 
-    public Shape getShape ();
+    public double getShape ();
 
     public boolean containsPoint (Point pos);
 }

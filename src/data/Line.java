@@ -5,8 +5,8 @@ import javafx.scene.paint.Color;
 
 public class Line {
     private Point a, b;
-    private Color color;
-    private int thickness;
+    private double color;
+    private double thickness;
 
     @Deprecated
     public Line (Point a, Point b) {
@@ -14,11 +14,11 @@ public class Line {
         this.b = b.clone();
     }
 
-    public Line (Point a, Point b, Color color, int thickness) {
+    public Line (Point a, Point b, double d, double e) {
         this.a = a.clone();
         this.b = b.clone();
-        this.color = color;
-        this.thickness = thickness;
+        this.color = d;
+        this.thickness = e;
     }
 
     public Point getA () {
@@ -29,11 +29,11 @@ public class Line {
         return b;
     }
 
-    public Color getColor () {
+    public double getColor () {
         return color;
     }
 
-    public int getThickness () {
+    public double getThickness () {
         return thickness;
     }
 }

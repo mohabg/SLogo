@@ -23,12 +23,10 @@ public class ScriptWindow {
         ConsoleTextArea console = commandWindow.getConsole();
         console.appendText("[script]");
         try {
-            // clear the screen
-            controller.reset();
             controller.compile(text);
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch(Exception e){
+			commandWindow.printError(e.getMessage());
         }
         /*
          * for (String command : commands) {

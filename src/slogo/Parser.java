@@ -26,7 +26,7 @@ public class Parser{
 		commandFactory = new CommandFactory(model);
 	}
 
-	private void addLanguage(String language){
+	public void addLanguage(String language){
 		addPatterns(language);
 	}
 	
