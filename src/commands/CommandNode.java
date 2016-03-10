@@ -2,7 +2,7 @@ package commands;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import slogo.CommandIterator;
 import slogo.Turtle;
 
 public abstract class CommandNode {
@@ -11,19 +11,18 @@ public abstract class CommandNode {
 	private List<CommandNode> children;
 	private Turtle turtle;
 	private boolean usesTurtle;
-	private boolean hasTurtle;
 	private double value;
 	private String input;
-
+	private CommandIterator commandIterator;
+	
 	public CommandNode(double val){
 		children = new ArrayList<>();
-		hasTurtle = false;
+		commandIterator = new CommandIterator();
 		this.value = val;
 	}
 	public int parametersNeeded(){
 		return parametersNeeded;
 	}
-	
 	public void setInput(String userInput){
 		input = userInput;
 	}
@@ -40,15 +39,14 @@ public abstract class CommandNode {
 		return turtle;
 	}
 	public boolean hasTurtle(){
-		return hasTurtle;
+		return turtle != null;
 	}
 	public void setTurtle(Turtle turtle){
-		this.turtle = turtle;
-		hasTurtle = true;
-		for(int i = 0; i < getChildren().size(); i++){
-			CommandNode child = getChildren().get(i);
-			if(child.getUsesTurtle() && !child.hasTurtle){
-				child.setTurtle(getTurtle());
+		List<CommandNode> allCommandsInChildren = commandIterator.iterate(this, new ArrayList<>());
+		allCommandsInChildren.add(this);
+		for(CommandNode command : allCommandsInChildren){
+			if(command.usesTurtle){
+				command.turtle = turtle;
 			}
 		}
 	}
@@ -56,8 +54,9 @@ public abstract class CommandNode {
 		this.usesTurtle = usesTurtle;
 	}
 	public boolean getUsesTurtle(){
-		for(CommandNode child : getChildren()){
-			if(child.getUsesTurtle()){
+		List<CommandNode> allCommandsInChildren = commandIterator.iterate(this, new ArrayList<>());
+		for(CommandNode command : allCommandsInChildren){
+			if(command.usesTurtle){
 				return true;
 			}
 		}

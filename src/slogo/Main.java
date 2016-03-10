@@ -30,15 +30,13 @@ public class Main extends Application {
      * @throws
      */
     @Override
-    public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
-<<<<<<< HEAD
+    public void start (Stage stage) 
+    		throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+    		ClassNotFoundException, NoSuchMethodException, SecurityException {
+    	
     	myController = new Controller();
     	myController.initialize();
-    	//myController.compile("cat 3");
-    	//myController.compile("fd 50");
-=======
-    	myController = new Controller("English");
->>>>>>> master
+    	
         myGUI = new GUI(myController);
         // TODO: stage.setTitle();
 

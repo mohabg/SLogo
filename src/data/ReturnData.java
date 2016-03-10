@@ -1,103 +1,131 @@
 package data;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import slogo.Turtle;
 
+
 public class ReturnData implements CanvasData, WorkspaceData {
 
-	private List<Line> lines = new ArrayList<Line>();
-	private List<Point> turtlePositions = new ArrayList<Point>();
-	private Image turtleImage;
-	private Map<String, String> userVariables;
-	private Set<String> userFunctions;
-	private Color penColor;
-	private double penBoolean;
+    private List<Line> lines = new ArrayList<Line>();
+    private List<Point> turtlePositions = new ArrayList<Point>();
+    private List<TurtleData> turtleInfo;
+    private Image turtleImage;
+    private Map<String, String> userVariables;
+    private Set<String> userFunctions;
+    private Color penColor;
+    private double penBoolean;
+    private double BackgroundColor;
 
-	public ReturnData() {
-		// TODO Auto-generated constructor stub
-	}
+    public ReturnData () {
+        // TODO Auto-generated constructor stub
+    }
 
-	public Image getTurtleImage() {
-		// TODO
-		return turtleImage;
-	}
+    @Deprecated
+    public Image getTurtleImage () {
+        // TODO
+        return turtleImage;
+    }
 
-	@Override
-	public List<Point> getTurtlePosition() {
-		// TODO
-		return turtlePositions;
-	}
+    @Override
+    @Deprecated
+    public List<Point> getTurtlePosition () {
+        // TODO
+        return turtlePositions;
+    }
 
-	public List<Line> getLines() {
-		// TODO
-		return lines;
-	}
+    public List<Line> getLines () {
+        // TODO
+        return lines;
+    }
 
-	public void addLines(List<Line> lines) {
-		this.lines = lines;
-	}
+    public void addLines (List<Line> lines) {
+        this.lines = lines;
+    }
 
-	public Color getBackgroundColor() {
-		// TODO
-		return null;
-	}
+    public Color getBackgroundColor () {
+        // TODO
+        return null;
+    }
 
-	public Map<String, String> getUserVariables() {
-		// TODO
-		return userVariables;
-	}
+    public Map<String, String> getUserVariables () {
+        // TODO
+        return userVariables;
+    }
 
-	public Set<String> getUserFunctions() {
-		// TODO
-		return userFunctions;
-	}
+    public Set<String> getUserFunctions () {
+        // TODO
+        return userFunctions;
+    }
 
-	public void addTurtlePosition(List<Point> turtlePositions) {
-		this.turtlePositions = turtlePositions;
-	}
+    @Deprecated
+    public void addTurtlePosition (List<Point> turtlePositions) {
+        this.turtlePositions = turtlePositions;
+    }
 
-	public void setVariables(Map<String, String> variables) {
-		this.userVariables = variables;
+    public void setVariables (Map<String, String> variables) {
+        this.userVariables = variables;
 
-	}
+    }
 
-	@Override
-	public void setTurtleImage(Image image) {
-		this.turtleImage = image;
-	}
+    @Override
+    @Deprecated
+    public void setTurtleImage (Image image) {
+        this.turtleImage = image;
+    }
 
-	public void addPenBoolean(double d) {
-		this.penBoolean = d;
+    @Deprecated
+    public void addPenBoolean (double d) {
+        this.penBoolean = d;
 
-	}
+    }
 
-	public void setFunctions(Set<String> functionOutputs) {
-		this.userFunctions = functionOutputs;
+    public void setFunctions (Set<String> functionOutputs) {
+        this.userFunctions = functionOutputs;
 
-	}
+    }
 
-	@Override
-	public boolean getPenDown() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    @Deprecated
+    public boolean getPenDown () {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public Color getPenColor() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    @Deprecated
+    public Color getPenColor () {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Collection<Turtle> getTurtles() {
-		// TODO Auto-generated method stub
-		return null;
+    @Override
+    public List<TurtleData> getTurtles () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+public void setTurtles(List<TurtleData> turtles){
+	this.turtleInfo = turtles;
+	
+}
+    @Override
+    public List<StampData> getStamps () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Color> getPalette () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+	public void addBackgroundColor(double color) {
+		BackgroundColor = color;
+		
 	}
 }

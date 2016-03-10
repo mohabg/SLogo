@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import commands.*;
+import exceptions.SlogoException;
 
 public class Parser{
 
@@ -21,16 +22,16 @@ public class Parser{
 		mySymbols = new ArrayList<>();
 		inputSaver = model;
 		addLanguage(language);
-		addLanguage("Syntax");
+		addPatterns("Syntax");
 		commandFactory = new CommandFactory(model);
 	}
 
-	private void addLanguage(String language){
+	public void addLanguage(String language){
 		addPatterns(language);
 	}
 	
-	private void addPatterns (String language) {
-		String filePath = String.format("resources/languages/%s", language);
+	private void addPatterns (String pattern) {
+		String filePath = String.format("resources/languages/%s", pattern);
 		ResourceBundle resources = ResourceBundle.getBundle(filePath);
 		Enumeration<String> iter = resources.getKeys();
 		while (iter.hasMoreElements()) {
@@ -59,7 +60,6 @@ public class Parser{
 	private List<CommandNode> createCommandNodes(String[] text) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		List<CommandNode> commandList = new ArrayList<>();
 		for(int i = 0; i < text.length; i++){
-			//System.out.println("Input " + text[i]);
 			if(text[i].trim().length() > 0){
 				CommandNode command = getCommandForWord(text, i);
 				commandList.add(command);
@@ -84,10 +84,6 @@ public class Parser{
 			CommandNode nextCommand = commandList.get(++currentIndex);
 			currentCommand.addToChildren(nextCommand);
 			if(nextCommand instanceof ListStart){
-				if(currentCommand instanceof MakeUserInstruction && counter == 3){
-					//Sets the parameters for the Command
-					currentCommand.run();
-				}
 				currentIndex = setChildrenForList(commandList, currentIndex);
 			}
 			if(nextCommand.parametersNeeded() > 0 && nextCommand.getChildren().size() == 0){
@@ -140,7 +136,6 @@ public class Parser{
 	}
 	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
 		final String WHITESPACE = "\\p{Space}";
-		System.out.println("Inputted script " + command);
 		List<CommandNode> commandHeads = parseText(command.split(WHITESPACE));
 		return commandHeads;
 	}

@@ -1,18 +1,39 @@
 package data;
 
+import javafx.scene.paint.Color;
+
+
 public class Line {
-	Point a, b;
+    private Point a, b;
+    private double color;
+    private double thickness;
 
-	public Line(Point a, Point b) {
-		this.a = a.clone();
-		this.b = b.clone();
-	}
+    @Deprecated
+    public Line (Point a, Point b) {
+        this.a = a.clone();
+        this.b = b.clone();
+    }
 
-	public Point getA() {
-		return a;
-	}
+    public Line (Point a, Point b, double d, double e) {
+        this.a = a.clone();
+        this.b = b.clone();
+        this.color = d;
+        this.thickness = e;
+    }
 
-	public Point getB() {
-		return b;
-	}
+    public Point getA () {
+        return a;
+    }
+
+    public Point getB () {
+        return b;
+    }
+
+    public double getColor () {
+        return color;
+    }
+
+    public double getThickness () {
+        return thickness;
+    }
 }

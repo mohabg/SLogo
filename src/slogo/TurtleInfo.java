@@ -11,5 +11,6 @@ public interface TurtleInfo {
 	public double isPenDown();
 	public double isVisible();
 	public String getPenColor();
+	public double getPenThickness();
 
 }

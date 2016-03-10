@@ -8,6 +8,7 @@ import java.util.HashMap;
 import commands.Command;
 import commands.CommandNode;
 import commands.Variable;
+import exceptions.SlogoException;
 
 public class CommandFactory {
 

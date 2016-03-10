@@ -7,6 +7,7 @@ import commands.CommandNode;
 import data.Line;
 import data.Point;
 import data.ReturnData;
+import data.TurtleData;
 import javafx.scene.image.Image;
 
 public class Model implements SaveInputs {
@@ -18,7 +19,7 @@ public class Model implements SaveInputs {
 	private Map<String, CommandNode> userFunctions;
 	private List<Double> consoleOutputs;
 	private List<CommandNode> pastCommands;
-	private String BackgroundColor;
+	private double BackgroundColor;
 	private Double penWidth;
 	private Collection<Image> stamps;
 
@@ -29,7 +30,7 @@ public class Model implements SaveInputs {
 		consoleOutputs = new ArrayList<Double>();
 		pastCommands = new ArrayList<CommandNode>();
 		lineList = new ArrayList<Line>();
-		Turtle turtle = new Turtle();
+		Turtle turtle = new Turtle(1);
 		turtleList = new ArrayList<Turtle>();
 		turtleList.add(turtle);
 	}
@@ -52,12 +53,12 @@ public class Model implements SaveInputs {
 
 	public void setCompileInfo() {
 		returnData.addLines(lineList);
-		returnData.addTurtlePosition(getTurtlePosition());
 		returnData.setVariables(makeVariableOutputs());
 		returnData.setFunctions(makeFunctionOutputs());
-		returnData.setTurtleImage(getTurtleList().get(0).getImage());
-		returnData.addPenBoolean(getTurtleList().get(0).isPenDown());
-		// returnData.addBackgroundColor();
+		List<TurtleData> turtleData = new ArrayList<TurtleData>();
+		turtleData.addAll(turtleList);
+		returnData.setTurtles(turtleData);
+		returnData.addBackgroundColor(BackgroundColor);
 	}
 
 	private Map<String, String> makeVariableOutputs() {
