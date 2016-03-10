@@ -31,7 +31,6 @@ public class Command extends CommandNode {
 	@Override
 	public double run() {
 		setVariableValues();
-		setVariableValuesInChildren(getChildren(), new ArrayList<>());
 
 		CommandNode commandsToExecute = getChildren().get(0);
 		double lastExecutedCommandValue = commandsToExecute.run();
@@ -51,25 +50,7 @@ public class Command extends CommandNode {
 
 	private void resetVariableValues() {
 		for (Variable variable : variables) {
-			variable.getVariableStack().pop();
-		}
-	}
-
-	private void setVariableValuesInChildren(List<CommandNode> children, List<CommandNode> visited) {
-		for (int i = 0; i < children.size(); i++) {
-			CommandNode command = children.get(i);
-			for (int j = 0; j < variables.length; j++) {
-				if (variables[j].getInput().equals(command.getInput())) {
-					//children.set(i, variables[j]);
-					//Variable variableInChildren = (Variable) command;
-					//variableInChildren.setValue(variables[j].getValue());
-				}
-			} 
-
-			if (!visited.contains(command)) {
-				visited.add(command);
-				setVariableValuesInChildren(command.getChildren(), visited);
-			}
+			variable.popFromStack();
 		}
 	}
 }

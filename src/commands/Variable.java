@@ -29,12 +29,13 @@ public class Variable extends CommandNode{
 		return variableValues.peek();
 	}
 	
-	public Stack<Double> getVariableStack(){
-		return variableValues;
+	public void popFromStack(){
+		variableValues.pop();
 	}
+	
 	@Override
 	public double run() {
-		// TODO Auto-generated method stub
+		
 		return getValue();
 	}
 
