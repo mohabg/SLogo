@@ -24,9 +24,6 @@ public class Controller {
 		this.language = language;
 		myModel = new Model();
 		myParser = new Parser(language, myModel);
-	}
-	
-	public void initialize() {
 		updateModel();
 	}
 	
