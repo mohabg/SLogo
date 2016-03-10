@@ -50,8 +50,9 @@ public class Parser{
 		List<CommandNode> commandHeads = new ArrayList<>();
 
 		for(int i = 0; i < commandList.size(); i++){
+			int newIndex = createChildren(commandList, i);
 			commandHeads.add(commandList.get(i));
-			i = createChildren(commandList, i);
+			i = newIndex;
 		}
 		return commandHeads;
 	}
@@ -84,10 +85,6 @@ public class Parser{
 			CommandNode nextCommand = commandList.get(++currentIndex);
 			currentCommand.addToChildren(nextCommand);
 			if(nextCommand instanceof ListStart){
-				if(currentCommand instanceof MakeUserInstruction && counter == 3){
-					//Sets the parameters for the Command
-					currentCommand.run();
-				}
 				currentIndex = setChildrenForList(commandList, currentIndex);
 			}
 			if(nextCommand.parametersNeeded() > 0 && nextCommand.getChildren().size() == 0){
