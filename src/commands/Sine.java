@@ -10,7 +10,7 @@ public class Sine extends CommandNode{
 	@Override
 	public double run() {
 		double degrees = getChildren().get(0).run();
-		setValue(Math.sin(degrees));
+		setValue(Math.sin(Math.toRadians(degrees)));
 		return getValue();
 	}
 

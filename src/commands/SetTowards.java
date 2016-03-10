@@ -10,7 +10,7 @@ public class SetTowards extends CommandNode{
 
 	@Override
 	public double run() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 

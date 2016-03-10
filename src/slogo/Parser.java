@@ -15,10 +15,11 @@ public class Parser{
 
 	private CommandFactory commandFactory;
 	private List<Entry<String, Pattern>> mySymbols;
-	private String language;
+	private SaveInputs inputSaver;
 
 	public Parser (String language, SaveInputs model) {
 		mySymbols = new ArrayList<>();
+		inputSaver = model;
 		addLanguage(language);
 		addLanguage("Syntax");
 		commandFactory = new CommandFactory(model);
@@ -45,33 +46,20 @@ public class Parser{
 	IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{
 
 		List<CommandNode> commandList = createCommandNodes(text);
+		System.out.println(" command list " + commandList);
 		List<CommandNode> commandHeads = new ArrayList<>();
-		List<Integer> headCommandIndices = new ArrayList<>();
 
 		for(int i = 0; i < commandList.size(); i++){
-			headCommandIndices.add(i);
+			commandHeads.add(commandList.get(i));
 			i = createChildren(commandList, i);
 		}
-
-		for(int i = 0; i < headCommandIndices.size(); i++){
-			int headCommandIndex = headCommandIndices.get(i);
-			commandHeads.add(commandList.get(headCommandIndex));
-		}
-		printCommandHeads(commandHeads);
 		return commandHeads;
-	}
-
-	private void printCommandHeads(List<CommandNode> commandHeads) {
-		for(int i = 0; i < commandHeads.size(); i++){
-			printCommandHeads(commandHeads.get(i).getChildren());
-		}
-
 	}
 
 	private List<CommandNode> createCommandNodes(String[] text) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		List<CommandNode> commandList = new ArrayList<>();
 		for(int i = 0; i < text.length; i++){
-			System.out.println("word " + text[i]);
+			//System.out.println("Input " + text[i]);
 			if(text[i].trim().length() > 0){
 				CommandNode command = getCommandForWord(text, i);
 				commandList.add(command);
@@ -89,32 +77,44 @@ public class Parser{
 	private int createChildren(List<CommandNode> commandList, int currentIndex) {
 		CommandNode currentCommand = commandList.get(currentIndex);
 		int counter = 0;
+		if(currentCommand instanceof Command){
+			setVariablesAndCommands(currentCommand);
+		}
 		while(counter++ < currentCommand.parametersNeeded()){
 			CommandNode nextCommand = commandList.get(++currentIndex);
 			currentCommand.addToChildren(nextCommand);
 			if(nextCommand instanceof ListStart){
+				if(currentCommand instanceof MakeUserInstruction && counter == 3){
+					//Sets the parameters for the Command
+					currentCommand.run();
+				}
 				currentIndex = setChildrenForList(commandList, currentIndex);
 			}
-			if(nextCommand.parametersNeeded() > 0){
+			if(nextCommand.parametersNeeded() > 0 && nextCommand.getChildren().size() == 0){
 				currentIndex = createChildren(commandList, currentIndex) ;
 			}
 		}
-		if(currentCommand instanceof MakeUserInstruction){
-			currentCommand.run();
-		}
 		return currentIndex;
+	}
+
+	private void setVariablesAndCommands(CommandNode currentCommand) {
+		Command currentFunction = (Command) currentCommand;
+		String input = currentFunction.getInput();
+		Command storedFunction = (Command) inputSaver.getCommandForFunction(input);
+		CommandNode commandsToExecute = storedFunction.getChildren().get(0);
+		currentFunction.setVariables(storedFunction.getVariables());
+		currentFunction.addToChildren(commandsToExecute);
 	}
 
 	private int setChildrenForList(List<CommandNode> commandList, int currentIndex) {
 		CommandNode startOfList = commandList.get(currentIndex);
 		currentIndex++;
-		while(true){
+		while(currentIndex < commandList.size()){
 			startOfList.addToChildren(commandList.get(currentIndex));
-			currentIndex = createChildren(commandList, currentIndex) + 1;
 			if(commandList.get(currentIndex) instanceof ListEnd){
-				startOfList.addToChildren(commandList.get(currentIndex));
 				break;
 			}
+			currentIndex = createChildren(commandList, currentIndex) + 1;
 		}
 		return currentIndex;
 	}
@@ -140,7 +140,9 @@ public class Parser{
 	}
 	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
 		final String WHITESPACE = "\\p{Space}";
-		return parseText(command.split(WHITESPACE));
+		System.out.println("Inputted script " + command);
+		List<CommandNode> commandHeads = parseText(command.split(WHITESPACE));
+		return commandHeads;
 	}
 
 }

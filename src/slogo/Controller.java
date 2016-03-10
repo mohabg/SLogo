@@ -20,7 +20,9 @@ public class Controller {
 	private List<Parser> myParsers;
 	private List<Color> myPalette;
 	protected static ResourceBundle errorBundle = ResourceBundle.getBundle("resources/Errors");
+	private String language = null;
 
+<<<<<<< HEAD
 	public Controller() {
 		myModels = new ArrayList<Model>();
 		Model model1 = new Model();
@@ -38,6 +40,27 @@ public class Controller {
 		Parser newParser = new Parser(language, newModel);
 	}
 	public String compile(String input, int modelNum) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {// frame
+=======
+	public Controller(String language) {
+		this.language = language;
+		reset();		
+	}
+	
+	public void reset()
+	{
+		myModel = new Model();
+		myParser = new Parser(language, myModel);
+		updateModel();
+	}
+	
+	public void setLanguage(String language)
+	{
+		this.language = language;
+		reset();
+	}
+
+	public String compile(String input) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{// frame
+>>>>>>> master
 		List<CommandNode> currCommandTree;
 		List<Double> outputs = new ArrayList<Double>();
 		currCommandTree = myParsers.get(modelNum).interpret(input);

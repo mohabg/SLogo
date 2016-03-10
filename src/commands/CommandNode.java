@@ -11,14 +11,15 @@ public abstract class CommandNode {
 	private List<CommandNode> children;
 	private Turtle turtle;
 	private boolean usesTurtle;
+	private boolean hasTurtle;
 	private double value;
 	private String input;
 
 	public CommandNode(double val){
 		children = new ArrayList<>();
+		hasTurtle = false;
 		this.value = val;
 	}
-
 	public int parametersNeeded(){
 		return parametersNeeded;
 	}
@@ -38,12 +39,16 @@ public abstract class CommandNode {
 	public Turtle getTurtle(){
 		return turtle;
 	}
+	public boolean hasTurtle(){
+		return hasTurtle;
+	}
 	public void setTurtle(Turtle turtle){
 		this.turtle = turtle;
+		hasTurtle = true;
 		for(int i = 0; i < getChildren().size(); i++){
 			CommandNode child = getChildren().get(i);
-			if(child.getUsesTurtle()){
-			child.setTurtle(getTurtle());
+			if(child.getUsesTurtle() && !child.hasTurtle){
+				child.setTurtle(getTurtle());
 			}
 		}
 	}
@@ -61,6 +66,13 @@ public abstract class CommandNode {
 	public void setParametersNeeded(int parameters){
 		parametersNeeded = parameters;
 	}
+	public void updateVariablesInChildren(){
+		for(CommandNode variable : getChildren()){
+        	if(variable instanceof Variable){
+        		variable.setValue(getValue());
+        	}
+        }
+	}
 	public void setValue(double value){
 		this.value = value;
 	}
@@ -69,5 +81,11 @@ public abstract class CommandNode {
 	}
 	public List<CommandNode> getChildren(){
 		return children;
+	}
+	
+	@Override
+	public String toString() {
+		String out = this.getClass().getSimpleName();
+		return out;
 	}
 }

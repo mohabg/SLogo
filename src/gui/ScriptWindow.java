@@ -1,6 +1,5 @@
 package gui;
 
-import java.lang.reflect.InvocationTargetException;
 import javafx.scene.control.TextArea;
 import slogo.Controller;
 import slogo.Resources;
@@ -8,39 +7,56 @@ import slogo.Resources;
 
 public class ScriptWindow {
 
-	private TextArea myTextArea;
-	private Controller controller;
-	private CommandWindow commandWindow;
+    private TextArea myTextArea;
+    private Controller controller;
+    private CommandWindow commandWindow;
 
-	public ScriptWindow (Controller controller, CommandWindow commandWindow) {
-		myTextArea = new TextArea();
-		this.controller = controller;
-		this.commandWindow = commandWindow;
-	}
+    public ScriptWindow (Controller controller, CommandWindow commandWindow) {
+        myTextArea = new TextArea();
+        this.controller = controller;
+        this.commandWindow = commandWindow;
+        
+        myTextArea.setText("fd 50 rt 90 fd 50 rt 90 fd 50");
+    }
 
-	public void handleRunButton () { // TODO: redundant
-		String text = myTextArea.getText();
-		String[] commands = text.split("\n");
-		ConsoleTextArea console = commandWindow.getConsole();
-		console.appendText("script");
-		for (String command : commands) {
-			if (!command.isEmpty()) {
-				String out = "";
-				try {
-					out = controller.compile(command);
-				}
-				catch (Exception e) {
-					commandWindow.printError(e.getMessage());
-				}
-				// System.out.println("******" + out + "******");
-				console.appendText("\n" + out);
-			}
+    public void handleRunButton () { // TODO: redundant
+        String text = myTextArea.getText();
+        ConsoleTextArea console = commandWindow.getConsole();
+        console.appendText("script");
+        try {
+        	//clear the screen
+        	controller.reset();
+        	controller.compile(text);
+        }
+        catch(Exception e){
+			commandWindow.printError(e.getMessage());
+        }
+       /* for (String command : commands) {
+            try {
+                if (!command.isEmpty()) {
+                    String out = "";
+                    try {
+                        out = controller.compile(command);
+                    }
+                    catch (ClassNotFoundException | NoSuchMethodException | SecurityException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    // System.out.println("******" + out + "******");
+                    console.appendText("\n" + out);
+                }
+            }
+            catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException e) {
+                // TODO
+                commandWindow.printError("Error");
+            }
+        }*/
 
-			console.appendText(Resources.CONSOLE_PROMPT_STR);
-		}
-	}
+        console.appendText(Resources.CONSOLE_PROMPT_STR);
+    }
 
-	public TextArea getTextArea () {
-		return myTextArea;
-	}
+    public TextArea getTextArea () {
+        return myTextArea;
+    }
 }

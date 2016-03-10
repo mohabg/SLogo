@@ -5,25 +5,32 @@ import java.util.List;
 
 public class Command extends CommandNode{
 	
-	private List<CommandNode> variables;
+	private CommandNode[] variables;
 	
 	public Command(double val) {
 		super(val);
-		variables = new ArrayList<>();
 		setUsesTurtle(true);
 	}
-	public void setVariables(List<CommandNode> variablesToSet){
-		for(int i = 0; i < variablesToSet.size(); i++){
-			variables.add(variablesToSet.get(i));
+	public List<CommandNode> getVariables(){
+		List<CommandNode> variablesAsList = new ArrayList<>();
+		for(int i = 0; i < variables.length; i++){
+			variablesAsList.add(variables[i]);
 		}
-		setParametersNeeded(variables.size());
+		return variablesAsList;
 	}
+	public void setVariables(List<CommandNode> variablesToSet){
+		variables = new CommandNode[variablesToSet.size()];
+		for(int i = 0; i < variablesToSet.size(); i++){
+			variables[i] = variablesToSet.get(i);
+		}
+		setParametersNeeded(variables.length);
+	}
+	
 	@Override
 	public double run() {
-		int variableIndex = 0;
 		for(int i = 1; i < getChildren().size(); i++){
 			double variableValue = getChildren().get(i).run();
-			variables.get(variableIndex++).setValue(variableValue);
+			variables[i - 1].setValue(variableValue);
 		}
 		CommandNode commandsToExecute = getChildren().get(0);
 		return commandsToExecute.run();
