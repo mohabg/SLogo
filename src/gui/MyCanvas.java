@@ -22,235 +22,216 @@ import javafx.scene.paint.Color;
 import slogo.Controller;
 import slogo.Resources;
 
-
 public class MyCanvas {
-    private Canvas canvas;
-    private Controller controller;
-    private List<Color> palette;
-    private ContextMenu backgroundContextMenu, turtleContextMenu;
-    // private Color backgroundColor;
-    private List<TurtleData> turtles, selectedTurtles;
 
-    public MyCanvas (int width, int height, Controller controller) {
-        this.controller = controller;
-        this.canvas = new Canvas(width, height);
-        this.palette = Arrays.asList(new Color[] { Color.ALICEBLUE, Color.ANTIQUEWHITE }); // TODO:
-                                                                                           // empty
-        this.backgroundContextMenu = new ContextMenu();
-        this.turtleContextMenu = new ContextMenu();
-        initControls();
+	private Canvas canvas;
+	private Controller controller;
+	private List<Color> palette;
+	private ContextMenu backgroundContextMenu, turtleContextMenu;
+	// private Color backgroundColor;
+	private List<TurtleData> turtles, selectedTurtles;
 
-        this.turtles = new ArrayList<TurtleData>();
-        this.selectedTurtles = new ArrayList<TurtleData>();
-    }
+	public MyCanvas(int width, int height, Controller controller) {
+		this.controller = controller;
+		this.canvas = new Canvas(width, height);
+		this.palette = Arrays.asList(new Color[] { Color.ALICEBLUE, Color.ANTIQUEWHITE }); // TODO:
+		// empty
+		this.backgroundContextMenu = new ContextMenu();
+		this.turtleContextMenu = new ContextMenu();
+		initControls();
 
-    public Canvas getCanvas () {
-        return canvas;
-    }
+		this.turtles = controller.getReturnData().getTurtles();
+		this.selectedTurtles = new ArrayList<TurtleData>();
+	}
 
-    public void update (CanvasData data) {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+	public Canvas getCanvas() {
+		return canvas;
+	}
 
-        drawTurtle(gc, data);
-        drawLines(gc, data);
-        
-        if(selectedTurtles.size() > 0)
-        	Resources.debugPrint(selectedTurtles.toString());
-        
-        Color backgroundColor = data.getBackgroundColor();
-        turtles = data.getTurtles();
+	public void update(CanvasData data) {
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        // palette = data.getPalette();
-    }
+		drawTurtle(gc, data);
+		drawLines(gc, data);
+		Resources.debugPrint(selectedTurtles.toString());
+		Color backgroundColor = data.getBackgroundColor();
+		turtles = data.getTurtles();
 
-    private void drawTurtle (GraphicsContext gc, CanvasData data) {
-        Image image = data.getTurtleImage();
+		// palette = data.getPalette();
+	}
 
-        List<Point> posList = data.getTurtlePosition();
+	private void drawTurtle(GraphicsContext gc, CanvasData data) {
+		List<TurtleData> turtleData = data.getTurtles();
+		for (TurtleData turtle : turtleData) {
+			Image image = turtle.getImage();
 
-        for (Point p : posList) { // TODO: use stream
-            ImageView imageView = new ImageView(image);
-            Point draw = getCartesianPos(p);
+			Point position = turtle.getPosition();
 
-            double x = draw.getX() - image.getWidth() / 2;
-            double y = draw.getY() - image.getHeight() / 2;
-            imageView.setRotate(p.getTheta());
+			ImageView imageView = new ImageView(image);
+			Point draw = getCartesianPos(position);
 
-            SnapshotParameters params = new SnapshotParameters();
-            params.setFill(Color.TRANSPARENT);
-            Image rotated = imageView.snapshot(params, null);
-            gc.drawImage(rotated, x, y);
-        }
-    }
+			double x = draw.getX() - image.getWidth() / 2;
+			double y = draw.getY() - image.getHeight() / 2;
+			imageView.setRotate(position.getTheta());
 
-    private void drawLines (GraphicsContext gc, CanvasData data) {
-        Collection<Line> lines = data.getLines();
+			SnapshotParameters params = new SnapshotParameters();
+			params.setFill(Color.TRANSPARENT);
+			Image rotated = imageView.snapshot(params, null);
+			gc.drawImage(rotated, x, y);
+		}
+	}
 
-        for (Line l : lines) { // TODO: stream
-            Point a = getCartesianPos(l.getA());
-            Point b = getCartesianPos(l.getB());
-            gc.setStroke(data.getPenColor());
-            gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
-        }
-    }
+	private void drawLines(GraphicsContext gc, CanvasData data) {
+		Collection<Line> lines = data.getLines();
 
-    private Menu createColorSubmenu (String name, List<Color> palette) {
-        Menu submenu = new Menu(name);
-        for (Color color : palette) { // TODO: stream
-            submenu.getItems().add(new MenuItem(color.toString()));
-        }
-        return submenu;
-    }
+		for (Line l : lines) { // TODO: stream
+			Point a = getCartesianPos(l.getA());
+			Point b = getCartesianPos(l.getB());
+			gc.setStroke(data.getPenColor());
+			gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
+		}
+	}
 
-    // TODO: refactor, combine with background
-    private void updateTurtleContextMenu () {
-        // TODO: place in resources
-        Menu penColorSubmenu = createColorSubmenu("Select background color", palette);
-        MenuItem turtleImageSubmenu = new MenuItem("Select turtle image");
-        for (MenuItem penColorItem : penColorSubmenu.getItems()) {
-            penColorItem.setOnAction(e -> handleSelectPenColor(penColorItem.getText()));
-        }
-        // selectTurtleImage.setOnAction(e -> handleSelectTurtleImage());
+	private Menu createColorSubmenu(String name, List<Color> palette) {
+		Menu submenu = new Menu(name);
+		for (Color color : palette) { // TODO: stream
+			submenu.getItems().add(new MenuItem(color.toString()));
+		}
+		return submenu;
+	}
 
-        turtleContextMenu.getItems().clear();
-        turtleContextMenu.getItems().addAll(penColorSubmenu, turtleImageSubmenu);
-    }
+	// TODO: refactor, combine with background
+	private void updateTurtleContextMenu() {
+		// TODO: place in resources
+		Menu penColorSubmenu = createColorSubmenu("Select background color", palette);
+		MenuItem turtleImageSubmenu = new MenuItem("Select turtle image");
+		for (MenuItem penColorItem : penColorSubmenu.getItems()) {
+			penColorItem.setOnAction(e -> handleSelectPenColor(penColorItem.getText()));
+		}
+		// selectTurtleImage.setOnAction(e -> handleSelectTurtleImage());
 
-    private void updateBackgroundContextMenu () {
-        // TODO: place in resources
-        Menu backgroundColorSubmenu = createColorSubmenu("Select background color", palette);
-        for (MenuItem backgroundColorItem : backgroundColorSubmenu.getItems()) {
-            backgroundColorItem
-                    .setOnAction(e -> handleSelectBackgroundColor(backgroundColorItem.getText()));
-        }
-        // selectBackgroundColor.setOnAction(e -> handleSelectBackgroundColor());
+		turtleContextMenu.getItems().clear();
+		turtleContextMenu.getItems().addAll(penColorSubmenu, turtleImageSubmenu);
+	}
 
-        backgroundContextMenu.getItems().clear();
-        backgroundContextMenu.getItems().addAll(backgroundColorSubmenu);
-    }
+	private void updateBackgroundContextMenu() {
+		// TODO: place in resources
+		Menu backgroundColorSubmenu = createColorSubmenu("Select background color", palette);
+		for (MenuItem backgroundColorItem : backgroundColorSubmenu.getItems()) {
+			backgroundColorItem.setOnAction(e -> handleSelectBackgroundColor(backgroundColorItem.getText()));
+		}
+		// selectBackgroundColor.setOnAction(e ->
+		// handleSelectBackgroundColor());
 
-    private void handleSelectBackgroundColor (String hex) {
-        /*
-         * ColorPicker picker = new ColorPicker();
-         * picker.setStyle("-fx-border-radius: 10 10 10 10;" + "-fx-background-radius: 10 10 10 10;"
-         * );
-         * picker.setOnAction(e -> {
-         * Color selectedColor = backgroundColor;
-         * picker.setValue(selectedColor);
-         * int index = palette.indexOf(selectedColor);
-         * String input = "setbg " + index;
-         * try {
-         * controller.compile(input);
-         * }
-         * catch (Exception e1) {
-         * // TODO Auto-generated catch block
-         * e1.printStackTrace();
-         * }
-         * });
-         */
+		backgroundContextMenu.getItems().clear();
+		backgroundContextMenu.getItems().addAll(backgroundColorSubmenu);
+	}
 
-        // TODO: refactor duplicate
-        Color color = hex2Color(hex);
-        int index = palette.indexOf(color);
-        try {
-            controller.compile("setbg " + index); // TODO: language
-        }
-        catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | ClassNotFoundException | NoSuchMethodException
-                | SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+	private void handleSelectBackgroundColor(String hex) {
+		/*
+		 * ColorPicker picker = new ColorPicker(); picker.setStyle(
+		 * "-fx-border-radius: 10 10 10 10;" +
+		 * "-fx-background-radius: 10 10 10 10;" ); picker.setOnAction(e -> {
+		 * Color selectedColor = backgroundColor;
+		 * picker.setValue(selectedColor); int index =
+		 * palette.indexOf(selectedColor); String input = "setbg " + index; try
+		 * { controller.compile(input); } catch (Exception e1) { // TODO
+		 * Auto-generated catch block e1.printStackTrace(); } });
+		 */
 
-    /*
-     * private String color2Hex (Color c) {
-     * int red = (int) (c.getRed() * 255);
-     * String redHex = Integer.toHexString(red);
-     * int green = (int) (c.getGreen() * 255);
-     * String greenHex = Integer.toHexString(green);
-     * int blue = (int) (c.getBlue() * 255);
-     * String blueHex = Integer.toHexString(blue);
-     * 
-     * return (redHex + greenHex + blueHex);
-     * }
-     */
+		// TODO: refactor duplicate
+		Color color = hex2Color(hex);
+		int index = palette.indexOf(color);
+		try {
+			controller.compile("setbg " + index); // TODO: language
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| ClassNotFoundException | NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-    // private void updateBackgroundColor (String hex) {
-    // canvas.setStyle("-fx-background-color: #" + hex + ";");
-    // }
+	/*
+	 * private String color2Hex (Color c) { int red = (int) (c.getRed() * 255);
+	 * String redHex = Integer.toHexString(red); int green = (int) (c.getGreen()
+	 * * 255); String greenHex = Integer.toHexString(green); int blue = (int)
+	 * (c.getBlue() * 255); String blueHex = Integer.toHexString(blue);
+	 * 
+	 * return (redHex + greenHex + blueHex); }
+	 */
 
-    private Color hex2Color (String hex) {
-        return Color.web(hex);
-    }
+	// private void updateBackgroundColor (String hex) {
+	// canvas.setStyle("-fx-background-color: #" + hex + ";");
+	// }
 
-    private void handleSelectPenColor (String hex) {
-        Color color = hex2Color(hex);
-        int index = palette.indexOf(color);
-        try {
-            controller.compile("setpc " + index); // TODO: language
-        }
-        catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | ClassNotFoundException | NoSuchMethodException
-                | SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+	private Color hex2Color(String hex) {
+		return Color.web(hex);
+	}
 
-    private void handleSelectTurtleImage () {
+	private void handleSelectPenColor(String hex) {
+		Color color = hex2Color(hex);
+		int index = palette.indexOf(color);
+		try {
+			controller.compile("setpc " + index); // TODO: language
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| ClassNotFoundException | NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-    }
+	private void handleSelectTurtleImage() {
 
-    private void initControls () {
-        canvas.setOnMouseClicked(e -> {
-            double x = e.getScreenX();
-            double y = e.getScreenY();
-            Point mousePos = new Point(x, y, 0);
+	}
 
-            if (e.getButton() == MouseButton.PRIMARY) {
-                handleLeftClick(mousePos);
-            }
-            else if (e.getButton() == MouseButton.SECONDARY) {
-                handleRightClick(mousePos);
-            }
-        });
-    }
+	private void initControls() {
+		canvas.setOnMouseClicked(e -> {
+			double x = e.getScreenX();
+			double y = e.getScreenY();
+			Point mousePos = new Point(x, y, 0);
 
-    private void attemptToSelectOrDeselectTurtle (Point mousePos) {
-        for (TurtleData turtle : turtles) {
-            if (turtle.containsPoint(mousePos)) {
-                if (!selectedTurtles.remove(turtle)) {
-                    selectedTurtles.add(turtle);
-                }
-            }
-        }
-    }
+			if (e.getButton() == MouseButton.PRIMARY) {
+				handleLeftClick(mousePos);
+			} else if (e.getButton() == MouseButton.SECONDARY) {
+				handleRightClick(mousePos);
+			}
+		});
+	}
 
-    private void handleLeftClick (Point mousePos) {
-        backgroundContextMenu.hide();
-        turtleContextMenu.hide();
+	private void attemptToSelectOrDeselectTurtle(Point mousePos) {
+		for (TurtleData turtle : turtles) { // TODO: stream
+			if (turtle.containsPoint(mousePos)) {
+				if (!selectedTurtles.remove(turtle)) {
+					selectedTurtles.add(turtle);
+				}
+			}
+		}
+	}
 
-        attemptToSelectOrDeselectTurtle(mousePos);
-    }
+	private void handleLeftClick(Point mousePos) {
+		backgroundContextMenu.hide();
+		turtleContextMenu.hide();
 
-    private void handleRightClick (Point mousePos) {
-        double x = mousePos.getX();
-        double y = mousePos.getY();
+		attemptToSelectOrDeselectTurtle(mousePos);
+	}
 
-        // TODO: duplicate
-        updateBackgroundContextMenu();
-        updateTurtleContextMenu();
-        backgroundContextMenu.show(canvas, x, y);
-        // TODO: turtles
-    }
+	private void handleRightClick(Point mousePos) {
+		double x = mousePos.getX();
+		double y = mousePos.getY();
 
-    private Point getCartesianPos (Point pos) {
-        double x = pos.getX() + canvas.getWidth() / 2;
-        double y = canvas.getHeight() / 2 - pos.getY();
-        Point newPos = new Point(x, y, pos.getTheta());
-        return newPos;
-    }
+		// TODO: duplicate
+		updateBackgroundContextMenu();
+		updateTurtleContextMenu();
+		backgroundContextMenu.show(canvas, x, y);
+		// TODO: turtles
+	}
+
+	private Point getCartesianPos(Point pos) {
+		double x = pos.getX() + canvas.getWidth() / 2;
+		double y = canvas.getHeight() / 2 - pos.getY();
+		Point newPos = new Point(x, y, pos.getTheta());
+		return newPos;
+	}
 
 }

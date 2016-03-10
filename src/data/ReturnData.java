@@ -6,17 +6,20 @@ import java.util.Map;
 import java.util.Set;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import slogo.Turtle;
 
 
 public class ReturnData implements CanvasData, WorkspaceData {
 
     private List<Line> lines = new ArrayList<Line>();
     private List<Point> turtlePositions = new ArrayList<Point>();
+    private List<TurtleData> turtleInfo;
     private Image turtleImage;
     private Map<String, String> userVariables;
     private Set<String> userFunctions;
     private Color penColor;
     private double penBoolean;
+    private double BackgroundColor;
 
     public ReturnData () {
         // TODO Auto-generated constructor stub
@@ -105,7 +108,10 @@ public class ReturnData implements CanvasData, WorkspaceData {
         // TODO Auto-generated method stub
         return null;
     }
-
+public void setTurtles(List<TurtleData> turtles){
+	this.turtleInfo = turtles;
+	
+}
     @Override
     public List<StampData> getStamps () {
         // TODO Auto-generated method stub
@@ -117,4 +123,9 @@ public class ReturnData implements CanvasData, WorkspaceData {
         // TODO Auto-generated method stub
         return null;
     }
+
+	public void addBackgroundColor(double color) {
+		BackgroundColor = color;
+		
+	}
 }
