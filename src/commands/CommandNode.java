@@ -32,20 +32,7 @@ public abstract class CommandNode {
 	public void addToChildren(CommandNode command){
 		children.add(command);
 	}
-	/*
-	@Override
-	public CommandNode clone() throws CloneNotSupportedException{
-		CommandNode clone = (CommandNode) super.clone();
-		clone.setInput(getInput());
-		clone.setValue(getValue());
-		clone.setParametersNeeded(parametersNeeded);
-		clone.setTurtle(getTurtle());
-		for(int i = 0; i < getChildren().size(); i++){
-			clone.addToChildren(getChildren().get(i).clone());
-		}
-		return clone;
-	}
-	*/
+	
 	public abstract double run();
 	
 	public Turtle getTurtle(){

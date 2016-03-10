@@ -22,7 +22,7 @@ public class Parser{
 		mySymbols = new ArrayList<>();
 		inputSaver = model;
 		addLanguage(language);
-		addLanguage("Syntax");
+		addPatterns("Syntax");
 		commandFactory = new CommandFactory(model);
 	}
 
@@ -30,8 +30,8 @@ public class Parser{
 		addPatterns(language);
 	}
 	
-	private void addPatterns (String language) {
-		String filePath = String.format("resources/languages/%s", language);
+	private void addPatterns (String pattern) {
+		String filePath = String.format("resources/languages/%s", pattern);
 		ResourceBundle resources = ResourceBundle.getBundle(filePath);
 		Enumeration<String> iter = resources.getKeys();
 		while (iter.hasMoreElements()) {
@@ -51,9 +51,8 @@ public class Parser{
 		List<CommandNode> commandHeads = new ArrayList<>();
 
 		for(int i = 0; i < commandList.size(); i++){
-			int newIndex = createChildren(commandList, i);
 			commandHeads.add(commandList.get(i));
-			i = newIndex;
+			i = createChildren(commandList, i);
 		}
 		return commandHeads;
 	}
@@ -137,7 +136,6 @@ public class Parser{
 	}
 	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
 		final String WHITESPACE = "\\p{Space}";
-		System.out.println("Inputted script " + command);
 		List<CommandNode> commandHeads = parseText(command.split(WHITESPACE));
 		return commandHeads;
 	}

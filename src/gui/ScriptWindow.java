@@ -16,7 +16,6 @@ public class ScriptWindow {
         this.controller = controller;
         this.commandWindow = commandWindow;
 
-        myTextArea.setText("fd 50 rt 90 fd 50 rt 90 fd 50");
     }
 
     public void handleRunButton () {
