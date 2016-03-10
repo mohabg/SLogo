@@ -94,4 +94,10 @@ public abstract class CommandNode {
 	public List<CommandNode> getChildren(){
 		return children;
 	}
+	
+	@Override
+	public String toString() {
+		String out = this.getClass().getSimpleName();
+		return out;
+	}
 }

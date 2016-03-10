@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import commands.*;
+import exceptions.SlogoException;
 
 public class Parser{
 

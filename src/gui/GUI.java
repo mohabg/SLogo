@@ -1,31 +1,21 @@
-
 package gui;
 
 import data.CanvasData;
-import data.ReturnData;
-import data.WorkspaceData;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 import slogo.Controller;
-import slogo.Resources;
 
 
 public class GUI {
-    private ObservableList<Node> rootNodeChildren;
+    // private ObservableList<Node> rootNodeChildren;
     private int width, height;
 
     // Data-transfer
-    ReturnData data;
     Controller controller;
 
     // Windows
@@ -36,23 +26,22 @@ public class GUI {
 
     public GUI (Controller controller) {
         this.controller = controller;
-        this.data = controller.getReturnData();
     }
 
     public Scene init (int width, int height) {
         BorderPane root = new BorderPane();
         Scene myScene = new Scene(root, width, height);
-        rootNodeChildren = root.getChildren();
+        // rootNodeChildren = root.getChildren();
         this.width = width;
         this.height = height;
 
-        root.setTop(createMenuBar());
-
         // GUI elements
-        this.canvas = new MyCanvas((CanvasData) data, getWindowWidth() / 2, getWindowHeight() / 2);
+        this.canvas = new MyCanvas(getWindowWidth() / 2, getWindowHeight() / 2, controller);
         this.commandWindow = new CommandWindow(controller);
         this.scriptWindow = new ScriptWindow(controller, commandWindow);
-        this.workspace = new Workspace((WorkspaceData) data);
+        this.workspace = new Workspace();
+
+        root.setTop(MenuFactory.createMenuBar(scriptWindow, controller));
 
         // Root node and grid layout
         GridPane grid =
@@ -63,7 +52,7 @@ public class GUI {
     }
 
     public void step (double millisecondDelay) {
-        canvas.update();
+        canvas.update((CanvasData) controller.getReturnData());
     }
 
     public int getWindowWidth () {
@@ -101,17 +90,5 @@ public class GUI {
         console.getConsole().setMaxHeight(GUI.getScreenCenter().getY() * 0.7);
 
         return grid;
-    }
-
-    private MenuBar createMenuBar () {
-        MenuBar menuBar = new MenuBar();
-        Menu scriptMenu = new Menu("Script");
-        MenuItem runMenuItem = new MenuItem(Resources.RUN_MENU_LABEL);
-
-        scriptMenu.getItems().add(runMenuItem);
-        runMenuItem.setOnAction(e -> scriptWindow.handleRunButton());
-        menuBar.getMenus().add(scriptMenu);
-
-        return menuBar;
     }
 }
