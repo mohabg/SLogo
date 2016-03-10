@@ -1,64 +1,37 @@
 package slogo;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import gui.GUI;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-
-/**
- * This is the main program, which runs SLogo.
- */
 public class Main extends Application {
+	private List<GUI> GUIs = new ArrayList<GUI>();
+	private int currentGUI = 0;
+	private ResourceBundle resources = ResourceBundle.getBundle("resources/Main");
 
-    private GUI myGUI;
-    private Controller myController;
+	@Override
+	public void start(Stage stage) {
+		int width = Integer.parseInt(resources.getString("width"));
+		int height = Integer.parseInt(resources.getString("height"));
+		String language = resources.getString("default_language");
+		String title = resources.getString("title");
 
-    /**
-     * @throws SecurityException 
-     * @throws NoSuchMethodException 
-     * @throws ClassNotFoundException 
-     * Set things up at the beginning.
-     * @throws InvocationTargetException
-     * @throws IllegalArgumentException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws
-     */
-    @Override
-    public void start (Stage stage) 
-    		throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-    		ClassNotFoundException, NoSuchMethodException, SecurityException {
-    	
-    	myController = new Controller();
-    	myController.initialize();
-    	
-        myGUI = new GUI(myController);
-        // TODO: stage.setTitle();
+		GUIs.add(new GUI(language, width, height));
 
-        // attach game to the stage and display it
-        Scene scene = myGUI.init(Resources.WIDTH, Resources.HEIGHT);
-        stage.setScene(scene);
-        stage.show();
+		stage.setScene(getCurrentGUI().getScene());
+		stage.setTitle(title);
+		stage.show();
+	}
 
-        // sets the game's loop
-        KeyFrame frame =
-                new KeyFrame(Duration.millis(Resources.millisecondDelay),
-                             e -> myGUI.step(Resources.secondDelay));
-        Timeline animation = new Timeline();
-        animation.setCycleCount(Timeline.INDEFINITE);
-        animation.getKeyFrames().add(frame);
-        animation.play();
-    }
+	public GUI getCurrentGUI() {
+		return GUIs.get(currentGUI);
+	}
 
-    /**
-     * Start the program.
-     */
-    public static void main (String[] args) {
-        launch(args);
-    }
+	public static void main(String[] args) {
+		launch(args);
+	}
 }

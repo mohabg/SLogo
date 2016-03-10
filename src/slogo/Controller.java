@@ -14,20 +14,16 @@ import javafx.scene.paint.Color;
 
 public class Controller {
 
-	public static final String DEFAULT_LANGUAGE = "English";
 	private Model myModel;
 	private Parser myParser;
 	private List<Double> myPalette;
 	private String language;
 	protected static ResourceBundle errorBundle = ResourceBundle.getBundle("resources/Errors");
 
-	public Controller() {
+	public Controller(String language) {
+		this.language = language;
 		myModel = new Model();
-		language = DEFAULT_LANGUAGE;
 		myParser = new Parser(language, myModel);
-	}
-	
-	public void initialize() {
 		updateModel();
 	}
 	
