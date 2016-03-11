@@ -8,9 +8,9 @@ public interface TurtleData {
 
     public int getID ();
 
-    public boolean containsPoint (Point pos);
-    
     public Point getPosition();
+    
+    public boolean containsPoint (Point pos);
     
 	public Image getImage();
 	
@@ -23,4 +23,5 @@ public interface TurtleData {
 	public double getPenColor();
 	
 	public double getPenThickness();
+
 }

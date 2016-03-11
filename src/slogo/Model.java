@@ -1,11 +1,18 @@
 package slogo;
 
+
 import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import commands.CommandNode;
 import data.Line;
 import data.Point;
 import data.ReturnData;
 import data.TurtleData;
+
 
 public class Model implements SaveInputs {
 

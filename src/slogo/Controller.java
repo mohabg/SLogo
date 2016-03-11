@@ -12,21 +12,21 @@ import data.ReturnData;
 
 public class Controller {
 
-	public static final String DEFAULT_LANGUAGE = "English";
 	private Model myModel;
 	private Parser myParser;
 	private String language;
 	private SaveSettings mySaver;
 	protected static ResourceBundle errorBundle = ResourceBundle.getBundle("resources/Errors");
 
-	public Controller() {
+	public Controller(String language) {
+		this.language = language;
 		myModel = new Model();
-		language = DEFAULT_LANGUAGE;
 		myParser = new Parser(language, myModel);
 		mySaver = new SaveSettings();
 	}
 
 	public void initialize() {
+
 		updateModel();
 	}
 
