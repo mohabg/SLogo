@@ -6,7 +6,7 @@ public class Resources {
     public static final String RUN_MENU_LABEL = "Run";
 
     // CommandWindow
-    public static final String ERROR_TEXT_STYLE = "-fx-text-fill: rgb(255,0,0)";
+    // public static final String ERROR_TEXT_STYLE = "-fx-text-fill: rgb(255,0,0)";
     public static final String CONSOLE_PROMPT_STR = "\n> ";
 
     // Debugging
