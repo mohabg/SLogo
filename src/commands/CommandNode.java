@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import slogo.CommandIterator;
 import slogo.Turtle;
+import slogo.TurtleListController;
 
 public abstract class CommandNode {
 
@@ -81,7 +82,10 @@ public abstract class CommandNode {
 	public List<CommandNode> getChildren(){
 		return children;
 	}
-	
+	public void setTurtleListController(TurtleListController controller){
+		//Do Nothing
+		//Override in MultipleTurtlesCommands
+	}
 	@Override
 	public String toString() {
 		String out = this.getClass().getSimpleName();
