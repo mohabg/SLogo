@@ -39,7 +39,7 @@ public class Turtle implements TurtleData {
 	}
 
 	public void move (double x, double y) {
-		System.out.println("turtle " + x + " " + y);
+		//System.out.println("turtle " + x + " " + y);
 		setX(x);
 		setY(y);
 		points.add(position.clone());

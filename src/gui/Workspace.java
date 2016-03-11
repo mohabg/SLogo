@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
 
 public class Workspace {
 	private ListView<String> listView = new ListView<String>();
@@ -15,9 +14,6 @@ public class Workspace {
 
 	public Workspace() {
 		listView.setItems(data);
-
-		initContextMenu();
-		initControls();
 	}
 
 	public void setData(Map<String, String> variables, Set<String> functions) {
@@ -34,13 +30,5 @@ public class Workspace {
 
 	public Node getView() {
 		return listView;
-	}
-
-	private void initContextMenu() {
-
-	}
-
-	private void initControls() {
-
 	}
 }
