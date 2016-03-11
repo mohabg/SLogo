@@ -1,6 +1,5 @@
 package gui;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,7 +56,7 @@ public class MyCanvas {
 
         drawLines(gc, data);
 
-        //Color backgroundColor = data.getBackgroundColor();
+        // Color backgroundColor = data.getBackgroundColor();
 
         turtles = data.getTurtles();
         drawTurtles(gc, turtles);
@@ -116,7 +115,7 @@ public class MyCanvas {
     // TODO: refactor, combine with background
     private void updateTurtleContextMenu () {
         // TODO: place in resources
-        Menu penColorSubmenu = createColorSubmenu("Select background color", palette);
+        Menu penColorSubmenu = createColorSubmenu("Select pen color", palette);
         MenuItem turtleImageSubmenu = new MenuItem("Select turtle image");
         for (MenuItem penColorItem : penColorSubmenu.getItems()) {
             penColorItem.setOnAction(e -> handleSelectPenColor(penColorItem.getText()));
@@ -141,37 +140,10 @@ public class MyCanvas {
     }
 
     private void handleSelectBackgroundColor (String hex) {
-        /*
-         * ColorPicker picker = new ColorPicker();
-         * picker.setStyle("-fx-border-radius: 10 10 10 10;" + "-fx-background-radius: 10 10 10 10;"
-         * );
-         * picker.setOnAction(e -> {
-         * Color selectedColor = backgroundColor;
-         * picker.setValue(selectedColor);
-         * int index = palette.indexOf(selectedColor);
-         * String input = "setbg " + index;
-         * try {
-         * controller.compile(input);
-         * }
-         * catch (Exception e1) {
-         * // TODO Auto-generated catch block
-         * e1.printStackTrace();
-         * }
-         * });
-         */
-
         // TODO: refactor duplicate
         Color color = hex2Color(hex);
         int index = palette.indexOf(color);
-        try {
-            controller.compile("setbg " + index); // TODO: language
-        }
-        catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | ClassNotFoundException | NoSuchMethodException
-                | SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        controller.compile("setbg " + index); // TODO: language
     }
 
     /*
@@ -198,15 +170,7 @@ public class MyCanvas {
     private void handleSelectPenColor (String hex) {
         Color color = hex2Color(hex);
         int index = palette.indexOf(color);
-        try {
-            controller.compile("setpc " + index); // TODO: language
-        }
-        catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | ClassNotFoundException | NoSuchMethodException
-                | SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        controller.compile("setpc " + index); // TODO: language
     }
 
     private void handleSelectTurtleImage () {

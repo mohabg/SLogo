@@ -1,6 +1,5 @@
 package gui;
 
-import java.lang.reflect.InvocationTargetException;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
@@ -25,8 +24,8 @@ public class CommandWindow {
     }
 
     public void printError (String message) {
-        Text errorText = new Text(message);
-        errorText.setStyle(Resources.ERROR_TEXT_STYLE);
+        Text errorText = new Text("\nError: " + message);
+        // errorText.setStyle(Resources.ERROR_TEXT_STYLE);
         console.appendText(errorText.getText());
     }
 
@@ -53,13 +52,8 @@ public class CommandWindow {
         String command =
                 text.substring(text.lastIndexOf(Resources.CONSOLE_PROMPT_STR) + ignoreLength)
                         .trim();
-        try {
-            String out = interpreter.compile(command);
-            print(out);
-        }
-        catch (Exception e) {
-           printError(e.getMessage());
-        }
+        String out = interpreter.compile(command);
+        print(out);
 
         print(Resources.CONSOLE_PROMPT_STR);
     }

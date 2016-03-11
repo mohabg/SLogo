@@ -1,15 +1,17 @@
 package slogo;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.lang.reflect.InvocationTargetException;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 import java.util.regex.Pattern;
-
-import commands.*;
+import commands.Command;
+import commands.CommandNode;
+import commands.ListEnd;
+import commands.ListStart;
 import exceptions.SlogoException;
 
 public class Parser{
@@ -43,9 +45,10 @@ public class Parser{
 		}
 	}
 
-	private List<CommandNode> parseText(String[] text) 
-			throws InstantiationException, IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{
+	private List<CommandNode> parseText(String[] text) throws InstantiationException, 
+													IllegalAccessException, IllegalArgumentException,
+													InvocationTargetException, ClassNotFoundException, 
+													NoSuchMethodException, SecurityException{
 		List<CommandNode> commandList = createCommandNodes(text);
 		System.out.println(" command list " + commandList);
 		List<CommandNode> commandHeads = new ArrayList<>();
@@ -57,9 +60,10 @@ public class Parser{
 		return commandHeads;
 	}
 
-	private List<CommandNode> createCommandNodes(String[] text) 
-			throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, 
-			IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	private List<CommandNode> createCommandNodes(String[] text) throws ClassNotFoundException, 
+																NoSuchMethodException, SecurityException,
+																InstantiationException, IllegalAccessException, 
+																IllegalArgumentException, InvocationTargetException{
 		List<CommandNode> commandList = new ArrayList<>();
 		for(int i = 0; i < text.length; i++){
 			if(text[i].trim().length() > 0){
@@ -70,9 +74,10 @@ public class Parser{
 		return commandList;
 	}
 
-	private CommandNode getCommandForWord(String[] text, int index) 
-			throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, 
-			IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	private CommandNode getCommandForWord(String[] text, int index) throws ClassNotFoundException, 
+																			NoSuchMethodException, SecurityException, 
+																			InstantiationException, IllegalAccessException,
+																			IllegalArgumentException, InvocationTargetException{
 		String word = text[index];
 		String symbol = getSymbol(word);
 		return commandFactory.getCommandNode(symbol, word);
@@ -129,7 +134,7 @@ public class Parser{
 				}
 			}
 		}catch (Exception e){
-			new SlogoException(Controller.errorBundle.getString("SyntaxError"));
+			new SlogoException(Controller.getErrorBundle().getString("SyntaxError"));
 		}
 		// Indicates syntax error
 		return null;
