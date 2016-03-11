@@ -81,9 +81,8 @@ public class Parser{
 	private int createChildren(List<CommandNode> commandList, int currentIndex) {
 		CommandNode currentCommand = commandList.get(currentIndex);
 		int counter = 0;
-		if(currentCommand instanceof Command){
-			setVariablesAndCommands(currentCommand);
-		}
+		setVariablesAndCommands(currentCommand);
+		
 		while(counter++ < currentCommand.parametersNeeded()){
 			CommandNode nextCommand = commandList.get(++currentIndex);
 			currentCommand.addToChildren(nextCommand);
@@ -98,12 +97,14 @@ public class Parser{
 	}
 
 	private void setVariablesAndCommands(CommandNode currentCommand) {
-		Command currentFunction = (Command) currentCommand;
-		String input = currentFunction.getInput();
-		Command storedFunction = (Command) inputSaver.getCommandForFunction(input);
-		CommandNode commandsToExecute = storedFunction.getChildren().get(0);
-		currentFunction.setVariables(storedFunction.getVariables());
-		currentFunction.addToChildren(commandsToExecute);
+		if(currentCommand instanceof Command){
+			Command currentFunction = (Command) currentCommand;
+			String input = currentFunction.getInput();
+			Command storedFunction = (Command) inputSaver.getCommandForFunction(input);
+			CommandNode commandsToExecute = storedFunction.getChildren().get(0);
+			currentFunction.setVariables(storedFunction.getVariables());
+			currentFunction.addToChildren(commandsToExecute);
+		}
 	}
 
 	private int setChildrenForList(List<CommandNode> commandList, int currentIndex) {

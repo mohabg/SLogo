@@ -18,10 +18,17 @@ public class ScriptWindow {
 
 	public void handleRunButton() {
 		String text = myTextArea.getText();
+		String[] eachLine = text.split("\n");
+		StringBuilder textWithoutComments = new StringBuilder();
+		for(int i = 0; i < eachLine.length; i++){
+			if(eachLine[i].charAt(0) != '#'){
+				textWithoutComments.append(eachLine[i] + " ");
+			}
+		}
 		ConsoleTextArea console = commandWindow.getConsole();
 		console.appendText("[script]");
 		try {
-			controller.compile(text);
+			controller.compile(textWithoutComments.toString());
 		} catch (Exception e) {
 			commandWindow.printError(e.getMessage());
 		}

@@ -37,9 +37,11 @@ public class Controller {
 	public String compile(String input) 
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			ClassNotFoundException, NoSuchMethodException, SecurityException {// frame
+		
 		List<CommandNode> currCommandTree= myParser.interpret(input);
 		List<Double> outputs = new ArrayList<Double>();
 		for (CommandNode command : currCommandTree) {
+			
 			outputs.addAll(update(command));
 		}
 		updateModel();
@@ -69,6 +71,7 @@ public class Controller {
 		ArrayList<Double> outputs = new ArrayList<Double>();
 		if (command.getUsesTurtle()) {
 			for (Turtle turtle : myModel.getTurtleList()) {
+				command.setTurtleListController(myModel);
 				command.setTurtle(turtle);
 				outputs.add(command.run());
 			}
