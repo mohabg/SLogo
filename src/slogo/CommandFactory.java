@@ -1,9 +1,6 @@
 package slogo;
 
-import java.awt.List;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 
 import commands.Command;
 import commands.CommandNode;
@@ -12,9 +9,6 @@ import exceptions.SlogoException;
 
 public class CommandFactory {
 
-	private HashMap<String, String> CommandMap = new HashMap<String, String>();
-
-	private Controller controller;
 	private SaveInputs inputSaver;
 
 	public CommandFactory(SaveInputs model) {
@@ -27,6 +21,7 @@ public class CommandFactory {
 		try{
 			constant = Integer.parseInt(word);
 		}catch (NumberFormatException e){
+			throw new SlogoException(String.format(Controller.errorBundle.getString("ParameterError"), word, commandName));
 		}
 		System.out.println("Creating " + word + " " + commandName);
 		Class commClass;

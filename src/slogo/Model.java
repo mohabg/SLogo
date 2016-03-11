@@ -1,14 +1,11 @@
 package slogo;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-
 import commands.CommandNode;
 import data.Line;
 import data.Point;
 import data.ReturnData;
 import data.TurtleData;
-import javafx.scene.image.Image;
 
 public class Model implements SaveInputs {
 
@@ -17,11 +14,11 @@ public class Model implements SaveInputs {
 	private List<Line> lineList;
 	private Map<String, CommandNode> userVariables;
 	private Map<String, CommandNode> userFunctions;
+	private List<Double> myPalette;
 	private List<Double> consoleOutputs;
 	private List<CommandNode> pastCommands;
 	private double BackgroundColor;
-	private Double penWidth;
-	private Collection<Image> stamps;
+	private Collection<MyStamp> stamps;
 
 	public Model() {
 		returnData = new ReturnData();
@@ -42,18 +39,15 @@ public class Model implements SaveInputs {
 		}
 		return consoleOutput.toString();
 	}
-
-	/*private List<Point> getTurtlePosition() {
-		List<Point> turtlePositions = new ArrayList<Point>();
-		for (Turtle turtle : turtleList) {
-			turtlePositions.add(turtle.getPosition());
-		}
-		return turtlePositions;
-	}*/
 	
 	public void addTurtle(){
 		Turtle turtle = new Turtle(turtleList.size());
 		turtleList.add(turtle);
+	}
+	
+	public void addStamp(double x, double y, double orientation, String image){
+		Point stampLoc = new Point(x, y, orientation);
+		stamps.add(new MyStamp(image, stampLoc));
 	}
 	
 	public void setCompileInfo() {
@@ -64,6 +58,10 @@ public class Model implements SaveInputs {
 		turtleData.addAll(turtleList);
 		returnData.setTurtles(turtleData);
 		returnData.addBackgroundColor(BackgroundColor);
+	}
+
+	public void addPaletteColor(double rgb){
+		myPalette.add(rgb);
 	}
 
 	private Map<String, String> makeVariableOutputs() {
@@ -92,6 +90,7 @@ public class Model implements SaveInputs {
 
 	public void addCommandToHistory(CommandNode command) {
 		pastCommands.add(command);
+		System.out.println("Command: " + command.toString() + "Value: " + (command.getValue()));
 	}
 
 	public void addVariableToMap(CommandNode variable, String variableName) {
@@ -123,5 +122,4 @@ public class Model implements SaveInputs {
 		stamps.clear();
 
 	}
-
 }

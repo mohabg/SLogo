@@ -9,7 +9,7 @@ public interface TurtleData {
 
     public Image getImage ();
 
-    public double isVisible ();
+    public Boolean isVisible ();
 
     public int getID ();
 

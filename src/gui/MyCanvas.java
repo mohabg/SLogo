@@ -55,7 +55,7 @@ public class MyCanvas {
 		drawTurtle(gc, data);
 		drawLines(gc, data);
 		Resources.debugPrint(selectedTurtles.toString());
-		Color backgroundColor = data.getBackgroundColor();
+		//Color backgroundColor = data.getBackgroundColor();
 		turtles = data.getTurtles();
 
 		// palette = data.getPalette();

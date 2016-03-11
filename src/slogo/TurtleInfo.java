@@ -8,8 +8,8 @@ public interface TurtleInfo {
 	public Point getPosition();
 	public Image getImage();
 	public String getShape();
-	public double isPenDown();
-	public double isVisible();
+	public Boolean isPenDown();
+	public Boolean isVisible();
 	public String getPenColor();
 	public double getPenThickness();
 
