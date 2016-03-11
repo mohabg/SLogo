@@ -79,13 +79,11 @@ public class MyCanvas {
             if (selectedTurtles.contains(turtle)) {
                 highlightImageView(imageView, Color.CORAL, 4.0); // TODO: resources
             }
-            // Point p = turtle.getPos();
-            // Point draw = convertCartesianToCanvasPos(p);
+            Point p = turtle.getPos();
+            Point draw = convertCartesianToCanvasPos(p);
 
-            double x = imageView.getTranslateX() - image.getWidth() / 2;// draw.getX() -
-                                                                        // image.getWidth() / 2;
-            double y = imageView.getTranslateY() - image.getHeight();// draw.getY() -
-                                                                     // image.getHeight() / 2;
+            double x = draw.getX() - image.getWidth() / 2;
+            double y = draw.getY() - image.getHeight() / 2;
             // imageView.setRotate(p.getTheta());
 
             SnapshotParameters params = new SnapshotParameters();
