@@ -34,6 +34,8 @@ public class Turtle implements TurtleData {
 		penThickness = DEFAULT_THICKNESS;
 		penColor = DEFAULT_COLOR;
 		this.ID = ID;
+		
+		points.add(position.clone());
 	}
 
 	public void move (double x, double y) {
