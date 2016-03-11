@@ -21,7 +21,7 @@ public class CommandFactory {
 		try{
 			constant = Integer.parseInt(word);
 		}catch (NumberFormatException e){
-			throw new SlogoException(String.format(Controller.errorBundle.getString("ParameterError"), word, commandName));
+			//throw new SlogoException(String.format(Controller.errorBundle.getString("ParameterError"), word, commandName));
 		}
 		System.out.println("Creating " + word + " " + commandName);
 		Class commClass;

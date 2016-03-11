@@ -16,18 +16,24 @@ public class Controller {
 	private Model myModel;
 	private Parser myParser;
 	private String language;
+	private SaveSettings mySaver;
 	protected static ResourceBundle errorBundle = ResourceBundle.getBundle("resources/Errors");
 
 	public Controller() {
 		myModel = new Model();
 		language = DEFAULT_LANGUAGE;
 		myParser = new Parser(language, myModel);
+		mySaver = new SaveSettings();
 	}
 
 	public void initialize() {
 		updateModel();
 	}
 
+	public void saveSettings(){
+		mySaver.saveInfo(myModel.getPastCommands());
+	}
+	
 	public String compile(String input) 
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			ClassNotFoundException, NoSuchMethodException, SecurityException {// frame

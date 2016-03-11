@@ -67,10 +67,6 @@ public class Turtle implements TurtleData {
 		position.setTheta(orientationToSet);
 	}
 
-	public Image getImage () {
-		return myImage;
-	}
-
 	private void setX (double x) {
 		position.setX(x);
 	}
@@ -83,16 +79,8 @@ public class Turtle implements TurtleData {
 		penThickness = thickness;
 	}
 
-	public double getPenThickness(){
-		return penThickness;
-	}
-
 	public void setPenColor(double color){
 		penColor = color;
-	}
-
-	public double getPenColor(){
-		return penColor;
 	}
 
 	public void turn (Double angle) {
@@ -105,10 +93,6 @@ public class Turtle implements TurtleData {
 
 	public void clearPoints () {
 		points.clear();
-	}
-
-	public boolean isPenDown () {
-		return penDown;
 	}
 
 	public void setPenDown () {
@@ -126,6 +110,25 @@ public class Turtle implements TurtleData {
 	public void setInvisible () {
 		visible = false;
 	}
+	@Override
+	public Image getImage () {
+		return myImage;
+	}
+	@Override
+	public double getPenThickness(){
+		return penThickness;
+	}
+
+	@Override
+	public double getPenColor(){
+		return penColor;
+	}
+
+	@Override
+	public Boolean isPenDown () {
+		return penDown;
+	}
+
 	@Override
 	public Boolean isVisible () {
 		return visible;

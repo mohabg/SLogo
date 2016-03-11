@@ -36,6 +36,8 @@ public class Main extends Application {
     	
     	myController = new Controller();
     	myController.initialize();
+    	myController.compile("forward forward 50");
+    	myController.saveSettings();
     	
         myGUI = new GUI(myController);
         // TODO: stage.setTitle();
