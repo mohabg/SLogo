@@ -16,6 +16,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -63,16 +64,28 @@ public class MyCanvas {
         // palette = data.getPalette();
     }
 
+    private void highlightImageView (ImageView imageView, Color color, double offset) {
+        DropShadow ds = new DropShadow(offset, color);
+        ds.setOffsetY(offset);
+        ds.setOffsetX(offset);
+        imageView.setEffect(ds);
+    }
+
     private void drawTurtles (GraphicsContext gc, Collection<TurtleData> turtles) {
         for (TurtleData turtle : turtles) { // TODO: use stream
             Image image = turtle.getImage();
             // ImageView imageView = new ImageView(image);
             ImageView imageView = getTurtleView(turtle);
-            Point p = turtle.getPos();
-            Point draw = convertCartesianToCanvasPos(p);
+            if (selectedTurtles.contains(turtle)) {
+                highlightImageView(imageView, Color.CORAL, 4.0); // TODO: resources
+            }
+            // Point p = turtle.getPos();
+            // Point draw = convertCartesianToCanvasPos(p);
 
-            double x = draw.getX() - image.getWidth() / 2;
-            double y = draw.getY() - image.getHeight() / 2;
+            double x = imageView.getTranslateX() - image.getWidth() / 2;// draw.getX() -
+                                                                        // image.getWidth() / 2;
+            double y = imageView.getTranslateY() - image.getHeight();// draw.getY() -
+                                                                     // image.getHeight() / 2;
             // imageView.setRotate(p.getTheta());
 
             SnapshotParameters params = new SnapshotParameters();
