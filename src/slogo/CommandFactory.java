@@ -2,11 +2,13 @@ package slogo;
 
 import java.awt.List;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import commands.Command;
 import commands.CommandNode;
 import commands.Variable;
+import exceptions.SlogoException;
 
 public class CommandFactory {
 
@@ -19,27 +21,26 @@ public class CommandFactory {
 		inputSaver = model;
 	}
 
-	public CommandNode getCommandNode(String commandName, String word){
+	public CommandNode getCommandNode(String commandName, String word) {
 		double constant = 0;
 		// Gets correct command constructor through reflection, instantiates node
 		try{
 			constant = Integer.parseInt(word);
 		}catch (NumberFormatException e){
 		}
+		System.out.println("Creating " + word + " " + commandName);
+		Class commClass;
 		try {
-			System.out.println("Creating " + word + " " + commandName);
-			Class commClass = Class.forName("commands." + commandName);
+			commClass = Class.forName("commands." + commandName);
 			Constructor commConstructor = commClass.getConstructor(double.class);
-						CommandNode command =  (CommandNode) commConstructor.newInstance(constant);
+			CommandNode command =  (CommandNode) commConstructor.newInstance(constant);
 			command.setInput(word);
 			inputSaver.addCommandToHistory(command);
 			command = getVariableOrCommandFromModel(word, command);
-			return command;
-
+			return command; 
 		} catch (Exception e){
-			e.printStackTrace();
+			throw new SlogoException(String.format(Controller.errorBundle.getString("CommandNameError"), commandName));
 		}
-		return null;
 	}
 
 	private CommandNode getVariableOrCommandFromModel(String word, CommandNode command) {

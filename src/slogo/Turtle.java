@@ -125,4 +125,20 @@ public class Turtle implements TurtleData {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public int getID () {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    public double getPenColor () {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    public double getPenThickness () {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }

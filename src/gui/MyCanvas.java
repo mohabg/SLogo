@@ -22,7 +22,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import slogo.Controller;
 import slogo.Resources;
-import slogo.Turtle;
 
 
 public class MyCanvas {
@@ -55,11 +54,10 @@ public class MyCanvas {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         drawLines(gc, data);
+
         Color backgroundColor = data.getBackgroundColor();
 
-        turtles.clear();
-        turtles.add(new Turtle());
-        // turtles = data.getTurtles();
+        turtles = data.getTurtles();
         drawTurtles(gc, turtles);
 
         // palette = data.getPalette();
@@ -205,47 +203,47 @@ public class MyCanvas {
 
     private void initControls () {
         canvas.setOnMouseClicked(e -> {
+            backgroundContextMenu.hide();
+            turtleContextMenu.hide();
+
+            Point mouseCanvasPos = new Point(e.getSceneX(), e.getSceneY());
+            Point mouseScreenPos = new Point(e.getScreenX(), e.getScreenY());
             if (e.getButton() == MouseButton.PRIMARY) {
-                Point mouseScenePos = new Point(e.getSceneX(), e.getSceneY());
-                handleLeftClick(mouseScenePos);
+                handleLeftClick(mouseCanvasPos);
             }
             else if (e.getButton() == MouseButton.SECONDARY) {
-                Point mouseScreenPos = new Point(e.getScreenX(), e.getScreenY());
-                handleRightClick(mouseScreenPos);
+                handleRightClick(mouseCanvasPos, mouseScreenPos);
             }
         });
     }
 
-    private void attemptToSelectOrDeselectTurtle (Point mouseCanvasPos) {
-        for (TurtleData turtle : turtles) { // TODO: stream
-            Resources.debugPrint("turtle: " + turtle.getPos().toString());
-            Resources
-                    .debugPrint("mouse: " + convertCanvasPosToCartesian(mouseCanvasPos).toString());
-            if (turtleContainsCanvasPos(turtle, mouseCanvasPos)) {
-                if (!selectedTurtles.remove(turtle)) {
-                    selectedTurtles.add(turtle);
-                }
+    private void handleLeftClick (Point mouseCanvasPos) {
+        Resources.debugPrint("mouse: " + convertCanvasPosToCartesian(mouseCanvasPos));
+        Collection<TurtleData> clickedTurtles =
+                findTurtlesContainingCanvasPos(turtles, mouseCanvasPos);
+        for (TurtleData turtle : clickedTurtles) { // TODO: stream
+            Resources.debugPrint("turtle: " + turtle.getPos());
+            if (!selectedTurtles.remove(turtle)) { // toggle selection
+                selectedTurtles.add(turtle);
             }
         }
-    }
-
-    private void handleLeftClick (Point mouseCanvasPos) {
-        backgroundContextMenu.hide();
-        turtleContextMenu.hide();
-
-        attemptToSelectOrDeselectTurtle(mouseCanvasPos);
         Resources.debugPrint(selectedTurtles.toString());
     }
 
-    private void handleRightClick (Point mouseScreenPos) {
-        double x = mouseScreenPos.getX();
-        double y = mouseScreenPos.getY();
+    private void handleRightClick (Point mouseCanvasPos, Point mouseScreenPos) {
+        double screenX = mouseScreenPos.getX();
+        double screenY = mouseScreenPos.getY();
 
-        // TODO: duplicate
-        updateBackgroundContextMenu();
-        updateTurtleContextMenu();
-        backgroundContextMenu.show(canvas, x, y);
-        // TODO: turtles
+        Collection<TurtleData> clickedTurtles =
+                findTurtlesContainingCanvasPos(turtles, mouseCanvasPos);
+        if (clickedTurtles.isEmpty()) {
+            updateBackgroundContextMenu();
+            backgroundContextMenu.show(canvas, screenX, screenY);
+        }
+        else { // handle clicked turtle(s)
+            updateTurtleContextMenu();
+            turtleContextMenu.show(canvas, screenX, screenY);
+        }
     }
 
     private Point convertCartesianToCanvasPos (Point myCartesian) {
@@ -271,18 +269,24 @@ public class MyCanvas {
         return turtleView;
     }
 
-    private boolean turtleContainsCanvasPos (TurtleData turtle, Point canvasPos) {
-        ImageView turtleView = getTurtleView(turtle);
-        // Point2D p = new Point2D(canvasPos.getX(), canvasPos.getY());
-        // Resources.debugPrint("bounds: " + turtleView.getBoundsInParent());
-        // Resources.debugPrint("p: " + p);
-        Bounds bounds = turtleView.getBoundsInParent();
-        boolean containsX =
-                (canvasPos.getX() > bounds.getMinX() && canvasPos.getX() < bounds.getMaxX());
-        boolean containsY =
-                (canvasPos.getY() > bounds.getMinY() && canvasPos.getY() < bounds.getMaxY());
-        // return turtleView.contains(p); // TODO: bug?
-        return (containsX && containsY);
+    private Collection<TurtleData> findTurtlesContainingCanvasPos (Collection<TurtleData> turtles,
+                                                                   Point canvasPos) {
+        Collection<TurtleData> ret = new ArrayList<TurtleData>();
+        for (TurtleData turtle : turtles) { // TODO: stream
+            ImageView turtleView = getTurtleView(turtle);
+            // Point2D p = new Point2D(canvasPos.getX(), canvasPos.getY());
+            // Resources.debugPrint("bounds: " + turtleView.getBoundsInParent());
+            // Resources.debugPrint("p: " + p);
+            Bounds bounds = turtleView.getBoundsInParent();
+            boolean containsX =
+                    (canvasPos.getX() > bounds.getMinX() && canvasPos.getX() < bounds.getMaxX());
+            boolean containsY =
+                    (canvasPos.getY() > bounds.getMinY() && canvasPos.getY() < bounds.getMaxY());
+            // return turtleView.contains(p); // TODO: bug?
+            if (containsX && containsY) {
+                ret.add(turtle);
+            }
+        }
+        return ret;
     }
-
 }

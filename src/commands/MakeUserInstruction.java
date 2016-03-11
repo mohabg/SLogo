@@ -4,29 +4,29 @@ import java.util.List;
 
 public class MakeUserInstruction extends CommandNode {
 
-	private boolean ranOnce;
 
 	public MakeUserInstruction(double val) {
 		super(val);
 		setUsesTurtle(true);
 		setParametersNeeded(3);
-		ranOnce = false;
 	}
-
 	@Override
-	public double run() {
-		if (!ranOnce) {
-			ranOnce = true;
+	public void addToChildren(CommandNode commandToAdd){
+		getChildren().add(commandToAdd);
+		if(getChildren().size() == parametersNeeded()){
 			List<CommandNode> variables = getChildren().get(1).getChildren();
-			CommandNode command = getChildren().get(0);
-			if (command instanceof Command) {
-				//Add everything except ListEnd to command's variables
-				((Command) command).setVariables(variables.subList(0, variables.size() - 1));
-			}
+			Command command = (Command) getChildren().get(0);
+			command.setVariables(variables.subList(0, variables.size() - 1));
 			CommandNode commandsToExecute = getChildren().get(2);
 			command.addToChildren(commandsToExecute);
 		}
+	}
+	@Override
+	public double run() {
+		if(getChildren().size() == 3){
 		return 1;
+		}
+		return 0;
 	}
 
 }
