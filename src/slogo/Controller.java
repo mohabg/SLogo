@@ -9,29 +9,31 @@ import commands.CommandNode;
 import data.Line;
 import data.Point;
 import data.ReturnData;
-import javafx.scene.paint.Color;
-
 
 public class Controller {
 
 	private Model myModel;
 	private Parser myParser;
-	private List<Double> myPalette;
 	private String language;
+	private SaveSettings mySaver;
 	protected static ResourceBundle errorBundle = ResourceBundle.getBundle("resources/Errors");
 
 	public Controller(String language) {
 		this.language = language;
 		myModel = new Model();
 		myParser = new Parser(language, myModel);
-		updateModel();
-	}
-	
-	public void addModel(){
-		Model newModel = new Model();
-		Parser newParser = new Parser(language, newModel);
+		mySaver = new SaveSettings();
 	}
 
+	public void initialize() {
+
+		updateModel();
+	}
+
+	public void saveSettings(){
+		mySaver.saveInfo(myModel.getPastCommands());
+	}
+	
 	public String compile(String input) 
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			ClassNotFoundException, NoSuchMethodException, SecurityException {// frame
@@ -43,7 +45,7 @@ public class Controller {
 		updateModel();
 		return getConsoleOutput(outputs);
 	}
-	
+
 	private void updateModel() {
 		myModel.setLines(makeLines());
 		myModel.setCompileInfo();
@@ -77,17 +79,16 @@ public class Controller {
 		return outputs;
 	}
 
-	
-
 	public List<Line> makeLines() {
 		ArrayList<Line> lines = new ArrayList<Line>();
 		for (Turtle turtle : myModel.getTurtleList()) {
-			for (int i = 0; i < turtle.getPoints().size() - 1; i++) {
-				Point next = turtle.getPoints().get(i + 1);
-				Point cur = turtle.getPoints().get(i);
-				Line line = new Line(next, cur, turtle.getPenColor(), turtle.getPenThickness());
-						lines.add(line);
-			}
+			if (turtle.isPenDown())
+				for (int i = 0; i < turtle.getPoints().size() - 1; i++) {
+					Point next = turtle.getPoints().get(i + 1);
+					Point cur = turtle.getPoints().get(i);
+					Line line = new Line(next, cur, turtle.getPenColor(), turtle.getPenThickness());
+					lines.add(line);
+				}
 		}
 		return lines;
 	}
@@ -103,5 +104,4 @@ public class Controller {
 	public String getLanguage () {
 		return this.language;
 	}
-	
 }

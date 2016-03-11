@@ -10,7 +10,12 @@ public class IsPenDown extends CommandNode{
 
 	@Override
 	public double run() {
-		return getTurtle().isPenDown();
+		if(getTurtle().isPenDown()){
+			return 1;
+		}
+		else{
+			return 0;
+		}
 	}
 
 }

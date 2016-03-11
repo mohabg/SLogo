@@ -25,7 +25,8 @@ public class GUI {
 
 	public GUI(String language, int width, int height) {
 		controller = new Controller(language);
-
+		controller.initialize();
+		
 		BorderPane root = new BorderPane();
 		scene = new Scene(root, width, height);
 

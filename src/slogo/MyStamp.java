@@ -6,22 +6,22 @@ import javafx.scene.image.Image;
 
 
 public class MyStamp implements StampData {
-    private Image image;
-    private Point pos;
+    private String image;
+    private Point position;
 
-    public MyStamp (Image image, Point pos) {
+    public MyStamp (String image, Point position) {
         this.image = image;
-        this.pos = pos;
+        this.position = position;
     }
 
     @Override
-    public Image getImage () {
+    public String getImage () {
         return image;
     }
 
     @Override
     public Point getPos () {
-        return pos;
+        return position;
     }
 
 }

@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+
 	private List<GUI> GUIs = new ArrayList<GUI>();
 	private int currentGUI = 0;
 	private ResourceBundle resources = ResourceBundle.getBundle("resources/Main");

@@ -6,12 +6,10 @@ public class ID extends CommandNode {
 		super(val);
 		setParametersNeeded(0);
 		setUsesTurtle(true);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public double run() {
-		// TODO Auto-generated method stub
 		return getTurtle().getID();
 	}
 

@@ -27,7 +27,7 @@ public interface CanvasData {
 
     public Collection<Line> getLines ();
 
-    public Color getBackgroundColor ();
+    public double getBackgroundColor ();
 
     public Collection<StampData> getStamps ();
 

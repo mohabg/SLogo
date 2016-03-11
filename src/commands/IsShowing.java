@@ -10,7 +10,12 @@ public class IsShowing extends CommandNode{
 
 	@Override
 	public double run() {
-		return getTurtle().isVisible();
+		if(getTurtle().isVisible()){
+			return 1;
+		}
+		else{
+			return 0;
+		}
 	}
 
 }

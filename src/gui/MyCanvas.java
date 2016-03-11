@@ -26,6 +26,7 @@ import slogo.Resources;
 
 
 public class MyCanvas {
+
     private Canvas canvas;
     private Controller controller;
     private List<Color> palette;
@@ -56,7 +57,7 @@ public class MyCanvas {
 
         drawLines(gc, data);
 
-        Color backgroundColor = data.getBackgroundColor();
+        //Color backgroundColor = data.getBackgroundColor();
 
         turtles = data.getTurtles();
         drawTurtles(gc, turtles);
@@ -79,7 +80,7 @@ public class MyCanvas {
             if (selectedTurtles.contains(turtle)) {
                 highlightImageView(imageView, Color.CORAL, 4.0); // TODO: resources
             }
-            Point p = turtle.getPos();
+            Point p = turtle.getPosition();
             Point draw = convertCartesianToCanvasPos(p);
 
             double x = draw.getX() - image.getWidth() / 2;
@@ -233,7 +234,7 @@ public class MyCanvas {
         Collection<TurtleData> clickedTurtles =
                 findTurtlesContainingCanvasPos(turtles, mouseCanvasPos);
         for (TurtleData turtle : clickedTurtles) { // TODO: stream
-            Resources.debugPrint("turtle: " + turtle.getPos());
+            Resources.debugPrint("turtle: " + turtle.getPosition());
             if (!selectedTurtles.remove(turtle)) { // toggle selection
                 selectedTurtles.add(turtle);
             }
@@ -273,10 +274,10 @@ public class MyCanvas {
 
     private ImageView getTurtleView (TurtleData turtle) {
         ImageView turtleView = new ImageView(turtle.getImage());
-        Point turtlePos = convertCartesianToCanvasPos(turtle.getPos());
+        Point turtlePos = convertCartesianToCanvasPos(turtle.getPosition());
         turtleView.setTranslateX(turtlePos.getX());
         turtleView.setTranslateY(turtlePos.getY());
-        turtleView.setRotate(turtle.getPos().getTheta());
+        turtleView.setRotate(turtle.getPosition().getTheta());
         return turtleView;
     }
 

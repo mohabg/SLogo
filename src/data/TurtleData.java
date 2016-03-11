@@ -5,13 +5,23 @@ import javafx.scene.shape.Shape;
 
 
 public interface TurtleData {
-    public Point getPos ();
-
-    public Image getImage ();
-
-    public double isVisible ();
 
     public int getID ();
 
-    public Shape getShape ();
+    public Point getPosition();
+    
+    public boolean containsPoint (Point pos);
+    
+	public Image getImage();
+	
+	public double getShape();
+	
+	public Boolean isPenDown();
+	
+	public Boolean isVisible();
+	
+	public double getPenColor();
+	
+	public double getPenThickness();
+
 }
