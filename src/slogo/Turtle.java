@@ -125,16 +125,4 @@ public class Turtle implements TurtleData {
         // TODO Auto-generated method stub
         return null;
     }
-
-    @Override
-    public boolean containsPoint (Point pos) {
-        double posX = position.getX();
-        double posY = position.getY();
-
-        double deltaX = Math.abs(pos.getX() - posX);
-        double deltaY = Math.abs(pos.getY() - posY);
-        double deltaXBound = myImage.getWidth() / 2;
-        double deltaYBound = myImage.getHeight() / 2;
-        return (deltaX < deltaXBound) && (deltaY < deltaYBound);
-    }
 }
