@@ -3,6 +3,7 @@ package gui;
 import java.util.ResourceBundle;
 
 import data.CanvasData;
+import data.ReturnData;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
@@ -26,7 +27,7 @@ public class GUI {
 	public GUI(String language, int width, int height) {
 		controller = new Controller(language);
 		controller.initialize();
-		
+
 		BorderPane root = new BorderPane();
 		scene = new Scene(root, width, height);
 
@@ -53,7 +54,10 @@ public class GUI {
 	}
 
 	public void step() {
-		canvas.update((CanvasData) controller.getReturnData());
+		ReturnData data = controller.getReturnData();
+
+		canvas.update((CanvasData) data);
+		workspace.setData(data.getUserVariables(), data.getUserFunctions());
 	}
 
 	// Reference: http://docs.oracle.com/javafx/2/layout/builtin_layouts.htm
@@ -66,7 +70,7 @@ public class GUI {
 		grid.add(canvas.getCanvas(), 0, 0);
 		grid.add(console.getConsole(), 1, 1);
 		grid.add(editor.getTextArea(), 1, 0);
-		grid.add(workspace.getTableView(), 0, 1);
+		grid.add(workspace.getView(), 0, 1);
 
 		return grid;
 	}

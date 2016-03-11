@@ -1,40 +1,46 @@
 package gui;
 
-import data.WorkspaceData;
+import java.util.Map;
+import java.util.Set;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 
-
 public class Workspace {
-    private TableView<String> tableView;
+	private ListView<String> listView = new ListView<String>();
+	private ObservableList<String> data = FXCollections.observableArrayList();
 
-    public Workspace () {
-        tableView = new TableView<String>();
-        initContextMenu();
-        initControls();
-    }
+	public Workspace() {
+		listView.setItems(data);
 
-    public TableView<String> getTableView () {
-        return tableView;
-    }
+		initContextMenu();
+		initControls();
+	}
 
-    private void initContextMenu () {
+	public void setData(Map<String, String> variables, Set<String> functions) {
+		data.clear();
 
-    }
+		for (String s : functions) {
+			data.add("Function: " + s);
+		}
 
-    private void initControls () {
+		for (String name : variables.keySet()) {
+			data.add(name + " " + variables.get(name));
+		}
+	}
 
-    }
+	public Node getView() {
+		return listView;
+	}
 
-    private void handleReturnKey () {
+	private void initContextMenu() {
 
-    }
+	}
 
-    private void handleLeftClick () {
+	private void initControls() {
 
-    }
-
-    private void handleRightClick () {
-
-    }
-
+	}
 }
