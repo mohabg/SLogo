@@ -4,6 +4,10 @@ public class Point {
     private double x, y, theta;
     private final double DEGREES = 360.0; // TODO: place in resources
 
+    public Point (double x, double y) {
+        this(x, y, 0.0);
+    }
+
     public Point (double x, double y, double theta) {
         this.x = x;
         this.y = y;
@@ -36,5 +40,10 @@ public class Point {
 
     public Point clone () {
         return new Point(x, y, theta);
+    }
+
+    @Override
+    public String toString () {
+        return "(" + x + ", " + y + ")";
     }
 }

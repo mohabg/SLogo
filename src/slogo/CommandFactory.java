@@ -1,45 +1,41 @@
 package slogo;
 
-import java.awt.List;
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
 
 import commands.Command;
 import commands.CommandNode;
 import commands.Variable;
+import exceptions.SlogoException;
 
 public class CommandFactory {
 
-	private HashMap<String, String> CommandMap = new HashMap<String, String>();
-
-	private Controller controller;
 	private SaveInputs inputSaver;
 
 	public CommandFactory(SaveInputs model) {
 		inputSaver = model;
 	}
 
-	public CommandNode getCommandNode(String commandName, String word){
+	public CommandNode getCommandNode(String commandName, String word) {
 		double constant = 0;
 		// Gets correct command constructor through reflection, instantiates node
 		try{
 			constant = Integer.parseInt(word);
 		}catch (NumberFormatException e){
+			//throw new SlogoException(String.format(Controller.errorBundle.getString("ParameterError"), word, commandName));
 		}
+		System.out.println("Creating " + word + " " + commandName);
+		Class commClass;
 		try {
-			System.out.println("Creating " + word + " " + commandName);
-			Class commClass = Class.forName("commands." + commandName);
+			commClass = Class.forName("commands." + commandName);
 			Constructor commConstructor = commClass.getConstructor(double.class);
-						CommandNode command =  (CommandNode) commConstructor.newInstance(constant);
+			CommandNode command =  (CommandNode) commConstructor.newInstance(constant);
 			command.setInput(word);
 			inputSaver.addCommandToHistory(command);
 			command = getVariableOrCommandFromModel(word, command);
-			return command;
-
+			return command; 
 		} catch (Exception e){
-			e.printStackTrace();
+			throw new SlogoException(String.format(Controller.errorBundle.getString("CommandNameError"), commandName));
 		}
-		return null;
 	}
 
 	private CommandNode getVariableOrCommandFromModel(String word, CommandNode command) {

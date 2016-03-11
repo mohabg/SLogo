@@ -26,10 +26,10 @@ public class Parser{
 		commandFactory = new CommandFactory(model);
 	}
 
-	private void addLanguage(String language){
+	public void addLanguage(String language){
 		addPatterns(language);
 	}
-	
+
 	private void addPatterns (String pattern) {
 		String filePath = String.format("resources/languages/%s", pattern);
 		ResourceBundle resources = ResourceBundle.getBundle(filePath);
@@ -37,15 +37,15 @@ public class Parser{
 		while (iter.hasMoreElements()) {
 			String key = iter.nextElement();
 			String regex = resources.getString(key);
-			
+
 			mySymbols.add(new SimpleEntry<>(key,
 					Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)));
 		}
 	}
-	
-	private List<CommandNode> parseText(String[] text) throws InstantiationException, IllegalAccessException,
-	IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{
 
+	private List<CommandNode> parseText(String[] text) 
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException{
 		List<CommandNode> commandList = createCommandNodes(text);
 		System.out.println(" command list " + commandList);
 		List<CommandNode> commandHeads = new ArrayList<>();
@@ -57,7 +57,9 @@ public class Parser{
 		return commandHeads;
 	}
 
-	private List<CommandNode> createCommandNodes(String[] text) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	private List<CommandNode> createCommandNodes(String[] text) 
+			throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, 
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		List<CommandNode> commandList = new ArrayList<>();
 		for(int i = 0; i < text.length; i++){
 			if(text[i].trim().length() > 0){
@@ -68,7 +70,9 @@ public class Parser{
 		return commandList;
 	}
 
-	private CommandNode getCommandForWord(String[] text, int index) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	private CommandNode getCommandForWord(String[] text, int index) 
+			throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, 
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		String word = text[index];
 		String symbol = getSymbol(word);
 		return commandFactory.getCommandNode(symbol, word);
@@ -118,11 +122,11 @@ public class Parser{
 	// returns the language's type associated with the given text if one exists 
 	private String getSymbol (String text) {
 		try{
-		for (Entry<String, Pattern> e : mySymbols) {
-			if (match(text, e.getValue())) {
-				return e.getKey();
+			for (Entry<String, Pattern> e : mySymbols) {
+				if (match(text, e.getValue())) {
+					return e.getKey();
+				}
 			}
-		}
 		}catch (Exception e){
 			new SlogoException(Controller.errorBundle.getString("SyntaxError"));
 		}
@@ -134,7 +138,9 @@ public class Parser{
 	private boolean match (String text, Pattern regex) {
 		return regex.matcher(text).matches();
 	}
-	public List<CommandNode> interpret (String command) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
+	public List<CommandNode> interpret (String command) 
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException, 
+			InvocationTargetException, ClassNotFoundException, NoSuchMethodException, SecurityException {
 		final String WHITESPACE = "\\p{Space}";
 		List<CommandNode> commandHeads = parseText(command.split(WHITESPACE));
 		return commandHeads;

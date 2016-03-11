@@ -1,13 +1,18 @@
 package slogo;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
 
+import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import commands.CommandNode;
 import data.Line;
 import data.Point;
 import data.ReturnData;
-import javafx.scene.image.Image;
+import data.TurtleData;
+
 
 public class Model implements SaveInputs {
 
@@ -16,11 +21,11 @@ public class Model implements SaveInputs {
 	private List<Line> lineList;
 	private Map<String, CommandNode> userVariables;
 	private Map<String, CommandNode> userFunctions;
+	private List<Double> myPalette;
 	private List<Double> consoleOutputs;
 	private List<CommandNode> pastCommands;
-	private String BackgroundColor;
-	private Double penWidth;
-	private Collection<Image> stamps;
+	private double BackgroundColor;
+	private Collection<MyStamp> stamps;
 
 	public Model() {
 		returnData = new ReturnData();
@@ -29,7 +34,7 @@ public class Model implements SaveInputs {
 		consoleOutputs = new ArrayList<Double>();
 		pastCommands = new ArrayList<CommandNode>();
 		lineList = new ArrayList<Line>();
-		Turtle turtle = new Turtle();
+		Turtle turtle = new Turtle(1);
 		turtleList = new ArrayList<Turtle>();
 		turtleList.add(turtle);
 	}
@@ -41,23 +46,29 @@ public class Model implements SaveInputs {
 		}
 		return consoleOutput.toString();
 	}
-
-	private List<Point> getTurtlePosition() {
-		List<Point> turtlePositions = new ArrayList<Point>();
-		for (Turtle turtle : turtleList) {
-			turtlePositions.add(turtle.getPos());
-		}
-		return turtlePositions;
+	
+	public void addTurtle(){
+		Turtle turtle = new Turtle(turtleList.size());
+		turtleList.add(turtle);
 	}
-
+	
+	public void addStamp(double x, double y, double orientation, String image){
+		Point stampLoc = new Point(x, y, orientation);
+		stamps.add(new MyStamp(image, stampLoc));
+	}
+	
 	public void setCompileInfo() {
 		returnData.addLines(lineList);
-		returnData.addTurtlePosition(getTurtlePosition());
 		returnData.setVariables(makeVariableOutputs());
 		returnData.setFunctions(makeFunctionOutputs());
-		returnData.setTurtleImage(getTurtleList().get(0).getImage());
-		returnData.addPenBoolean(getTurtleList().get(0).isPenDown());
-		// returnData.addBackgroundColor();
+		List<TurtleData> turtleData = new ArrayList<TurtleData>();
+		turtleData.addAll(turtleList);
+		returnData.setTurtles(turtleData);
+		returnData.addBackgroundColor(BackgroundColor);
+	}
+
+	public void addPaletteColor(double rgb){
+		myPalette.add(rgb);
 	}
 
 	private Map<String, String> makeVariableOutputs() {
@@ -86,6 +97,7 @@ public class Model implements SaveInputs {
 
 	public void addCommandToHistory(CommandNode command) {
 		pastCommands.add(command);
+		System.out.println("Command: " + command.toString() + "Value: " + (command.getValue()));
 	}
 
 	public void addVariableToMap(CommandNode variable, String variableName) {
@@ -112,4 +124,9 @@ public class Model implements SaveInputs {
 		return returnData;
 	}
 
+	@Override
+	public void clearStamps() {
+		stamps.clear();
+
+	}
 }
