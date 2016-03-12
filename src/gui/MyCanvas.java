@@ -56,6 +56,7 @@ public class MyCanvas {
 
         Color bgColor = data.getPalette().get((int) data.getBackgroundColor());
         gc.setFill(bgColor);
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         drawLines(gc, data);
@@ -83,10 +84,10 @@ public class MyCanvas {
             double x = b.getMinX();
             double y = b.getMinY();
 
-            SnapshotParameters params = new SnapshotParameters();
-            params.setFill(Color.TRANSPARENT);
-            Image rotated = imageView.snapshot(params, null);
-            gc.drawImage(rotated, x, y);
+            //SnapshotParameters params = new SnapshotParameters();
+            //params.setFill(Color.TRANSPARENT);
+            //Image rotated = imageView.snapshot(params, null);
+            gc.drawImage(imageView.getImage(), x, y);
 
             if (selectedTurtles.contains(turtle)) {
                 // TODO: resources

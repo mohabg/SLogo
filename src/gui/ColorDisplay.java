@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 public class ColorDisplay {
 	private ResourceBundle resources = ResourceBundle.getBundle("resources/Color");
 	private GridPane pane = new GridPane();
+	private int lastHash = 0;
 
 	public ColorDisplay() {
 		double padding = Double.parseDouble(resources.getString("padding"));
@@ -26,10 +27,15 @@ public class ColorDisplay {
 	public void update(CanvasData data) {
 		int width = Integer.parseInt(resources.getString("rowWidth"));
 		List<Color> palette = data.getPalette();
-		for (int i = 0; i < palette.size(); i++) {
-			Node n = generateNode(palette.get(i), i);
-			pane.add(n, i % width, i / width);
+
+		if (lastHash != palette.hashCode()) {
+			lastHash = palette.hashCode();
+			for (int i = 0; i < palette.size(); i++) {
+				Node n = generateNode(palette.get(i), i);
+				pane.add(n, i % width, i / width);
+			}
 		}
+
 	}
 
 	public Parent getParent() {
@@ -38,7 +44,7 @@ public class ColorDisplay {
 
 	private Node generateNode(Color c, int id) {
 		int size = Integer.parseInt(resources.getString("size"));
-		
+
 		Rectangle r = new Rectangle(size, size);
 		r.setFill(c);
 		Text t = new Text(Integer.toString(id));
