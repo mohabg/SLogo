@@ -46,4 +46,8 @@ public class Point {
     public String toString () {
         return "(" + x + ", " + y + ")";
     }
+
+    public Point add (Point p) {
+        return (new Point(this.x + p.getX(), this.y + p.getY()));
+    }
 }

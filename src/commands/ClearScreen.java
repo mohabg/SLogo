@@ -10,7 +10,7 @@ public class ClearScreen extends CommandNode{
 
 	@Override
 	public double run() {
-		getTurtle().clearPoints();
+		getTurtle().clearLines();
 		double distanceMoved = Math.sqrt(Math.pow(getTurtle().getX(), 2) + Math.pow(getTurtle().getY(), 2));
 		getTurtle().move(0, 0);
 		getTurtle().setOrientation(0);
