@@ -1,5 +1,7 @@
 package gui;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,6 +21,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import slogo.Controller;
 
 
@@ -111,14 +116,14 @@ public class MyCanvas {
     private void updateTurtleContextMenu () {
         Menu penColorSubmenu =
                 createColorSubmenu(GUIResources.getString("selectPenColor"), palette);
-        MenuItem turtleImageSubmenu = new MenuItem(GUIResources.getString("selectTurtleImage"));
         for (MenuItem penColorItem : penColorSubmenu.getItems()) {
             penColorItem.setOnAction(e -> handleSelectPenColor(penColorItem.getText()));
         }
-        // selectTurtleImage.setOnAction(e -> handleSelectTurtleImage());
+        MenuItem turtleImageMenuItem = new MenuItem(GUIResources.getString("selectTurtleImage"));
+        turtleImageMenuItem.setOnAction(e -> handleSelectTurtleImage());
 
         turtleContextMenu.getItems().clear();
-        turtleContextMenu.getItems().addAll(penColorSubmenu, turtleImageSubmenu);
+        turtleContextMenu.getItems().addAll(penColorSubmenu, turtleImageMenuItem);
     }
 
     private void updateBackgroundContextMenu () {
@@ -159,7 +164,33 @@ public class MyCanvas {
     }
 
     private void handleSelectTurtleImage () {
+        String img = getUserSelectedImage();
+        if (img == null) {
+            return;
+        }
 
+        for (TurtleData turtle : selectedTurtles) { // TODO: stream
+            turtle.setImage(img);
+        }
+    }
+
+    private String getUserSelectedImage () {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters()
+                .addAll(new ExtensionFilter("Image Files", "*.bmp", "*.png", "*.jpg", "*.gif"));
+
+        File file = fileChooser.showOpenDialog(new Stage());
+        String filename;
+        try {
+            filename = file.toURI().toURL().toString();
+        }
+        catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+
+        return filename;
     }
 
     private void initControls () {

@@ -11,6 +11,8 @@ public interface TurtleData {
 
     Image getImage ();
 
+    void setImage (String path);
+
     double getShape ();
 
     Boolean isPenDown ();
@@ -20,4 +22,5 @@ public interface TurtleData {
     double getPenColor ();
 
     double getPenThickness ();
+
 }
