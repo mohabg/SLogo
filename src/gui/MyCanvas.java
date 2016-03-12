@@ -53,11 +53,12 @@ public class MyCanvas {
 
 	public void update(CanvasData data) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		
+		Color bgColor = data.getPalette().get((int) data.getBackgroundColor());
+		gc.setFill(bgColor);
+		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 		drawLines(gc, data);
-
-		// Color backgroundColor = data.getBackgroundColor();
 
 		turtles = data.getTurtles();
 		drawTurtles(gc, turtles);

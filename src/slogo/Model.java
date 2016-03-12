@@ -41,7 +41,7 @@ public class Model implements SaveInputs, TurtleListController {
 	private List<double[]> myPalette;
 	private List<Double> consoleOutputs;
 	private List<CommandNode> pastCommands;
-	private double BackgroundColor;
+	private double BackgroundColor = 1;
 	private Collection<MyStamp> stamps;
 
 	public Model() {
@@ -75,6 +75,10 @@ public class Model implements SaveInputs, TurtleListController {
 				turtleList.add(turtle);
 			}
 		}
+	}
+
+	public void setBackgroundColor(double c) {
+		BackgroundColor = c;
 	}
 
 	public LinkedHashMap<String, Double> returnHistory() {
@@ -134,7 +138,7 @@ public class Model implements SaveInputs, TurtleListController {
 		List<TurtleData> turtleData = new ArrayList<TurtleData>();
 		turtleData.addAll(turtleList);
 		returnData.setTurtles(turtleData);
-		returnData.addBackgroundColor(BackgroundColor);
+		returnData.setBackgroundColor(BackgroundColor);
 		returnData.setHistory(returnHistory());
 		returnData.setPalette(makePalette());
 	}
@@ -177,7 +181,8 @@ public class Model implements SaveInputs, TurtleListController {
 
 	public void addCommandToHistory(CommandNode command) {
 		pastCommands.add(command);
-		System.out.println("Command: " + command.toString() + "Value: " + (command.getValue()));
+		// System.out.println("Command: " + command.toString() + "Value: " +
+		// (command.getValue()));
 	}
 
 	public void addVariableToMap(CommandNode variable, String variableName) {
