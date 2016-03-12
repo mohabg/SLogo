@@ -34,13 +34,15 @@ public class MyCanvas {
 
     private Canvas canvas;
     private Controller controller;
+    private CommandWindow console;
     private List<Color> palette;
     private ContextMenu backgroundContextMenu, turtleContextMenu;
     private List<TurtleData> turtles, selectedTurtles;
 
-    public MyCanvas (int width, int height, Controller controller) {
+    public MyCanvas (int width, int height, Controller controller, CommandWindow console) {
         this.controller = controller;
         this.canvas = new Canvas(width, height);
+        this.console = console;
         this.palette = new ArrayList<Color>();
         this.backgroundContextMenu = new ContextMenu();
         this.turtleContextMenu = new ContextMenu();
@@ -107,7 +109,7 @@ public class MyCanvas {
     private void drawLines (GraphicsContext gc, CanvasData data, double lineSpacing) {
         Collection<Line> lines = data.getLines();
 
-        for (Line l : lines) { // TODO: stream
+        for (Line l : lines) {
             int color = (int) l.getColor() % data.getPalette().size();
             drawLine(gc, l, lineSpacing, data.getPalette().get(color));
         }
@@ -137,7 +139,7 @@ public class MyCanvas {
 
     private Menu createColorSubmenu (String name, List<Color> palette) {
         Menu submenu = new Menu(name);
-        for (Color color : palette) { // TODO: stream
+        for (Color color : palette) {
             submenu.getItems().add(new MenuItem(color.toString()));
         }
         return submenu;
@@ -147,7 +149,7 @@ public class MyCanvas {
         Menu penColorSubmenu =
                 createColorSubmenu(GUIResources.getString("selectPenColor"), palette);
         for (MenuItem penColorItem : penColorSubmenu.getItems()) {
-            penColorItem.setOnAction(e -> handleSelectPenColor(penColorItem.getText()));
+            penColorItem.setOnAction(e -> handleSelectColor(penColorItem.getText(), "SetPenColor"));
         }
 
         MenuItem turtleImageSubmenu = new MenuItem(GUIResources.getString("selectTurtleImage"));
@@ -162,17 +164,28 @@ public class MyCanvas {
                 createColorSubmenu(GUIResources.getString("selectBackgroundColor"), palette);
         for (MenuItem backgroundColorItem : backgroundColorSubmenu.getItems()) {
             backgroundColorItem
-                    .setOnAction(e -> handleSelectBackgroundColor(backgroundColorItem.getText()));
+                    .setOnAction(e -> handleSelectColor(backgroundColorItem.getText(),
+                                                        "SetBackground"));
         }
 
         backgroundContextMenu.getItems().clear();
         backgroundContextMenu.getItems().addAll(backgroundColorSubmenu);
     }
 
-    private void handleSelectBackgroundColor (String hex) {
+    private void handleSelectColor (String hex, String key) {
         Color color = Color.web(hex);
         int index = palette.indexOf(color);
-        controller.compile("setbg " + index); // TODO: language
+        String language = controller.getLanguage();
+        ResourceBundle langResources = ResourceBundle.getBundle("resources.languages/" + language);
+
+        String commands = langResources.getString(key);
+        int beginIndex = 0;// commands.indexOf(',');
+        int endIndex = commands.indexOf('|');
+        if (endIndex < 0) { // doesn't contain
+            endIndex = commands.length();
+        }
+        String command = commands.substring(beginIndex, endIndex);
+        controller.compile(command + " " + index);
     }
 
     /*
@@ -183,16 +196,6 @@ public class MyCanvas {
      * 
      * return (redHex + greenHex + blueHex); }
      */
-
-    // private void updateBackgroundColor (String hex) {
-    // canvas.setStyle("-fx-background-color: #" + hex + ";");
-    // }
-
-    private void handleSelectPenColor (String hex) {
-        Color color = Color.web(hex);
-        int index = palette.indexOf(color);
-        controller.compile("setpc " + index); // TODO: language
-    }
 
     private void initControls () {
         canvas.setOnMouseClicked(e -> {
@@ -220,7 +223,7 @@ public class MyCanvas {
     private void handleLeftClick (Point mouseCanvasPos) {
         Collection<TurtleData> clickedTurtles =
                 findTurtlesContainingCanvasPos(turtles, mouseCanvasPos);
-        for (TurtleData turtle : clickedTurtles) { // TODO: stream
+        for (TurtleData turtle : clickedTurtles) {
             if (!selectedTurtles.remove(turtle)) { // toggle selection
                 selectedTurtles.add(turtle);
             }
@@ -258,7 +261,7 @@ public class MyCanvas {
     private Collection<TurtleData> findTurtlesContainingCanvasPos (Collection<TurtleData> turtles,
                                                                    Point canvasPos) {
         Collection<TurtleData> ret = new ArrayList<TurtleData>();
-        for (TurtleData turtle : turtles) { // TODO: stream
+        for (TurtleData turtle : turtles) {
             TurtleView turtleView = new TurtleView(turtle, this);
             Point2D p = new Point2D(canvasPos.getX(), canvasPos.getY());
             if (turtleView.contains(p)) {
@@ -274,9 +277,7 @@ public class MyCanvas {
             return;
         }
 
-        for (TurtleData turtle : selectedTurtles) { // TODO: stream
-            turtle.setImage(img);
-        }
+        selectedTurtles.stream().forEach(t -> t.setImage(img));
     }
 
     private String getUserSelectedImage () {
@@ -290,8 +291,7 @@ public class MyCanvas {
             filename = file.toURI().toURL().toString();
         }
         catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            console.printError(e.getMessage());
             return null;
         }
 

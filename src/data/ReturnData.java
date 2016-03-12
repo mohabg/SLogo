@@ -89,38 +89,4 @@ public class ReturnData implements CanvasData, WorkspaceData {
         backgroundColor = color;
     }
 
-    @Deprecated
-    public Image getTurtleImage () {
-        return turtleImage;
-    }
-
-    @Override
-    @Deprecated
-    public List<Point> getTurtlePosition () {
-        return turtlePositions;
-    }
-
-    @Deprecated
-    public void addTurtlePosition (List<Point> turtlePositions) {
-        this.turtlePositions = turtlePositions;
-    }
-
-    @Override
-    @Deprecated
-    public void setTurtleImage (Image image) {
-        this.turtleImage = image;
-    }
-
-    @Override
-    @Deprecated
-    public boolean getPenDown () {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public Color getPenColor () {
-        return null;
-    }
-
 }
