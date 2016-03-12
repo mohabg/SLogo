@@ -30,7 +30,7 @@ public class Turtle implements TurtleData {
 
 	public Turtle(int ID) {
 		myImage = DEFAULT_IMAGE;
-		position = HOME;
+		position = new Point(0, 0);
 		penDown = true;
 		visible = true;
 		penThickness = DEFAULT_THICKNESS;

@@ -11,8 +11,8 @@ public class Tell extends MultipleTurtleCommands{
 
 	@Override
 	public double run() {
-		List<CommandNode> listStart = getChildren().get(0).getChildren();
-		List<CommandNode> turtleIds = listStart.subList(0, listStart.size() - 1 );
+		CommandNode listStart = getChildren().get(0);
+		List<CommandNode> turtleIds = listStart.getChildren().subList(0, listStart.getChildren().size() - 1 );
 		getTurtleListController().setActiveTurtles(turtleIds);
 		return turtleIds.get(turtleIds.size() - 1).run();
 	}
