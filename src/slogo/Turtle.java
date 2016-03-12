@@ -35,7 +35,6 @@ public class Turtle implements TurtleData {
 	}
 
 	public Turtle(int ID) {
-		System.out.println("turtle id: " + ID);
 		myImage = DEFAULT_IMAGE;
 		position = HOME.clone();
 		penDown = true;
@@ -53,8 +52,6 @@ public class Turtle implements TurtleData {
 
 		Point curPos = position.clone();
 		
-		System.out.println(position.getX() + " " + position.getY() + " " + getGUID());
-		
 		if (isPenDown())
 			lines.add(new Line(oldPos, curPos));
 	}
@@ -64,7 +61,6 @@ public class Turtle implements TurtleData {
 	}
 
 	public Point getPosition() {
-		//System.out.println(position.getX() + " " + position.getY() + " " + getGUID());
 		return position.clone();
 	}
 

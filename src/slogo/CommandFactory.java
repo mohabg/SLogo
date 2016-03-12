@@ -26,7 +26,6 @@ public class CommandFactory {
             // SlogoException(String.format(Controller.errorBundle.getString("ParameterError"),
             // word, commandName));
         }
-        System.out.println("Creating " + word + " " + commandName);
         Class commClass;
         try {
             commClass = Class.forName("commands." + commandName);
