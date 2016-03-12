@@ -2,6 +2,7 @@ package slogo;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.LinkedHashMap;
 import java.util.List;
 import commands.CommandNode;
 import gui.CommandWindow;
@@ -15,12 +16,11 @@ public class SaveSettings {
     public SaveSettings (CommandWindow console) {
     }
 
-    public void saveInfo (List<CommandNode> history, String filename) {
+    public void saveInfo (LinkedHashMap<String, Double> history, String filename) {
         StringBuilder saveText = new StringBuilder();
-        for (CommandNode commandNode : history) {
-            String command = commandNode.toString();
+        for (String command : history.keySet()) {
             saveText.append(command);
-            saveText.append(commandNode.getValue());
+            saveText.append(history.get(command));
         }
         writeFile(saveText.toString(), filename);
         System.out.println("Save text: " + saveText.toString());

@@ -1,5 +1,6 @@
 package gui;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import commands.CommandNode;
 import javafx.collections.FXCollections;
@@ -18,12 +19,11 @@ public class HistoryWindow {
         listView.setItems(data);
     }
 
-    public void update (List<CommandNode> history) {
+    public void update (LinkedHashMap<String, Double> history) {
         data.clear();
 
-        for (CommandNode commandNode : history) {
-            String input = commandNode.toString();
-            data.add(input + "\t\t\t\t" + commandNode.getValue());
+        for (String command : history.keySet()) {
+            data.add(command + "\t\t\t\t" + history.get(command));
         }
     }
 

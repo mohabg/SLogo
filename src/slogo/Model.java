@@ -3,6 +3,7 @@ package slogo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -81,17 +82,17 @@ public class Model implements SaveInputs, TurtleListController {
         BackgroundColor = c;
     }
 
-    public List<CommandNode> returnHistory () {
-        List<CommandNode> history = new ArrayList<CommandNode>();
+    public LinkedHashMap<String, Double> returnHistory () {
+    	LinkedHashMap<String, Double> history = new LinkedHashMap<String, Double>();
         StringBuilder commandName = new StringBuilder();
         for (CommandNode command : pastCommands) {
             String name = command.toString();
-            // double value = command.getValue();
+            double value = command.getValue();
             if (!name.equals("Constant")) {
                 commandName.append(name + " ");
             }
             else {
-                history.add(command);
+                history.put(commandName.toString(), value);
                 commandName = new StringBuilder();
             }
         }

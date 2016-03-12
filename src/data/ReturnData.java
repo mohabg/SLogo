@@ -1,6 +1,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +20,7 @@ public class ReturnData implements CanvasData, WorkspaceData {
     private Map<String, String> userVariables;
     private Set<String> userFunctions;
     private double backgroundColor;
-    private List<CommandNode> history;
+    private LinkedHashMap<String, Double> history;
 
     public ReturnData () {
     }
@@ -60,11 +61,11 @@ public class ReturnData implements CanvasData, WorkspaceData {
 
     }
 
-    public void setHistory (List<CommandNode> history) {
+    public void setHistory (LinkedHashMap<String, Double> history) {
         this.history = history;
     }
 
-    public List<CommandNode> getHistory () {
+    public LinkedHashMap<String, Double> getHistory () {
         return this.history;
     }
 
