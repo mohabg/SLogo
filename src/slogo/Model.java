@@ -49,7 +49,7 @@ public class Model implements SaveInputs, TurtleListController{
 		}
 		return consoleOutput.toString();
 	}
-	
+
 	public void addTurtle(double id){
 		int maxId = turtleList.size();
 		if(id > maxId){
@@ -60,6 +60,23 @@ public class Model implements SaveInputs, TurtleListController{
 		}
 	}
 
+	public Map<String, Double> returnHistory(){
+		Map<String, Double> history = new HashMap<String, Double>();
+		StringBuilder commandName = new StringBuilder();
+		for (CommandNode command : pastCommands) {
+			String name = command.toString();
+			double value = command.getValue();
+			if (!name.equals("Constant")) {
+				commandName.append(name + " ");
+				System.out.println("command");
+			}
+			else {
+				history.put(commandName.toString(), value);
+				commandName = new StringBuilder();
+			}
+		}
+		return history;
+	}
 	public List<Turtle> getTurtleList() {
 		return turtleList;
 	}
@@ -90,7 +107,7 @@ public class Model implements SaveInputs, TurtleListController{
 		Point stampLoc = new Point(x, y, orientation);
 		stamps.add(new MyStamp(image, stampLoc));
 	}
-	
+
 	public void setCompileInfo() {
 		returnData.addLines(lineList);
 		returnData.setVariables(makeVariableOutputs());
@@ -99,6 +116,7 @@ public class Model implements SaveInputs, TurtleListController{
 		turtleData.addAll(turtleList);
 		returnData.setTurtles(turtleData);
 		returnData.addBackgroundColor(BackgroundColor);
+		returnData.setHistory(returnHistory());
 	}
 
 	public void addPaletteColor(double rgb){

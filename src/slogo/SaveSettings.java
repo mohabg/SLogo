@@ -3,6 +3,8 @@ package slogo;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
+import java.util.Map;
+
 import commands.CommandNode;
 import gui.CommandWindow;
 
@@ -15,21 +17,12 @@ public class SaveSettings {
     public SaveSettings (CommandWindow console) {
     }
 
-    public void saveInfo (List<CommandNode> history) {
-        saveInfo = history;
+    public void saveInfo (Map<String, Double> history) {
         StringBuilder saveText = new StringBuilder();
-        for (CommandNode command : history) {
-            String name = command.toString();
-            int value = (int) command.getValue();
-            if (!name.equals("Constant")) {
-                saveText.append(name + " ");
-                System.out.println("command");
+        for (String command : history.keySet()) {
+            saveText.append(command);
+            saveText.append(history.get(command));
             }
-            else {
-                saveText.append(value + " ");
-                System.out.println("constant value");
-            }
-        }
         writeFile(saveText.toString());
         System.out.println("Save text: " + saveText.toString());
 

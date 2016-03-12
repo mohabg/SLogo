@@ -18,6 +18,7 @@ public class ReturnData implements CanvasData, WorkspaceData {
 	private Map<String, String> userVariables;
 	private Set<String> userFunctions;
 	private double BackgroundColor;
+	private Map<String, Double> history;
 
 	public ReturnData () {
 	}
@@ -50,6 +51,9 @@ public class ReturnData implements CanvasData, WorkspaceData {
 	public void setFunctions (Set<String> functionOutputs) {
 		this.userFunctions = functionOutputs;
 
+	}
+	public void setHistory(Map<String, Double> history){
+		this.history = history;
 	}
 	@Override
 	public List<TurtleData> getTurtles () {
