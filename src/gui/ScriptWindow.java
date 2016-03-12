@@ -23,7 +23,7 @@ public class ScriptWindow {
 
 		for (String s : eachLine) {
 			String cut = s.trim();
-			if (cut.startsWith("#") == false)
+			if (!cut.startsWith("#"))
 				textWithoutComments.append(s + "\n");
 		}
 
