@@ -31,6 +31,6 @@ public interface CanvasData {
 
     Collection<StampData> getStamps ();
 
-    List<Double> getPalette ();
+    List<Color> getPalette ();
 
 }
