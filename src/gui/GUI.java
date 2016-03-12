@@ -25,31 +25,6 @@ public class GUI {
 
 	private ResourceBundle resources = ResourceBundle.getBundle("resources/GUI");
 
-	/*
-	 * public GUI(String language, int width, int height) { controller = new
-	 * Controller(language);
-	 * 
-	 * BorderPane pane = new BorderPane(); root = pane; // scene = new
-	 * Scene(root, width, height);
-	 * 
-	 * canvas = new MyCanvas(width / 2, height / 2, controller); commandWindow =
-	 * new CommandWindow(controller); controller.initialize(commandWindow); //
-	 * TODO: remove backdoor // dependency? scriptWindow = new
-	 * ScriptWindow(controller, commandWindow); workspace = new Workspace();
-	 * 
-	 * GridPane grid = createGridPane(this.canvas, this.commandWindow,
-	 * this.scriptWindow, this.workspace);
-	 * 
-	 * pane.setTop(MenuFactory.createMenuBar(scriptWindow, controller));
-	 * pane.setCenter(grid);
-	 * 
-	 * int msDelay = Integer.parseInt(resources.getString("frameDelayMs"));
-	 * KeyFrame frame = new KeyFrame(Duration.millis(msDelay), e -> step());
-	 * Timeline animation = new Timeline();
-	 * animation.setCycleCount(Timeline.INDEFINITE);
-	 * animation.getKeyFrames().add(frame); animation.play(); }
-	 */
-
 	public GUI(String language, int width, int height) {
 		controller = new Controller(language);
 
@@ -91,12 +66,11 @@ public class GUI {
 		historyWindow.update(data.getHistory());
 	}
 
-	// Reference: http://docs.oracle.com/javafx/2/layout/builtin_layouts.htm
 	private GridPane createGridPane(MyCanvas canvas, CommandWindow console, ScriptWindow editor, Workspace workspace,
 			HistoryWindow historyWindow) {
 		GridPane grid = new GridPane();
 		setGridPaneStyle(grid);
-		
+
 		grid.getColumnConstraints().addAll(colWidth(50), colWidth(50), colWidth(40));
 
 		grid.add(canvas.getCanvas(), 0, 0);
@@ -107,29 +81,16 @@ public class GUI {
 
 		return grid;
 	}
-	
-	private ColumnConstraints colWidth(double percent)
-	{
+
+	private ColumnConstraints colWidth(double percent) {
 		ColumnConstraints col = new ColumnConstraints();
 		col.setPercentWidth(percent);
 		return col;
 	}
 
-	// TODO: resource file
 	private void setGridPaneStyle(GridPane grid) {
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(0, 10, 0, 10));
 	}
-
-	/*
-	 * private GridPane createBottomGridPane (CommandWindow console,
-	 * HistoryWindow historyWindow) { GridPane grid = new GridPane();
-	 * setGridPaneStyle(grid);
-	 * 
-	 * grid.add(console.getConsole(), 0, 0); grid.add(historyWindow.getView(),
-	 * 0, 1);
-	 * 
-	 * return grid; }
-	 */
 }
