@@ -23,6 +23,7 @@ public class GUI {
 	private Parent root;
 	private HistoryWindow historyWindow;
 	private ColorDisplay colorDisplay;
+	private LineStyle lineStyle;
 
 	private ResourceBundle resources = ResourceBundle.getBundle("resources/GUI");
 
@@ -41,9 +42,10 @@ public class GUI {
 		workspace = new Workspace();
 		historyWindow = new HistoryWindow();
 		colorDisplay = new ColorDisplay();
+		lineStyle = new LineStyle();
 
 		GridPane grid = createGridPane(this.canvas, this.commandWindow, this.scriptWindow, this.workspace,
-				this.historyWindow, colorDisplay);
+				this.historyWindow, colorDisplay, lineStyle);
 
 		pane.setTop(MenuFactory.createMenuBar(scriptWindow, controller));
 		pane.setCenter(grid);
@@ -63,14 +65,14 @@ public class GUI {
 	public void step() {
 		ReturnData data = controller.getReturnData();
 
-		canvas.update((CanvasData) data);
+		canvas.update((CanvasData) data, lineStyle.getSelectedSpacing());
 		workspace.setData((WorkspaceData) data);
 		historyWindow.update(data.getHistory());
 		colorDisplay.update((CanvasData) data);
 	}
 
 	private GridPane createGridPane(MyCanvas canvas, CommandWindow console, ScriptWindow editor, Workspace workspace,
-			HistoryWindow historyWindow, ColorDisplay colorDisplay) {
+			HistoryWindow historyWindow, ColorDisplay colorDisplay, LineStyle lineStyle) {
 		GridPane grid = new GridPane();
 		setGridPaneStyle(grid);
 
@@ -81,7 +83,13 @@ public class GUI {
 		grid.add(editor.getTextArea(), 1, 0);
 		grid.add(console.getConsole(), 1, 1);
 		grid.add(historyWindow.getView(), 2, 0);
-		grid.add(colorDisplay.getParent(), 2, 1);
+		
+		GridPane subGrid = new GridPane();
+		setGridPaneStyle(subGrid);
+		subGrid.add(colorDisplay.getParent(), 0, 0);
+		subGrid.add(lineStyle.getParent(), 0, 1);
+		
+		grid.add(subGrid, 2, 1);
 
 		return grid;
 	}

@@ -51,7 +51,7 @@ public class MyCanvas {
 		return canvas;
 	}
 
-	public void update(CanvasData data) {
+	public void update(CanvasData data, double lineSpacing) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
 		Color bgColor = data.getPalette().get((int) data.getBackgroundColor());
@@ -59,7 +59,7 @@ public class MyCanvas {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-		drawLines(gc, data);
+		drawLines(gc, data, lineSpacing);
 
 		turtles = data.getTurtles();
 		drawTurtles(gc, turtles);
@@ -97,6 +97,13 @@ public class MyCanvas {
 
 		Point a = convertCartesianToCanvasPos(l.getA());
 		Point b = convertCartesianToCanvasPos(l.getB());
+		
+		if(dottedLen < 0.1)
+		{
+			gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
+			return;
+		}
+		
 		double dx = b.getX() - a.getX();
 		double dy = b.getY() - a.getY();
 		double length = Math.sqrt(dx * dx + dy * dy);
@@ -105,25 +112,27 @@ public class MyCanvas {
 		double unitY = dy / length * dottedLen;
 
 		boolean drawing = true;
-		for (int i = 0; i < length / dottedLen; i++) {
+		for (double i = 0; i < length / dottedLen; i++) {
 			if (drawing) {
+				double end = Math.min(i + 1, length / dottedLen);
+
 				double startX = a.getX() + unitX * i;
 				double startY = a.getY() + unitY * i;
+				double endX = a.getX() + unitX * end;
+				double endY = a.getY() + unitY * end;
 
-				gc.strokeLine(startX, startY, startX + unitX, startY + unitY);
+				gc.strokeLine(startX, startY, endX, endY);
 			}
-
 			drawing = !drawing;
 		}
 	}
 
-	private void drawLines(GraphicsContext gc, CanvasData data) {
+	private void drawLines(GraphicsContext gc, CanvasData data, double lineSpacing) {
 		Collection<Line> lines = data.getLines();
 
 		for (Line l : lines) { // TODO: stream
-
 			int color = (int) l.getColor() % data.getPalette().size();
-			drawLine(gc, l, 3, data.getPalette().get(color));
+			drawLine(gc, l, lineSpacing, data.getPalette().get(color));
 		}
 	}
 
