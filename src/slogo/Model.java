@@ -81,7 +81,6 @@ public class Model implements SaveInputs, TurtleListController{
 			double value = command.getValue();
 			if (!name.equals("Constant")) {
 				commandName.append(name + " ");
-				System.out.println("command");
 			}
 			else {
 				history.put(commandName.toString(), value);

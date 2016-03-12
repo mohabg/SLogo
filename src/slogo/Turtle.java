@@ -28,9 +28,16 @@ public class Turtle implements TurtleData {
 	private int ID;
 	private List<Line> lines = new ArrayList<Line>();
 
+	private String GUID = java.util.UUID.randomUUID().toString();
+
+	public String getGUID() {
+		return GUID;
+	}
+
 	public Turtle(int ID) {
+		System.out.println("turtle id: " + ID);
 		myImage = DEFAULT_IMAGE;
-		position = HOME;
+		position = HOME.clone();
 		penDown = true;
 		visible = true;
 		penThickness = DEFAULT_THICKNESS;
@@ -45,7 +52,9 @@ public class Turtle implements TurtleData {
 		position.setY(y);
 
 		Point curPos = position.clone();
-
+		
+		System.out.println(position.getX() + " " + position.getY() + " " + getGUID());
+		
 		if (isPenDown())
 			lines.add(new Line(oldPos, curPos));
 	}
@@ -55,6 +64,7 @@ public class Turtle implements TurtleData {
 	}
 
 	public Point getPosition() {
+		//System.out.println(position.getX() + " " + position.getY() + " " + getGUID());
 		return position.clone();
 	}
 
@@ -85,12 +95,11 @@ public class Turtle implements TurtleData {
 	public void turn(Double angle) {
 		position.setTheta(position.getTheta() + angle);
 	}
-	
-	public List<Line> getLines()
-	{
+
+	public List<Line> getLines() {
 		return lines;
 	}
-	
+
 	public void clearLines() {
 		lines.clear();
 	}
@@ -148,6 +157,6 @@ public class Turtle implements TurtleData {
 
 	public void setShape(double shape) {
 		this.shape = shape;
-		
+
 	}
 }

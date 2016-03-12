@@ -20,7 +20,7 @@ public class ScriptWindow {
 		String text = myTextArea.getText();
 		String[] eachLine = text.split("\n");
 		StringBuilder textWithoutComments = new StringBuilder();
-
+		
 		for (String s : eachLine) {
 			String cut = s.trim();
 			if (!cut.startsWith("#"))

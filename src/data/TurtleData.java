@@ -20,5 +20,4 @@ public interface TurtleData {
     double getPenColor ();
 
     double getPenThickness ();
-
 }

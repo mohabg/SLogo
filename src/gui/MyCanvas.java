@@ -73,7 +73,7 @@ public class MyCanvas {
 	}
 
 	private void drawTurtles(GraphicsContext gc, Collection<TurtleData> turtles) {
-		for (TurtleData turtle : turtles) { // TODO: use stream
+		for (TurtleData turtle : turtles) {			
 			if (!turtle.isVisible())
 				continue;
 
