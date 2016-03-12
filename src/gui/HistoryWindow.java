@@ -1,8 +1,6 @@
 package gui;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import commands.CommandNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -23,7 +21,7 @@ public class HistoryWindow {
         data.clear();
 
         for (String[] command : history) {
-            data.add(command[0] + "\t\t\t\t" + command[1]);
+            data.add(command[0] + ", " + command[1]);
         }
     }
 

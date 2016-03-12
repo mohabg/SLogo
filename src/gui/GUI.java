@@ -83,17 +83,17 @@ public class GUI {
 		grid.add(editor.getTextArea(), 1, 0);
 		grid.add(console.getConsole(), 1, 1);
 		grid.add(historyWindow.getView(), 2, 0);
-		
+
 		GridPane subGrid = new GridPane();
 		setGridPaneStyle(subGrid);
 		subGrid.add(colorDisplay.getParent(), 0, 0);
 		subGrid.add(lineStyle.getParent(), 0, 1);
-		
+
 		grid.add(subGrid, 2, 1);
 
 		return grid;
 	}
-
+	
 	private ColumnConstraints colWidth(double percent) {
 		ColumnConstraints col = new ColumnConstraints();
 		col.setPercentWidth(percent);
@@ -105,4 +105,5 @@ public class GUI {
 		grid.setVgap(10);
 		grid.setPadding(new Insets(0, 10, 0, 10));
 	}
+
 }

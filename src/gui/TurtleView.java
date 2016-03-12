@@ -26,17 +26,4 @@ public class TurtleView extends ImageView {
         this.setY(center.getY() - this.getImage().getHeight() / 2);
     }
 
-    /*
-     * public void rotate (double angle) {
-     * // this.setRotationAxis(Rotate.Z_AXIS.add(this.getImage().getWidth() / 2,
-     * // this.getImage().getHeight() / 2, 0));
-     * this.setRotate(angle);
-     * // Rotate rotate = new Rotate(this.getRotate());
-     * // clip.getTransforms().add(rotate);
-     * clip.setRotationAxis(Rotate.Z_AXIS.add(this.getImage().getWidth() / 2,
-     * this.getImage().getHeight() / 2, 0));
-     * clip.setRotate(angle);
-     * }
-     */
-
 }
