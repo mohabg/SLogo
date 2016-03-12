@@ -55,6 +55,7 @@ public class MyCanvas {
 
         Color bgColor = data.getPalette().get((int) data.getBackgroundColor());
         gc.setFill(bgColor);
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         drawLines(gc, data);
