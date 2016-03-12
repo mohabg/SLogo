@@ -21,7 +21,7 @@ public class HistoryWindow {
         data.clear();
 
         for (String[] command : history) {
-            data.add(command[0] + "\t\t\t" + command[1]);
+            data.add(command[0] + ", " + command[1]);
         }
     }
 
