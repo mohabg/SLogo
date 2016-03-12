@@ -30,8 +30,8 @@ public class Controller {
 		mySaver = new SaveSettings(console);
 		updateModel();
 	}
-	public void saveSettings () {
-		mySaver.saveInfo(myModel.returnHistory());
+	public void saveSettings (String filename) {
+		mySaver.saveInfo(myModel.returnHistory(), filename);
 	}
 
 	public String compile (String input) {// frame

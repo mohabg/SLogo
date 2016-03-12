@@ -13,7 +13,7 @@ public class ReturnData implements CanvasData, WorkspaceData {
 	private List<Line> lines = new ArrayList<Line>();
 	private List<Point> turtlePositions = new ArrayList<Point>();
 	private List<TurtleData> turtleInfo;
-	private List<Double> palette;
+	private List<Color> palette;
 	private Image turtleImage;
 	private Map<String, String> userVariables;
 	private Set<String> userFunctions;
@@ -22,7 +22,7 @@ public class ReturnData implements CanvasData, WorkspaceData {
 
 	public ReturnData () {
 	}
-	
+
 	public List<Line> getLines () {
 		return lines;
 	}
@@ -34,7 +34,9 @@ public class ReturnData implements CanvasData, WorkspaceData {
 	public double getBackgroundColor () {
 		return BackgroundColor;
 	}
-
+	public void setPalette(List<Color> palette){
+		this.palette = palette;
+	}
 	public Map<String, String> getUserVariables () {
 		// TODO
 		return userVariables;
@@ -71,7 +73,7 @@ public class ReturnData implements CanvasData, WorkspaceData {
 	}
 
 	@Override
-	public List<Double> getPalette () {
+	public List<Color> getPalette () {
 		// TODO Auto-generated method stub
 		return palette;
 	}
@@ -116,5 +118,5 @@ public class ReturnData implements CanvasData, WorkspaceData {
 		return null;
 	}
 
-	
+
 }

@@ -145,4 +145,9 @@ public class Turtle implements TurtleData {
 	public int getID() {
 		return ID;
 	}
+
+	public void setShape(double shape) {
+		this.shape = shape;
+		
+	}
 }

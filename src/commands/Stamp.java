@@ -10,6 +10,7 @@ public class Stamp extends CommandNode{
 	@Override
 	public double run() {
 		// TODO Auto-generated method stub
+		// model.makeStamp()
 		return 0;
 	}
 

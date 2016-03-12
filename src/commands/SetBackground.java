@@ -10,6 +10,8 @@ public class SetBackground extends CommandNode{
 	@Override
 	public double run() {
 		// TODO Auto-generated method stub
+		// get model
+		// model.setBackground(index);
 		return 0;
 	}
 

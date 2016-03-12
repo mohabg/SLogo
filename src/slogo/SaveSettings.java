@@ -17,19 +17,19 @@ public class SaveSettings {
     public SaveSettings (CommandWindow console) {
     }
 
-    public void saveInfo (Map<String, Double> history) {
+    public void saveInfo (Map<String, Double> history, String filename) {
         StringBuilder saveText = new StringBuilder();
         for (String command : history.keySet()) {
             saveText.append(command);
             saveText.append(history.get(command));
             }
-        writeFile(saveText.toString());
+        writeFile(saveText.toString(), filename);
         System.out.println("Save text: " + saveText.toString());
 
     }
 
-    public void writeFile (String text) {
-        File file = new File("SavedFiles/test.txt");
+    public void writeFile (String text, String filename) {
+        File file = new File("SavedFiles/" + filename + ".txt");
 
         try (FileOutputStream fop = new FileOutputStream(file)) {
 
