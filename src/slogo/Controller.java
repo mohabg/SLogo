@@ -2,6 +2,7 @@ package slogo;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import commands.CommandNode;
@@ -75,7 +76,11 @@ public class Controller {
 	public Collection<Double> update(CommandNode command) {
 		ArrayList<Double> outputs = new ArrayList<Double>();
 		if (command.getUsesTurtle()) {
-			for (Turtle turtle : myModel.getTurtleList()) {
+			for(int i = 0; i < myModel.getActiveTurtles().size(); i++){
+				if(i >= myModel.getActiveTurtles().size()){
+					break;
+				}
+				Turtle turtle = myModel.getActiveTurtles().get(i);
 				command.setTurtleListController(myModel);
 				command.setTurtle(turtle);
 				outputs.add(command.run());
