@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 public class Turtle implements TurtleData {
 
 	private static final double DEFAULT_THICKNESS = 1;
-	private static final double DEFAULT_COLOR = 1;
+	private static final double DEFAULT_COLOR = 0;
 	private static final Point HOME = new Point(0, 0, 0);
 	private static final int TURTLE_WIDTH = 30;
 	private static final int TURTLE_HEIGHT = 30;
