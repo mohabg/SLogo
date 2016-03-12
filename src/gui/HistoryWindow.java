@@ -19,11 +19,11 @@ public class HistoryWindow {
         listView.setItems(data);
     }
 
-    public void update (LinkedHashMap<String, Double> history) {
+    public void update (List<String[]> history) {
         data.clear();
 
-        for (String command : history.keySet()) {
-            data.add(command + "\t\t\t\t" + history.get(command));
+        for (String[] command : history) {
+            data.add(command[0] + "\t\t\t\t" + command[1]);
         }
     }
 

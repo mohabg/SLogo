@@ -82,18 +82,18 @@ public class Model implements SaveInputs, TurtleListController {
         BackgroundColor = c;
     }
 
-    public LinkedHashMap<String, Double> returnHistory () {
-    	LinkedHashMap<String, Double> history = new LinkedHashMap<String, Double>();
-        StringBuilder commandName = new StringBuilder();
+    public List<String[]> returnHistory () {
+    	List<String[]> history = new ArrayList<String[]>();
+        StringBuilder historyString = new StringBuilder();
         for (CommandNode command : pastCommands) {
             String name = command.toString();
-            double value = command.getValue();
+            Double value = command.getValue();
             if (!name.equals("Constant")) {
-                commandName.append(name + " ");
+                historyString.append(name + " ");
             }
             else {
-                history.put(commandName.toString(), value);
-                commandName = new StringBuilder();
+                history.add(new String[]{historyString.toString(), value.toString()});
+                historyString = new StringBuilder();
             }
         }
         return history;
