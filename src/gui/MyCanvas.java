@@ -103,7 +103,7 @@ public class MyCanvas {
 		for (Line l : lines) { // TODO: stream
 			Point a = convertCartesianToCanvasPos(l.getA());
 			Point b = convertCartesianToCanvasPos(l.getB());
-			int color = (int) l.getColor();
+			int color = (int) l.getColor() % data.getPalette().size();
 			gc.setStroke(data.getPalette().get(color));
 			gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
 		}
