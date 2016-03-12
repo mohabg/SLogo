@@ -73,7 +73,7 @@ public class MyCanvas {
 	}
 
 	private void drawTurtles(GraphicsContext gc, Collection<TurtleData> turtles) {
-		for (TurtleData turtle : turtles) {			
+		for (TurtleData turtle : turtles) {
 			if (!turtle.isVisible())
 				continue;
 
@@ -103,7 +103,8 @@ public class MyCanvas {
 		for (Line l : lines) { // TODO: stream
 			Point a = convertCartesianToCanvasPos(l.getA());
 			Point b = convertCartesianToCanvasPos(l.getB());
-			gc.setStroke(data.getPenColor());
+			int color = (int) l.getColor();
+			gc.setStroke(data.getPalette().get(color));
 			gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
 		}
 	}

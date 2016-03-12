@@ -22,6 +22,7 @@ public class GUI {
 	private Workspace workspace;
 	private Parent root;
 	private HistoryWindow historyWindow;
+	private ColorDisplay colorDisplay;
 
 	private ResourceBundle resources = ResourceBundle.getBundle("resources/GUI");
 
@@ -39,9 +40,10 @@ public class GUI {
 		scriptWindow = new ScriptWindow(controller, commandWindow);
 		workspace = new Workspace();
 		historyWindow = new HistoryWindow();
+		colorDisplay = new ColorDisplay();
 
 		GridPane grid = createGridPane(this.canvas, this.commandWindow, this.scriptWindow, this.workspace,
-				this.historyWindow);
+				this.historyWindow, colorDisplay);
 
 		pane.setTop(MenuFactory.createMenuBar(scriptWindow, controller));
 		pane.setCenter(grid);
@@ -64,10 +66,11 @@ public class GUI {
 		canvas.update((CanvasData) data);
 		workspace.setData((WorkspaceData) data);
 		historyWindow.update(data.getHistory());
+		colorDisplay.update((CanvasData) data);
 	}
 
 	private GridPane createGridPane(MyCanvas canvas, CommandWindow console, ScriptWindow editor, Workspace workspace,
-			HistoryWindow historyWindow) {
+			HistoryWindow historyWindow, ColorDisplay colorDisplay) {
 		GridPane grid = new GridPane();
 		setGridPaneStyle(grid);
 
@@ -78,6 +81,7 @@ public class GUI {
 		grid.add(editor.getTextArea(), 1, 0);
 		grid.add(console.getConsole(), 1, 1);
 		grid.add(historyWindow.getView(), 2, 0);
+		grid.add(colorDisplay.getParent(), 2, 1);
 
 		return grid;
 	}
