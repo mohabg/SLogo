@@ -15,9 +15,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import slogo.Controller;
@@ -64,13 +62,6 @@ public class MyCanvas {
         drawTurtles(gc, turtles);
 
         palette = data.getPalette();
-    }
-
-    private void highlightImageView (ImageView imageView, Color color, double offset) {
-        DropShadow ds = new DropShadow(offset, color);
-        ds.setOffsetY(offset);
-        ds.setOffsetX(offset);
-        imageView.setEffect(ds);
     }
 
     private void drawTurtles (GraphicsContext gc, Collection<TurtleData> turtles) {
