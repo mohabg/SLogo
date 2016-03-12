@@ -2,18 +2,14 @@ package slogo;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import commands.CommandNode;
 import data.Line;
-import data.Point;
 import data.ReturnData;
 import gui.CommandWindow;
 
-
 public class Controller {
-
 
 	private Model myModel;
 	private Parser myParser;
@@ -28,31 +24,31 @@ public class Controller {
 		myParser = new Parser(language, myModel);
 	}
 
-	public void initialize (CommandWindow console) {
-        this.console = console;
-        mySaver = new SaveSettings(console);
-        updateModel();
-    }
-	 public void saveSettings () {
-	        mySaver.saveInfo(myModel.getPastCommands());
-	    }
+	public void initialize(CommandWindow console) {
+		this.console = console;
+		mySaver = new SaveSettings(console);
+		updateModel();
+	}
 
-	 public String compile (String input) {// frame
-	        List<CommandNode> currCommandTree;
-	        try {
-	            currCommandTree = myParser.interpret(input);
-	        }
-	        catch (Exception e) {
-	            console.printError(e.getMessage());
-	            return "";
-	        }
-	        List<Double> outputs = new ArrayList<Double>();
-	        for (CommandNode command : currCommandTree) {
-	            outputs.addAll(update(command));
-	        }
-	        updateModel();
-	        return getConsoleOutput(outputs);
-	    }
+	public void saveSettings() {
+		mySaver.saveInfo(myModel.getPastCommands());
+	}
+
+	public String compile(String input) {// frame
+		List<CommandNode> currCommandTree;
+		try {
+			currCommandTree = myParser.interpret(input);
+		} catch (Exception e) {
+			console.printError(e.getMessage());
+			return "";
+		}
+		List<Double> outputs = new ArrayList<Double>();
+		for (CommandNode command : currCommandTree) {
+			outputs.addAll(update(command));
+		}
+		updateModel();
+		return getConsoleOutput(outputs);
+	}
 
 	private void updateModel() {
 		myModel.setLines(makeLines());
@@ -63,10 +59,9 @@ public class Controller {
 	public String getConsoleOutput(List<Double> consoleOutputs) {
 		StringBuilder consoleOutput = new StringBuilder();
 		for (Double output : consoleOutputs) {
-			if (consoleOutput.length() == 0){
+			if (consoleOutput.length() == 0) {
 				consoleOutput.append("\n" + output.toString());
-			}
-			else{
+			} else {
 				consoleOutput.append(", \n" + output.toString());
 			}
 		}
@@ -76,8 +71,8 @@ public class Controller {
 	public Collection<Double> update(CommandNode command) {
 		ArrayList<Double> outputs = new ArrayList<Double>();
 		if (command.getUsesTurtle()) {
-			for(int i = 0; i < myModel.getActiveTurtles().size(); i++){
-				if(i >= myModel.getActiveTurtles().size()){
+			for (int i = 0; i < myModel.getActiveTurtles().size(); i++) {
+				if (i >= myModel.getActiveTurtles().size()) {
 					break;
 				}
 				Turtle turtle = myModel.getActiveTurtles().get(i);
@@ -95,13 +90,7 @@ public class Controller {
 	public List<Line> makeLines() {
 		ArrayList<Line> lines = new ArrayList<Line>();
 		for (Turtle turtle : myModel.getTurtleList()) {
-			if (turtle.isPenDown())
-				for (int i = 0; i < turtle.getPoints().size() - 1; i++) {
-					Point next = turtle.getPoints().get(i + 1);
-					Point cur = turtle.getPoints().get(i);
-					Line line = new Line(next, cur, turtle.getPenColor(), turtle.getPenThickness());
-					lines.add(line);
-				}
+			lines.addAll(turtle.getLines());
 		}
 		return lines;
 	}
@@ -109,15 +98,17 @@ public class Controller {
 	public ReturnData getReturnData() {
 		return myModel.getReturnData();
 	}
-	public void setLanguage (String language) {
+
+	public void setLanguage(String language) {
 		this.language = language;
 		myParser.addLanguage(language);
 	}
 
-	public String getLanguage () {
+	public String getLanguage() {
 		return this.language;
 	}
-	public static ResourceBundle getErrorBundle () {
-        return errorBundle;
-    }
+
+	public static ResourceBundle getErrorBundle() {
+		return errorBundle;
+	}
 }
