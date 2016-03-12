@@ -3,6 +3,7 @@ package gui;
 import java.util.ResourceBundle;
 import data.CanvasData;
 import data.ReturnData;
+import data.WorkspaceData;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
@@ -57,7 +58,7 @@ public class GUI {
 		ReturnData data = controller.getReturnData();
 
 		canvas.update((CanvasData) data);
-		workspace.setData(data.getUserVariables(), data.getUserFunctions());
+		workspace.setData((WorkspaceData) data);
 	}
 
 	// Reference: http://docs.oracle.com/javafx/2/layout/builtin_layouts.htm
