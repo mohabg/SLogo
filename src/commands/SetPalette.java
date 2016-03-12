@@ -4,17 +4,21 @@ public class SetPalette extends CommandNode {
 
 	public SetPalette(double val) {
 		super(val);
-		// TODO Auto-generated constructor stub
+		setParametersNeeded(4);
 	}
 
 	@Override
 	public double run() {
-		// TODO Auto-generated method stub
-		//setValue(getChildren().get(0).run());
-		//get model, set palette here
-		//model.addPaletteColor(index, r, g, b);
-		//return index;
-		return 0;
+		// setValue(getChildren().get(0).run());
+		// get model, set palette here
+		
+		double[] params = new double[4];
+		for(int i = 0; i < 4; i++)
+			params[i] = getChildren().get(i).run();
+		
+		getModel().addPaletteColor(params[0], params[1], params[2], params[3]);
+		return params[0];
+		// return 0;
 	}
 
 }
