@@ -30,16 +30,16 @@ public class Controller {
 		mySaver = new SaveSettings(console);
 		updateModel();
 	}
-
-	public void saveSettings() {
-		mySaver.saveInfo(myModel.getPastCommands());
+	public void saveSettings (String filename) {
+		mySaver.saveInfo(myModel.returnHistory(), filename);
 	}
 
-	public String compile(String input) {// frame
+	public String compile (String input) {// frame
 		List<CommandNode> currCommandTree;
 		try {
 			currCommandTree = myParser.interpret(input);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			console.printError(e.getMessage());
 			return "";
 		}
@@ -85,10 +85,7 @@ public class Controller {
 				command.setTurtle(turtle);
 				outputs.add(command.run());
 			}
-		} else {
-			outputs.add(command.run());
 		}
-
 		return outputs;
 	}
 
@@ -99,7 +96,6 @@ public class Controller {
 		}
 		return lines;
 	}
-
 	public ReturnData getReturnData() {
 		return myModel.getReturnData();
 	}

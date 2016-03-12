@@ -2,7 +2,7 @@ package data;
 
 public class Point {
     private double x, y, theta;
-    private final double DEGREES = 360.0; // TODO: place in resources
+    private static final double DEGREES = 360.0; // TODO: place in resources
 
     public Point (double x, double y) {
         this(x, y, 0.0);

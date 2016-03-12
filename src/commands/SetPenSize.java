@@ -1,8 +1,8 @@
 package commands;
 
-public class Left extends CommandNode{
+public class SetPenSize extends CommandNode {
 
-	public Left(double val) {
+	public SetPenSize(double val) {
 		super(val);
 		setParametersNeeded(1);
 		setUsesTurtle(true);
@@ -10,8 +10,7 @@ public class Left extends CommandNode{
 
 	@Override
 	public double run() {
-		setValue(getChildren().get(0).run());
-		getTurtle().turn(360 - getValue());
+		getTurtle().setPenThickness(getValue());
 		return getValue();
 	}
 

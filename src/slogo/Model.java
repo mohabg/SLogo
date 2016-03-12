@@ -1,6 +1,5 @@
 package slogo;
 
-
 import java.util.*;
 import java.util.List;
 import java.util.Map;
@@ -12,17 +11,30 @@ import data.Line;
 import data.Point;
 import data.ReturnData;
 import data.TurtleData;
+import javafx.scene.paint.Color;
 
 
 public class Model implements SaveInputs, TurtleListController{
 
+	private static final List<double[]> DEFAULT_PALETTE = new ArrayList<double[]>(){{
+		add(new double[]{0, 0, 0});
+		add(new double[]{255,255,255});
+		add(new double[]{255,0,0});
+		add(new double[]{0,255,0});
+		add(new double[]{0,0,255});
+		add(new double[]{255,255,0});
+		add(new double[]{0,255,255});
+		add(new double[]{255,0,255});
+	}};
+	private static final double RGB_CORRECTION = 255;
+	
 	private ReturnData returnData;
 	private List<Turtle> turtleList;
 	private List<Turtle> activeTurtles;
 	private List<Line> lineList;
 	private Map<String, CommandNode> userVariables;
 	private Map<String, CommandNode> userFunctions;
-	private List<Double> myPalette;
+	private List<double[]> myPalette;
 	private List<Double> consoleOutputs;
 	private List<CommandNode> pastCommands;
 	private double BackgroundColor;
@@ -34,6 +46,7 @@ public class Model implements SaveInputs, TurtleListController{
 		userFunctions = new HashMap<String, CommandNode>();
 		consoleOutputs = new ArrayList<Double>();
 		pastCommands = new ArrayList<CommandNode>();
+		myPalette = DEFAULT_PALETTE;
 		lineList = new ArrayList<Line>();
 		Turtle turtle = new Turtle(1);
 		turtleList = new ArrayList<Turtle>();
@@ -49,7 +62,7 @@ public class Model implements SaveInputs, TurtleListController{
 		}
 		return consoleOutput.toString();
 	}
-	
+
 	private void addTurtle(double id){
 		int maxId = turtleList.size();
 		if(id > maxId){
@@ -60,6 +73,22 @@ public class Model implements SaveInputs, TurtleListController{
 		}
 	}
 
+	public Map<String, Double> returnHistory(){
+		Map<String, Double> history = new HashMap<String, Double>();
+		StringBuilder commandName = new StringBuilder();
+		for (CommandNode command : pastCommands) {
+			String name = command.toString();
+			double value = command.getValue();
+			if (!name.equals("Constant")) {
+				commandName.append(name + " ");
+			}
+			else {
+				history.put(commandName.toString(), value);
+				commandName = new StringBuilder();
+			}
+		}
+		return history;
+	}
 	public List<Turtle> getTurtleList() {
 		return turtleList;
 	}
@@ -90,7 +119,7 @@ public class Model implements SaveInputs, TurtleListController{
 		Point stampLoc = new Point(x, y, orientation);
 		stamps.add(new MyStamp(image, stampLoc));
 	}
-	
+
 	public void setCompileInfo() {
 		returnData.addLines(lineList);
 		returnData.setVariables(makeVariableOutputs());
@@ -99,10 +128,20 @@ public class Model implements SaveInputs, TurtleListController{
 		turtleData.addAll(turtleList);
 		returnData.setTurtles(turtleData);
 		returnData.addBackgroundColor(BackgroundColor);
+		returnData.setHistory(returnHistory());
+		returnData.setPalette(makePalette());
 	}
 
-	public void addPaletteColor(double rgb){
-		myPalette.add(rgb);
+	public void addPaletteColor(double index, double r, double g, double b){
+		myPalette.add((int) index, new double[]{r, g, b});
+	}
+	public List<Color> makePalette(){
+		List<Color> palette = new ArrayList<Color>();
+		for(int i = 0; i < myPalette.size(); i++){
+			double[] rbg = myPalette.get(i);
+			palette.add(new Color(rbg[0]/RGB_CORRECTION, rbg[1]/RGB_CORRECTION, rbg[2]/RGB_CORRECTION, 1));
+		}
+		return palette;
 	}
 
 	private Map<String, String> makeVariableOutputs() {
