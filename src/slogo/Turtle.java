@@ -13,7 +13,7 @@ public class Turtle implements TurtleData {
 	private static final Point HOME = new Point(0, 0, 0);
 	private static final int TURTLE_WIDTH = 30;
 	private static final int TURTLE_HEIGHT = 30;
-	private static final Image DEFAULT_IMAGE = new Image("resources/turtle.png", TURTLE_WIDTH, TURTLE_HEIGHT, true, true);; // TODO: make non-constant
+	private static final Image DEFAULT_IMAGE = new Image("resources/turtle.png", TURTLE_WIDTH, TURTLE_HEIGHT, true, true); // TODO: make non-constant
 
 	private Point position;
 	private Image myImage;
@@ -139,18 +139,6 @@ public class Turtle implements TurtleData {
 	@Override
 	public double getShape () {
 		return shape;
-	}
-
-	@Override
-	public boolean containsPoint (Point pos) {
-		double posX = position.getX();
-		double posY = position.getY();
-
-		double deltaX = Math.abs(pos.getX() - posX);
-		double deltaY = Math.abs(pos.getY() - posY);
-		double deltaXBound = myImage.getWidth() / 2;
-		double deltaYBound = myImage.getHeight() / 2;
-		return (deltaX < deltaXBound) && (deltaY < deltaYBound);
 	}
 
 	@Override

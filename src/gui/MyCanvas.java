@@ -9,6 +9,7 @@ import data.Line;
 import data.Point;
 import data.TurtleData;
 import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -32,12 +33,13 @@ public class MyCanvas {
     private ContextMenu backgroundContextMenu, turtleContextMenu;
     // private Color backgroundColor;
     private List<TurtleData> turtles, selectedTurtles;
+    public static Point CANVAS_MOUSE_OFFSET = new Point(-10, -24);
 
     public MyCanvas (int width, int height, Controller controller) {
         this.controller = controller;
         this.canvas = new Canvas(width, height);
-        this.palette = Arrays.asList(new Color[] { Color.ALICEBLUE, Color.ANTIQUEWHITE }); // TODO:
-                                                                                           // empty
+        // TODO: resource
+        this.palette = Arrays.asList(new Color[] { Color.ALICEBLUE, Color.ANTIQUEWHITE });
         this.backgroundContextMenu = new ContextMenu();
         this.turtleContextMenu = new ContextMenu();
         initControls();
@@ -73,23 +75,35 @@ public class MyCanvas {
 
     private void drawTurtles (GraphicsContext gc, Collection<TurtleData> turtles) {
         for (TurtleData turtle : turtles) { // TODO: use stream
-            Image image = turtle.getImage();
+            // Image image = turtle.getImage();
             // ImageView imageView = new ImageView(image);
-            ImageView imageView = getTurtleView(turtle);
-            if (selectedTurtles.contains(turtle)) {
-                highlightImageView(imageView, Color.CORAL, 4.0); // TODO: resources
-            }
-            Point p = turtle.getPosition();
-            Point draw = convertCartesianToCanvasPos(p);
+            TurtleView imageView = new TurtleView(turtle, this);
+            Bounds b = imageView.getBoundsInParent();
+            double x = b.getMinX();
+            double y = b.getMinY();
 
-            double x = draw.getX() - image.getWidth() / 2;
-            double y = draw.getY() - image.getHeight() / 2;
-            // imageView.setRotate(p.getTheta());
+            /*
+             * Point p = turtle.getPosition();
+             * Point draw = convertCartesianToCanvasPos(p);
+             * 
+             * double x = draw.getX() - image.getWidth() / 2;
+             * double y = draw.getY() - image.getHeight() / 2;
+             * imageView.setRotate(p.getTheta());
+             */
 
             SnapshotParameters params = new SnapshotParameters();
             params.setFill(Color.TRANSPARENT);
             Image rotated = imageView.snapshot(params, null);
             gc.drawImage(rotated, x, y);
+
+            if (selectedTurtles.contains(turtle)) {
+                // TODO: resources
+                // highlightImageView(imageView, Color.CORAL, 4.0);
+
+                gc.setStroke(Color.RED);
+                gc.strokeRect(b.getMinX() - 2, b.getMinY() - 2, b.getWidth() + 4,
+                              b.getHeight() + 4);
+            }
         }
     }
 
@@ -182,8 +196,15 @@ public class MyCanvas {
             backgroundContextMenu.hide();
             turtleContextMenu.hide();
 
-            Point mouseCanvasPos = new Point(e.getSceneX(), e.getSceneY());
+            Point mouseCanvasPos = new Point(e.getSceneX(), e.getSceneY()).add(CANVAS_MOUSE_OFFSET);
             Point mouseScreenPos = new Point(e.getScreenX(), e.getScreenY());
+            /*
+             * GraphicsContext gc = canvas.getGraphicsContext2D();
+             * gc.setFill(Color.DARKORANGE);
+             * gc.fillOval(mouseCanvasPos.getX(), mouseCanvasPos.getY(), 3, 3);
+             * gc.setFill(Color.DARKMAGENTA);
+             * // gc.fillOval(turtleView.getX(), turtleView.getY(), 3, 3);
+             */
             if (e.getButton() == MouseButton.PRIMARY) {
                 handleLeftClick(mouseCanvasPos);
             }
@@ -222,7 +243,7 @@ public class MyCanvas {
         }
     }
 
-    private Point convertCartesianToCanvasPos (Point myCartesian) {
+    public Point convertCartesianToCanvasPos (Point myCartesian) {
         double x = myCartesian.getX() + canvas.getWidth() / 2;
         double y = canvas.getHeight() / 2 - myCartesian.getY();
         Point canvasPos = new Point(x, y, myCartesian.getTheta());
@@ -236,30 +257,13 @@ public class MyCanvas {
         return myCartesian;
     }
 
-    private ImageView getTurtleView (TurtleData turtle) {
-        ImageView turtleView = new ImageView(turtle.getImage());
-        Point turtlePos = convertCartesianToCanvasPos(turtle.getPosition());
-        turtleView.setTranslateX(turtlePos.getX());
-        turtleView.setTranslateY(turtlePos.getY());
-        turtleView.setRotate(turtle.getPosition().getTheta());
-        return turtleView;
-    }
-
     private Collection<TurtleData> findTurtlesContainingCanvasPos (Collection<TurtleData> turtles,
                                                                    Point canvasPos) {
         Collection<TurtleData> ret = new ArrayList<TurtleData>();
         for (TurtleData turtle : turtles) { // TODO: stream
-            ImageView turtleView = getTurtleView(turtle);
-            // Point2D p = new Point2D(canvasPos.getX(), canvasPos.getY());
-            // Resources.debugPrint("bounds: " + turtleView.getBoundsInParent());
-            // Resources.debugPrint("p: " + p);
-            Bounds bounds = turtleView.getBoundsInParent();
-            boolean containsX =
-                    (canvasPos.getX() > bounds.getMinX() && canvasPos.getX() < bounds.getMaxX());
-            boolean containsY =
-                    (canvasPos.getY() > bounds.getMinY() && canvasPos.getY() < bounds.getMaxY());
-            // return turtleView.contains(p); // TODO: bug?
-            if (containsX && containsY) {
+            TurtleView turtleView = new TurtleView(turtle, this);
+            Point2D p = new Point2D(canvasPos.getX(), canvasPos.getY());
+            if (turtleView.contains(p)) {
                 ret.add(turtle);
             }
         }
