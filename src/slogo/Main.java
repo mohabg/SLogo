@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -23,13 +25,10 @@ public class Main extends Application {
 	public void start(Stage stage) {
 		addGUI();
 
-		BorderPane mainPane = new BorderPane();
+		Pane mainPane = new AnchorPane();
+		Button newTabButton = addNewTabButton();
 
-
-		mainPane.setCenter(tabPane);
-		mainPane.setTop(addNewTabButton());
-		
-		//mainPane.setCenter(getCurrentGUI().getParent());
+		mainPane.getChildren().addAll(tabPane, newTabButton);
 
 		stage.setScene(new Scene(mainPane));
 
@@ -37,11 +36,16 @@ public class Main extends Application {
 		stage.setTitle(title);
 		stage.show();
 	}
-	
-	private Button addNewTabButton()
-	{
+
+	private Button addNewTabButton() {
 		Button newTabBtn = new Button("New Tab");
 		newTabBtn.setOnAction(e -> addGUI());
+
+		double right = Double.parseDouble(resources.getString("buttonRightSpacing"));
+		double top = Double.parseDouble(resources.getString("buttonTopSpacing"));
+		AnchorPane.setRightAnchor(newTabBtn, right);
+		AnchorPane.setTopAnchor(newTabBtn, top);
+
 		return newTabBtn;
 	}
 
@@ -49,7 +53,7 @@ public class Main extends Application {
 		int width = Integer.parseInt(resources.getString("width"));
 		int height = Integer.parseInt(resources.getString("height"));
 		String language = resources.getString("default_language");
-		
+
 		GUI gui = new GUI(language, width, height);
 		GUIs.add(gui);
 
