@@ -1,5 +1,8 @@
 package commands;
+import java.util.ArrayList;
+import java.util.List;
 
+import slogo.Turtle;
 import slogo.TurtleListController;
 
 public abstract class MultipleTurtleCommands extends CommandNode{
@@ -16,5 +19,16 @@ public abstract class MultipleTurtleCommands extends CommandNode{
 	}
 	protected TurtleListController getTurtleListController(){
 		return model;
+	}
+	protected double setTurtlesAndRun(List<Turtle> activeTurtles, List<CommandNode> commandsToExecute){;
+		double lastExecutedCommandValue = 0;
+		for(int i = 0; i < commandsToExecute.size(); i++){
+			CommandNode command = commandsToExecute.get(i);
+			for(Turtle turtle : activeTurtles){
+				command.setTurtle(turtle);
+				lastExecutedCommandValue = command.run();
+			}
+		}
+		return lastExecutedCommandValue;
 	}
 }

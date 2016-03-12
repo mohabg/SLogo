@@ -82,6 +82,9 @@ public abstract class CommandNode {
 	public List<CommandNode> getChildren(){
 		return children;
 	}
+	public CommandIterator getCommandIterator(){
+		return commandIterator;
+	}
 	public void setTurtleListController(TurtleListController controller){
 		//Do Nothing
 		//Override in MultipleTurtlesCommands

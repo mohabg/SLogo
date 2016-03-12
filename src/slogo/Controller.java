@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import commands.CommandNode;
+import commands.MultipleTurtleCommands;
 import data.Line;
 import data.ReturnData;
 import gui.CommandWindow;
@@ -71,13 +72,17 @@ public class Controller {
 
 	public Collection<Double> update(CommandNode command) {
 		ArrayList<Double> outputs = new ArrayList<Double>();
+		if(command instanceof MultipleTurtleCommands){
+			command.setTurtleListController(myModel);
+			outputs.add(command.run());
+			return outputs;
+		}
 		if (command.getUsesTurtle()) {
 			for (int i = 0; i < myModel.getActiveTurtles().size(); i++) {
 				if (i >= myModel.getActiveTurtles().size()) {
 					break;
 				}
 				Turtle turtle = myModel.getActiveTurtles().get(i);
-				command.setTurtleListController(myModel);
 				command.setTurtle(turtle);
 				outputs.add(command.run());
 			}
