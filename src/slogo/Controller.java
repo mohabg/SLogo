@@ -1,6 +1,5 @@
 package slogo;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,42 +8,50 @@ import commands.CommandNode;
 import data.Line;
 import data.Point;
 import data.ReturnData;
+import gui.CommandWindow;
+
 
 public class Controller {
+
 
 	private Model myModel;
 	private Parser myParser;
 	private String language;
 	private SaveSettings mySaver;
-	protected static ResourceBundle errorBundle = ResourceBundle.getBundle("resources/Errors");
+	private CommandWindow console;
+	private static ResourceBundle errorBundle = ResourceBundle.getBundle("resources/Errors");
 
 	public Controller(String language) {
 		this.language = language;
 		myModel = new Model();
 		myParser = new Parser(language, myModel);
-		mySaver = new SaveSettings();
 	}
 
-	public void initialize() {
+	public void initialize (CommandWindow console) {
+        this.console = console;
+        mySaver = new SaveSettings(console);
+        updateModel();
+    }
+	 public void saveSettings () {
+	        mySaver.saveInfo(myModel.getPastCommands());
+	    }
 
-		updateModel();
-	}
-
-	public void saveSettings(){
-		mySaver.saveInfo(myModel.getPastCommands());
-	}
-	
-	public String compile(String input) 
-			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-			ClassNotFoundException, NoSuchMethodException, SecurityException {// frame
-		List<CommandNode> currCommandTree= myParser.interpret(input);
-		List<Double> outputs = new ArrayList<Double>();
-		for (CommandNode command : currCommandTree) {
-			outputs.addAll(update(command));
-		}
-		updateModel();
-		return getConsoleOutput(outputs);
-	}
+	 public String compile (String input) {// frame
+	        List<CommandNode> currCommandTree;
+	        try {
+	            currCommandTree = myParser.interpret(input);
+	        }
+	        catch (Exception e) {
+	            console.printError(e.getMessage());
+	            return "";
+	        }
+	        List<Double> outputs = new ArrayList<Double>();
+	        for (CommandNode command : currCommandTree) {
+	            outputs.addAll(update(command));
+	        }
+	        updateModel();
+	        return getConsoleOutput(outputs);
+	    }
 
 	private void updateModel() {
 		myModel.setLines(makeLines());
@@ -69,6 +76,7 @@ public class Controller {
 		ArrayList<Double> outputs = new ArrayList<Double>();
 		if (command.getUsesTurtle()) {
 			for (Turtle turtle : myModel.getTurtleList()) {
+				command.setTurtleListController(myModel);
 				command.setTurtle(turtle);
 				outputs.add(command.run());
 			}
@@ -104,4 +112,7 @@ public class Controller {
 	public String getLanguage () {
 		return this.language;
 	}
+	public static ResourceBundle getErrorBundle () {
+        return errorBundle;
+    }
 }

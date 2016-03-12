@@ -14,10 +14,11 @@ import data.ReturnData;
 import data.TurtleData;
 
 
-public class Model implements SaveInputs {
+public class Model implements SaveInputs, TurtleListController{
 
 	private ReturnData returnData;
 	private List<Turtle> turtleList;
+	private List<Turtle> activeTurtles;
 	private List<Line> lineList;
 	private Map<String, CommandNode> userVariables;
 	private Map<String, CommandNode> userFunctions;
@@ -37,6 +38,8 @@ public class Model implements SaveInputs {
 		Turtle turtle = new Turtle(1);
 		turtleList = new ArrayList<Turtle>();
 		turtleList.add(turtle);
+		activeTurtles = new ArrayList<>();
+		activeTurtles.add(turtle);
 	}
 
 	public String getConsoleOutput() {
@@ -47,11 +50,42 @@ public class Model implements SaveInputs {
 		return consoleOutput.toString();
 	}
 	
-	public void addTurtle(){
-		Turtle turtle = new Turtle(turtleList.size());
-		turtleList.add(turtle);
+	public void addTurtle(double id){
+		int maxId = turtleList.size();
+		if(id > maxId){
+			for(int i = maxId; i < id; i++){
+				Turtle turtle = new Turtle(turtleList.size());
+				turtleList.add(turtle);		
+			}
+		}
 	}
-	
+
+	public List<Turtle> getTurtleList() {
+		return turtleList;
+	}
+	public List<Turtle> getActiveTurtles(){
+		return activeTurtles;
+	}
+	public void setActiveTurtles(List<CommandNode> activeTurtlesIds){
+		List<Double> idValues = new ArrayList<>();
+		double maxId = 0;
+		for(CommandNode id : activeTurtlesIds){
+			double newId = id.run();
+			idValues.add(newId);
+			if(newId > maxId){
+				maxId = newId;
+			}
+		}
+		addTurtle(maxId);
+		activeTurtles.clear();
+		for(Turtle turtle : turtleList){
+			for(double id : idValues){
+				if(turtle.getID() == id){
+					activeTurtles.add(turtle);
+				}
+			}
+		}
+	}
 	public void addStamp(double x, double y, double orientation, String image){
 		Point stampLoc = new Point(x, y, orientation);
 		stamps.add(new MyStamp(image, stampLoc));
@@ -89,10 +123,6 @@ public class Model implements SaveInputs {
 
 	public void setLines(List<Line> lines) {
 		lineList = lines;
-	}
-
-	public List<Turtle> getTurtleList() {
-		return turtleList;
 	}
 
 	public void addCommandToHistory(CommandNode command) {
