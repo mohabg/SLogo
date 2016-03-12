@@ -159,7 +159,7 @@ public class MyCanvas {
     }
 
     private void handleSelectTurtleImage () {
-        // TODO
+
     }
 
     private void initControls () {

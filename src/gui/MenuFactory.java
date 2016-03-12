@@ -10,7 +10,6 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import slogo.Controller;
-import slogo.Resources;
 
 
 public class MenuFactory {
@@ -34,7 +33,7 @@ public class MenuFactory {
             langMenu.getItems().add(item);
         }
 
-        MenuItem runMenuItem = new MenuItem(Resources.RUN_MENU_LABEL);
+        MenuItem runMenuItem = new MenuItem(GUIResources.getString("scriptMenuLabel"));
         runMenuItem.setOnAction(e -> scriptWindow.handleRunButton());
         scriptMenu.getItems().add(runMenuItem);
 

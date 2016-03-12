@@ -1,11 +1,9 @@
 package data;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import commands.CommandNode;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -42,7 +40,6 @@ public class ReturnData implements CanvasData, WorkspaceData {
     }
 
     public Map<String, String> getUserVariables () {
-        // TODO
         return userVariables;
     }
 
@@ -52,7 +49,6 @@ public class ReturnData implements CanvasData, WorkspaceData {
     }
 
     public Set<String> getUserFunctions () {
-        // TODO
         return userFunctions;
     }
 
@@ -71,7 +67,6 @@ public class ReturnData implements CanvasData, WorkspaceData {
 
     @Override
     public List<TurtleData> getTurtles () {
-        // TODO Auto-generated method stub
         return turtleInfo;
     }
 
@@ -82,13 +77,11 @@ public class ReturnData implements CanvasData, WorkspaceData {
 
     @Override
     public List<StampData> getStamps () {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public List<Color> getPalette () {
-        // TODO Auto-generated method stub
         return palette;
     }
 
@@ -98,14 +91,12 @@ public class ReturnData implements CanvasData, WorkspaceData {
 
     @Deprecated
     public Image getTurtleImage () {
-        // TODO
         return turtleImage;
     }
 
     @Override
     @Deprecated
     public List<Point> getTurtlePosition () {
-        // TODO
         return turtlePositions;
     }
 
