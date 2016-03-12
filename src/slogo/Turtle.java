@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 public class Turtle implements TurtleData {
 
 	private static final double DEFAULT_THICKNESS = 1;
-	private static final double DEFAULT_COLOR = 1;
+	private static final double DEFAULT_COLOR = 0;
 	private static final Point HOME = new Point(0, 0, 0);
 	private static final int TURTLE_WIDTH = 30;
 	private static final int TURTLE_HEIGHT = 30;
@@ -28,9 +28,15 @@ public class Turtle implements TurtleData {
 	private int ID;
 	private List<Line> lines = new ArrayList<Line>();
 
+	private String GUID = java.util.UUID.randomUUID().toString();
+
+	public String getGUID() {
+		return GUID;
+	}
+
 	public Turtle(int ID) {
 		myImage = DEFAULT_IMAGE;
-		position = new Point(0, 0);
+		position = HOME.clone();
 		penDown = true;
 		visible = true;
 		penThickness = DEFAULT_THICKNESS;
@@ -45,9 +51,9 @@ public class Turtle implements TurtleData {
 		position.setY(y);
 
 		Point curPos = position.clone();
-
+		
 		if (isPenDown())
-			lines.add(new Line(oldPos, curPos));
+			lines.add(new Line(oldPos, curPos, getPenColor(), getPenThickness()));
 	}
 
 	public void setImage(String path) {
@@ -85,12 +91,11 @@ public class Turtle implements TurtleData {
 	public void turn(Double angle) {
 		position.setTheta(position.getTheta() + angle);
 	}
-	
-	public List<Line> getLines()
-	{
+
+	public List<Line> getLines() {
 		return lines;
 	}
-	
+
 	public void clearLines() {
 		lines.clear();
 	}
@@ -148,6 +153,6 @@ public class Turtle implements TurtleData {
 
 	public void setShape(double shape) {
 		this.shape = shape;
-		
+
 	}
 }

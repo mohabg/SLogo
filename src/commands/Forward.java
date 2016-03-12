@@ -12,7 +12,6 @@ public class Forward extends CommandNode {
 		double newXLocation = getTurtle().getX() + getValue()*Math.sin(Math.toRadians(getTurtle().getOrientation()));
 		double newYLocation = getTurtle().getY() + getValue()*Math.cos(Math.toRadians(getTurtle().getOrientation()));
 		getTurtle().move(newXLocation, newYLocation);
-		//System.out.println(getTurtle().getX() + " " + getTurtle().getY());
 		return getValue();
 	}
 }

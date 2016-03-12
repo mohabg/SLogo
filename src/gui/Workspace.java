@@ -1,8 +1,7 @@
 package gui;
 
-import java.util.Map;
-import java.util.Set;
-
+import data.TurtleData;
+import data.WorkspaceData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -16,15 +15,19 @@ public class Workspace {
 		listView.setItems(data);
 	}
 
-	public void setData(Map<String, String> variables, Set<String> functions) {
+	public void setData(WorkspaceData state) {
 		data.clear();
 
-		for (String s : functions) {
+		for (TurtleData t : state.getTurtles()) {
+			data.add(String.format("Turtle %d, (%.1f, %.1f)", t.getID(), t.getPosition().getX(), t.getPosition().getY()));
+		}
+
+		for (String s : state.getUserFunctions()) {
 			data.add("Function: " + s);
 		}
 
-		for (String name : variables.keySet()) {
-			data.add(name + " " + variables.get(name));
+		for (String name : state.getUserVariables().keySet()) {
+			data.add(name + " " + state.getUserVariables().get(name));
 		}
 	}
 

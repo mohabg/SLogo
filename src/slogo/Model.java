@@ -1,6 +1,9 @@
 package slogo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,21 +16,22 @@ import data.ReturnData;
 import data.TurtleData;
 import javafx.scene.paint.Color;
 
+public class Model implements SaveInputs, TurtleListController {
 
-public class Model implements SaveInputs, TurtleListController{
-
-	private static final List<double[]> DEFAULT_PALETTE = new ArrayList<double[]>(){{
-		add(new double[]{0, 0, 0});
-		add(new double[]{255,255,255});
-		add(new double[]{255,0,0});
-		add(new double[]{0,255,0});
-		add(new double[]{0,0,255});
-		add(new double[]{255,255,0});
-		add(new double[]{0,255,255});
-		add(new double[]{255,0,255});
-	}};
+	private static final List<double[]> DEFAULT_PALETTE = new ArrayList<double[]>() {
+		{
+			add(new double[] { 0, 0, 0 });
+			add(new double[] { 255, 255, 255 });
+			add(new double[] { 255, 0, 0 });
+			add(new double[] { 0, 255, 0 });
+			add(new double[] { 0, 0, 255 });
+			add(new double[] { 255, 255, 0 });
+			add(new double[] { 0, 255, 255 });
+			add(new double[] { 255, 0, 255 });
+		}
+	};
 	private static final double RGB_CORRECTION = 255;
-	
+
 	private ReturnData returnData;
 	private List<Turtle> turtleList;
 	private List<Turtle> activeTurtles;
@@ -37,7 +41,7 @@ public class Model implements SaveInputs, TurtleListController{
 	private List<double[]> myPalette;
 	private List<Double> consoleOutputs;
 	private List<CommandNode> pastCommands;
-	private double BackgroundColor;
+	private double BackgroundColor = 1;
 	private Collection<MyStamp> stamps;
 
 	public Model() {
@@ -63,60 +67,66 @@ public class Model implements SaveInputs, TurtleListController{
 		return consoleOutput.toString();
 	}
 
-	private void addTurtle(double id){
+	private void addTurtle(double id) {
 		int maxId = turtleList.size();
-		if(id > maxId){
-			for(int i = maxId + 1; i <= id; i++){
+		if (id > maxId) {
+			for (int i = maxId + 1; i <= id; i++) {
 				Turtle turtle = new Turtle(i);
-				turtleList.add(turtle);		
+				turtleList.add(turtle);
 			}
 		}
 	}
 
-	public Map<String, Double> returnHistory(){
-		Map<String, Double> history = new HashMap<String, Double>();
+	public void setBackgroundColor(double c) {
+		BackgroundColor = c;
+	}
+
+	public LinkedHashMap<String, Double> returnHistory() {
+		LinkedHashMap<String, Double> history = new LinkedHashMap<String, Double>();
 		StringBuilder commandName = new StringBuilder();
 		for (CommandNode command : pastCommands) {
 			String name = command.toString();
 			double value = command.getValue();
 			if (!name.equals("Constant")) {
 				commandName.append(name + " ");
-				System.out.println("command");
-			}
-			else {
+			} else {
 				history.put(commandName.toString(), value);
 				commandName = new StringBuilder();
 			}
 		}
 		return history;
 	}
+
 	public List<Turtle> getTurtleList() {
 		return turtleList;
 	}
-	public List<Turtle> getActiveTurtles(){
+
+	public List<Turtle> getActiveTurtles() {
 		return activeTurtles;
 	}
-	public void setActiveTurtles(List<CommandNode> activeTurtlesIds){
+
+	public void setActiveTurtles(List<CommandNode> activeTurtlesIds) {
 		List<Double> idValues = new ArrayList<>();
 		double maxId = 0;
-		for(CommandNode id : activeTurtlesIds){
+		for (CommandNode id : activeTurtlesIds) {
 			double newId = id.run();
 			idValues.add(newId);
-			if(newId > maxId){
+			if (newId > maxId) {
 				maxId = newId;
 			}
 		}
 		addTurtle(maxId);
 		activeTurtles.clear();
-		for(Turtle turtle : turtleList){
-			for(double id : idValues){
-				if(turtle.getID() == id){
+		for (Turtle turtle : turtleList) {
+			for (double id : idValues) {
+				if (turtle.getID() == id) {
 					activeTurtles.add(turtle);
 				}
 			}
 		}
 	}
-	public void addStamp(double x, double y, double orientation, String image){
+
+	public void addStamp(double x, double y, double orientation, String image) {
 		Point stampLoc = new Point(x, y, orientation);
 		stamps.add(new MyStamp(image, stampLoc));
 	}
@@ -128,19 +138,23 @@ public class Model implements SaveInputs, TurtleListController{
 		List<TurtleData> turtleData = new ArrayList<TurtleData>();
 		turtleData.addAll(turtleList);
 		returnData.setTurtles(turtleData);
-		returnData.addBackgroundColor(BackgroundColor);
+		returnData.setBackgroundColor(BackgroundColor);
 		returnData.setHistory(returnHistory());
 		returnData.setPalette(makePalette());
 	}
 
-	public void addPaletteColor(double index, double r, double g, double b){
-		myPalette.add((int) index, new double[]{r, g, b});
+	public void addPaletteColor(double index, double r, double g, double b) {
+		if (index >= myPalette.size())
+			myPalette.add(new double[] { r, g, b });
+		else
+			myPalette.set((int) index, new double[] { r, g, b });
 	}
-	public List<Color> makePalette(){
+
+	public List<Color> makePalette() {
 		List<Color> palette = new ArrayList<Color>();
-		for(int i = 0; i < myPalette.size(); i++){
+		for (int i = 0; i < myPalette.size(); i++) {
 			double[] rbg = myPalette.get(i);
-			palette.add(new Color(rbg[0]/RGB_CORRECTION, rbg[1]/RGB_CORRECTION, rbg[2]/RGB_CORRECTION, 1));
+			palette.add(new Color(rbg[0] / RGB_CORRECTION, rbg[1] / RGB_CORRECTION, rbg[2] / RGB_CORRECTION, 1));
 		}
 		return palette;
 	}
@@ -167,7 +181,8 @@ public class Model implements SaveInputs, TurtleListController{
 
 	public void addCommandToHistory(CommandNode command) {
 		pastCommands.add(command);
-		System.out.println("Command: " + command.toString() + "Value: " + (command.getValue()));
+		// System.out.println("Command: " + command.toString() + "Value: " +
+		// (command.getValue()));
 	}
 
 	public void addVariableToMap(CommandNode variable, String variableName) {

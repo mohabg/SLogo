@@ -32,7 +32,7 @@ public class MyCanvas {
 	private ContextMenu backgroundContextMenu, turtleContextMenu;
 	// private Color backgroundColor;
 	private List<TurtleData> turtles, selectedTurtles;
-	public static Point CANVAS_MOUSE_OFFSET = new Point(-10, -24);
+	public static final Point CANVAS_MOUSE_OFFSET = new Point(-10, -24);
 
 	public MyCanvas(int width, int height, Controller controller) {
 		this.controller = controller;
@@ -53,11 +53,12 @@ public class MyCanvas {
 
 	public void update(CanvasData data) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		
+		Color bgColor = data.getPalette().get((int) data.getBackgroundColor());
+		gc.setFill(bgColor);
+		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 		drawLines(gc, data);
-
-		// Color backgroundColor = data.getBackgroundColor();
 
 		turtles = data.getTurtles();
 		drawTurtles(gc, turtles);
@@ -73,25 +74,14 @@ public class MyCanvas {
 	}
 
 	private void drawTurtles(GraphicsContext gc, Collection<TurtleData> turtles) {
-		for (TurtleData turtle : turtles) { // TODO: use stream
-			if (turtle.isVisible() == false)
+		for (TurtleData turtle : turtles) {
+			if (!turtle.isVisible())
 				continue;
 
-			// Image image = turtle.getImage();
-			// ImageView imageView = new ImageView(image);
 			TurtleView imageView = new TurtleView(turtle, this);
 			Bounds b = imageView.getBoundsInParent();
 			double x = b.getMinX();
 			double y = b.getMinY();
-
-			/*
-			 * Point p = turtle.getPosition(); Point draw =
-			 * convertCartesianToCanvasPos(p);
-			 * 
-			 * double x = draw.getX() - image.getWidth() / 2; double y =
-			 * draw.getY() - image.getHeight() / 2;
-			 * imageView.setRotate(p.getTheta());
-			 */
 
 			SnapshotParameters params = new SnapshotParameters();
 			params.setFill(Color.TRANSPARENT);
@@ -114,7 +104,8 @@ public class MyCanvas {
 		for (Line l : lines) { // TODO: stream
 			Point a = convertCartesianToCanvasPos(l.getA());
 			Point b = convertCartesianToCanvasPos(l.getB());
-			gc.setStroke(data.getPenColor());
+			int color = (int) l.getColor() % data.getPalette().size();
+			gc.setStroke(data.getPalette().get(color));
 			gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
 		}
 	}
@@ -238,15 +229,13 @@ public class MyCanvas {
 	public Point convertCartesianToCanvasPos(Point myCartesian) {
 		double x = myCartesian.getX() + canvas.getWidth() / 2;
 		double y = canvas.getHeight() / 2 - myCartesian.getY();
-		Point canvasPos = new Point(x, y, myCartesian.getTheta());
-		return canvasPos;
+		return new Point(x, y, myCartesian.getTheta());
 	}
 
 	private Point convertCanvasPosToCartesian(Point canvasPos) {
 		double x = canvasPos.getX() - canvas.getWidth() / 2;
 		double y = canvas.getHeight() / 2 - canvasPos.getY();
-		Point myCartesian = new Point(x, y, canvasPos.getTheta());
-		return myCartesian;
+		return new Point(x, y, canvasPos.getTheta());
 	}
 
 	private Collection<TurtleData> findTurtlesContainingCanvasPos(Collection<TurtleData> turtles, Point canvasPos) {
