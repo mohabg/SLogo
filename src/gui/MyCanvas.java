@@ -1,7 +1,6 @@
 package gui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import data.CanvasData;
@@ -39,7 +38,7 @@ public class MyCanvas {
         this.controller = controller;
         this.canvas = new Canvas(width, height);
         // TODO: resource
-        this.palette = Arrays.asList(new Color[] { Color.ALICEBLUE, Color.ANTIQUEWHITE });
+        this.palette = new ArrayList<Color>();
         this.backgroundContextMenu = new ContextMenu();
         this.turtleContextMenu = new ContextMenu();
         initControls();
@@ -64,7 +63,7 @@ public class MyCanvas {
         turtles = data.getTurtles();
         drawTurtles(gc, turtles);
 
-        // palette = data.getPalette();
+        palette = data.getPalette();
     }
 
     private void highlightImageView (ImageView imageView, Color color, double offset) {
@@ -190,12 +189,11 @@ public class MyCanvas {
             Point mouseCanvasPos = new Point(e.getSceneX(), e.getSceneY()).add(CANVAS_MOUSE_OFFSET);
             Point mouseScreenPos = new Point(e.getScreenX(), e.getScreenY());
 
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            gc.setFill(Color.DARKORANGE);
-            gc.fillOval(mouseCanvasPos.getX(),
-                        mouseCanvasPos.getY(), 3, 3);
-            gc.setFill(Color.DARKMAGENTA); // gc.fillOval(turtleView.getX(), turtleView.getY(), 3,
-                                           // 3);
+            // GraphicsContext gc = canvas.getGraphicsContext2D();
+            // gc.setFill(Color.DARKORANGE);
+            // gc.fillOval(mouseCanvasPos.getX(),
+            // mouseCanvasPos.getY(), 3, 3);
+            // gc.setFill(Color.DARKMAGENTA);
 
             if (e.getButton() == MouseButton.PRIMARY) {
                 handleLeftClick(mouseCanvasPos);
