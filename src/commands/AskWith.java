@@ -5,9 +5,9 @@ import java.util.List;
 
 import slogo.Turtle;
 
-public class Ask extends MultipleTurtleCommands{
+public class AskWith extends MultipleTurtleCommands{
 
-	public Ask(double val) {
+	public AskWith(double val) {
 		super(val);
 		setParametersNeeded(2);
 	}
@@ -15,15 +15,13 @@ public class Ask extends MultipleTurtleCommands{
 	@Override
 	public double run() {
 		CommandNode listStart = getChildren().get(0);
-		List<CommandNode> turtleIds = listStart.getChildren().subList(0, listStart.getChildren().size() - 1);
+		CommandNode turtleCondition = listStart.getChildren().get(0);
 		List<CommandNode> commandsToExecute = getChildren().get(1).getChildren();
 		List<Turtle> turtlesToUse = new ArrayList<>();
-		
 		for(Turtle turtle : getTurtleListController().getTurtleList()){
-			for(CommandNode id : turtleIds){
-				if(turtle.getID() == id.run()){
-					turtlesToUse.add(turtle);
-				}
+			turtleCondition.setTurtle(turtle);
+			if(turtleCondition.run() == 1){
+				turtlesToUse.add(turtle);
 			}
 		}
 		return setTurtlesAndRun(turtlesToUse, commandsToExecute);

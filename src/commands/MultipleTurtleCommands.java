@@ -24,8 +24,13 @@ public abstract class MultipleTurtleCommands extends CommandNode{
 		double lastExecutedCommandValue = 0;
 		for(int i = 0; i < commandsToExecute.size(); i++){
 			CommandNode command = commandsToExecute.get(i);
-			for(Turtle turtle : activeTurtles){
-				command.setTurtle(turtle);
+			if(command.getUsesTurtle()){
+				for(Turtle turtle : activeTurtles){
+					command.setTurtle(turtle);
+					lastExecutedCommandValue = command.run();
+				}
+			}
+			else{
 				lastExecutedCommandValue = command.run();
 			}
 		}

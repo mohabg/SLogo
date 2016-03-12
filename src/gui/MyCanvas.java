@@ -28,7 +28,6 @@ import slogo.Controller;
 
 
 public class MyCanvas {
-
     private static final Point CANVAS_MOUSE_OFFSET = new Point(-10, -50);
     private static final Color SELECTION_COLOR = Color.RED;
     private final ResourceBundle GUIResources = ResourceBundle.getBundle("resources/GUI");
@@ -51,11 +50,7 @@ public class MyCanvas {
         this.selectedTurtles = new ArrayList<TurtleData>();
     }
 
-    public Canvas getCanvas () {
-        return canvas;
-    }
-
-    public void update (CanvasData data) {
+    public void update (CanvasData data, double segLength) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         Color bgColor = data.getPalette().get((int) data.getBackgroundColor());
@@ -63,12 +58,59 @@ public class MyCanvas {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        drawLines(gc, data);
+        drawLines(gc, data, segLength);
 
         turtles = data.getTurtles();
         drawTurtles(gc, turtles);
 
         palette = data.getPalette();
+    }
+
+    public Canvas getCanvas () {
+        return canvas;
+    }
+
+    private void drawLine (GraphicsContext gc, Line l, double dottedLen, Color c) {
+        gc.setStroke(c);
+
+        Point a = convertCartesianToCanvasPos(l.getA());
+        Point b = convertCartesianToCanvasPos(l.getB());
+
+        if (dottedLen < 0.1) {
+            gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
+            return;
+        }
+
+        double dx = b.getX() - a.getX();
+        double dy = b.getY() - a.getY();
+        double length = Math.sqrt(dx * dx + dy * dy);
+
+        double unitX = dx / length * dottedLen;
+        double unitY = dy / length * dottedLen;
+
+        boolean drawing = true;
+        for (double i = 0; i < length / dottedLen; i++) {
+            if (drawing) {
+                double end = Math.min(i + 1, length / dottedLen);
+
+                double startX = a.getX() + unitX * i;
+                double startY = a.getY() + unitY * i;
+                double endX = a.getX() + unitX * end;
+                double endY = a.getY() + unitY * end;
+
+                gc.strokeLine(startX, startY, endX, endY);
+            }
+            drawing = !drawing;
+        }
+    }
+
+    private void drawLines (GraphicsContext gc, CanvasData data, double lineSpacing) {
+        Collection<Line> lines = data.getLines();
+
+        for (Line l : lines) { // TODO: stream
+            int color = (int) l.getColor() % data.getPalette().size();
+            drawLine(gc, l, lineSpacing, data.getPalette().get(color));
+        }
     }
 
     private void drawTurtles (GraphicsContext gc, Collection<TurtleData> turtles) {
@@ -93,18 +135,6 @@ public class MyCanvas {
         }
     }
 
-    private void drawLines (GraphicsContext gc, CanvasData data) {
-        Collection<Line> lines = data.getLines();
-
-        for (Line l : lines) { // TODO: stream
-            Point a = convertCartesianToCanvasPos(l.getA());
-            Point b = convertCartesianToCanvasPos(l.getB());
-            int color = (int) l.getColor() % data.getPalette().size();
-            gc.setStroke(data.getPalette().get(color));
-            gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
-        }
-    }
-
     private Menu createColorSubmenu (String name, List<Color> palette) {
         Menu submenu = new Menu(name);
         for (Color color : palette) { // TODO: stream
@@ -119,11 +149,12 @@ public class MyCanvas {
         for (MenuItem penColorItem : penColorSubmenu.getItems()) {
             penColorItem.setOnAction(e -> handleSelectPenColor(penColorItem.getText()));
         }
-        MenuItem turtleImageMenuItem = new MenuItem(GUIResources.getString("selectTurtleImage"));
-        turtleImageMenuItem.setOnAction(e -> handleSelectTurtleImage());
+
+        MenuItem turtleImageSubmenu = new MenuItem(GUIResources.getString("selectTurtleImage"));
+        turtleImageSubmenu.setOnAction(e -> handleSelectTurtleImage());
 
         turtleContextMenu.getItems().clear();
-        turtleContextMenu.getItems().addAll(penColorSubmenu, turtleImageMenuItem);
+        turtleContextMenu.getItems().addAll(penColorSubmenu, turtleImageSubmenu);
     }
 
     private void updateBackgroundContextMenu () {
@@ -161,36 +192,6 @@ public class MyCanvas {
         Color color = Color.web(hex);
         int index = palette.indexOf(color);
         controller.compile("setpc " + index); // TODO: language
-    }
-
-    private void handleSelectTurtleImage () {
-        String img = getUserSelectedImage();
-        if (img == null) {
-            return;
-        }
-
-        for (TurtleData turtle : selectedTurtles) { // TODO: stream
-            turtle.setImage(img);
-        }
-    }
-
-    private String getUserSelectedImage () {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters()
-                .addAll(new ExtensionFilter("Image Files", "*.bmp", "*.png", "*.jpg", "*.gif"));
-
-        File file = fileChooser.showOpenDialog(new Stage());
-        String filename;
-        try {
-            filename = file.toURI().toURL().toString();
-        }
-        catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-        }
-
-        return filename;
     }
 
     private void initControls () {
@@ -266,4 +267,35 @@ public class MyCanvas {
         }
         return ret;
     }
+
+    private void handleSelectTurtleImage () {
+        String img = getUserSelectedImage();
+        if (img == null) {
+            return;
+        }
+
+        for (TurtleData turtle : selectedTurtles) { // TODO: stream
+            turtle.setImage(img);
+        }
+    }
+
+    private String getUserSelectedImage () {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters()
+                .addAll(new ExtensionFilter("Image Files", "*.bmp", "*.png", "*.jpg", "*.gif"));
+
+        File file = fileChooser.showOpenDialog(new Stage());
+        String filename;
+        try {
+            filename = file.toURI().toURL().toString();
+        }
+        catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+
+        return filename;
+    }
+
 }
