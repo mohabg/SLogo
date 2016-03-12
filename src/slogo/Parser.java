@@ -50,7 +50,6 @@ public class Parser{
 													InvocationTargetException, ClassNotFoundException, 
 													NoSuchMethodException, SecurityException{
 		List<CommandNode> commandList = createCommandNodes(text);
-		System.out.println(" command list " + commandList);
 		List<CommandNode> commandHeads = new ArrayList<>();
 
 		for(int i = 0; i < commandList.size(); i++){

@@ -1,6 +1,6 @@
 package commands;
 
-public class ClearScreen extends CommandNode{
+public class ClearScreen extends CommandNode {
 
 	public ClearScreen(double val) {
 		super(val);
@@ -10,10 +10,11 @@ public class ClearScreen extends CommandNode{
 
 	@Override
 	public double run() {
-		getTurtle().clearLines();
 		double distanceMoved = Math.sqrt(Math.pow(getTurtle().getX(), 2) + Math.pow(getTurtle().getY(), 2));
 		getTurtle().move(0, 0);
 		getTurtle().setOrientation(0);
+		getTurtle().setVisible();
+		getTurtle().clearLines();
 		return distanceMoved;
 	}
 
