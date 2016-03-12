@@ -9,28 +9,28 @@ import javafx.scene.paint.Color;
 public interface CanvasData {
 
     @Deprecated
-    public Image getTurtleImage ();
+    Image getTurtleImage ();
 
     @Deprecated
-    public List<Point> getTurtlePosition ();
+    List<Point> getTurtlePosition ();
 
     @Deprecated
-    public void setTurtleImage (Image image);
+    void setTurtleImage (Image image);
 
     @Deprecated
-    public boolean getPenDown ();
+    boolean getPenDown ();
 
     @Deprecated
-    public Color getPenColor ();
+    Color getPenColor ();
 
-    public List<TurtleData> getTurtles ();
+    List<TurtleData> getTurtles ();
 
-    public Collection<Line> getLines ();
+    Collection<Line> getLines ();
 
-    public double getBackgroundColor ();
+    double getBackgroundColor ();
 
-    public Collection<StampData> getStamps ();
+    Collection<StampData> getStamps ();
 
-    public List<Double> getPalette ();
+    List<Double> getPalette ();
 
 }

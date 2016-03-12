@@ -5,20 +5,20 @@ import javafx.scene.image.Image;
 
 public interface TurtleData {
 
-    public int getID ();
+    int getID ();
 
-    public Point getPosition ();
+    Point getPosition ();
 
-    public Image getImage ();
+    Image getImage ();
 
-    public double getShape ();
+    double getShape ();
 
-    public Boolean isPenDown ();
+    Boolean isPenDown ();
 
-    public Boolean isVisible ();
+    Boolean isVisible ();
 
-    public double getPenColor ();
+    double getPenColor ();
 
-    public double getPenThickness ();
+    double getPenThickness ();
 
 }
