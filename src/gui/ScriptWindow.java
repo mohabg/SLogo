@@ -9,7 +9,7 @@ public class ScriptWindow {
 	private TextArea myTextArea;
 	private Controller controller;
 	private CommandWindow commandWindow;
-
+	
 	public ScriptWindow(Controller controller, CommandWindow commandWindow) {
 		myTextArea = new TextArea();
 		this.controller = controller;
