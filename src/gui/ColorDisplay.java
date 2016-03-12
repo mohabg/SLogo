@@ -2,7 +2,6 @@ package gui;
 
 import java.util.List;
 import java.util.ResourceBundle;
-
 import data.CanvasData;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -11,6 +10,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+
 
 public class ColorDisplay {
 	private ResourceBundle resources = ResourceBundle.getBundle("resources/Color");
@@ -30,16 +30,14 @@ public class ColorDisplay {
 
 		if (lastHash != palette.hashCode()) {
 			lastHash = palette.hashCode();
+			
+			pane.getChildren().clear();
 			for (int i = 0; i < palette.size(); i++) {
 				Node n = generateNode(palette.get(i), i);
 				pane.add(n, i % width, i / width);
 			}
 		}
 
-	}
-
-	public Parent getParent() {
-		return pane;
 	}
 
 	private Node generateNode(Color c, int id) {
@@ -52,4 +50,8 @@ public class ColorDisplay {
 
 		return stack;
 	}
+
+    public Parent getParent () {
+        return pane;
+    }
 }

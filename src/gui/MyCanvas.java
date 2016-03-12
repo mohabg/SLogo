@@ -15,9 +15,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import slogo.Controller;
@@ -67,13 +65,6 @@ public class MyCanvas {
         palette = data.getPalette();
     }
 
-    private void highlightImageView (ImageView imageView, Color color, double offset) {
-        DropShadow ds = new DropShadow(offset, color);
-        ds.setOffsetY(offset);
-        ds.setOffsetX(offset);
-        imageView.setEffect(ds);
-    }
-
     private void drawTurtles (GraphicsContext gc, Collection<TurtleData> turtles) {
         for (TurtleData turtle : turtles) {
             if (!turtle.isVisible())
@@ -84,10 +75,10 @@ public class MyCanvas {
             double x = b.getMinX();
             double y = b.getMinY();
 
-            //SnapshotParameters params = new SnapshotParameters();
-            //params.setFill(Color.TRANSPARENT);
-            //Image rotated = imageView.snapshot(params, null);
-            gc.drawImage(imageView.getImage(), x, y);
+            SnapshotParameters params = new SnapshotParameters();
+            params.setFill(Color.TRANSPARENT);
+            Image rotated = imageView.snapshot(params, null);
+            gc.drawImage(rotated, x, y);
 
             if (selectedTurtles.contains(turtle)) {
                 // TODO: resources
