@@ -13,39 +13,45 @@ import javafx.scene.text.Text;
 
 
 public class ColorDisplay {
-    private ResourceBundle resources = ResourceBundle.getBundle("resources/Color");
-    private GridPane pane = new GridPane();
+	private ResourceBundle resources = ResourceBundle.getBundle("resources/Color");
+	private GridPane pane = new GridPane();
+	private int lastHash = 0;
 
-    public ColorDisplay () {
-        double padding = Double.parseDouble(resources.getString("padding"));
+	public ColorDisplay() {
+		double padding = Double.parseDouble(resources.getString("padding"));
 
-        pane.setHgap(padding);
-        pane.setVgap(padding);
-    }
+		pane.setHgap(padding);
+		pane.setVgap(padding);
+	}
 
-    public void update (CanvasData data) {
-        pane.getChildren().clear();
+	public void update(CanvasData data) {
+		int width = Integer.parseInt(resources.getString("rowWidth"));
+		List<Color> palette = data.getPalette();
 
-        int width = Integer.parseInt(resources.getString("rowWidth"));
-        List<Color> palette = data.getPalette();
-        for (int i = 0; i < palette.size(); i++) {
-            Node n = generateNode(palette.get(i), i);
-            pane.add(n, i % width, i / width);
-        }
-    }
+		if (lastHash != palette.hashCode()) {
+			lastHash = palette.hashCode();
+			
+			pane.getChildren().clear();
+			for (int i = 0; i < palette.size(); i++) {
+				Node n = generateNode(palette.get(i), i);
+				pane.add(n, i % width, i / width);
+			}
+		}
+
+	}
+
+	private Node generateNode(Color c, int id) {
+		int size = Integer.parseInt(resources.getString("size"));
+
+		Rectangle r = new Rectangle(size, size);
+		r.setFill(c);
+		Text t = new Text(Integer.toString(id));
+		StackPane stack = new StackPane(r, t);
+
+		return stack;
+	}
 
     public Parent getParent () {
         return pane;
-    }
-
-    private Node generateNode (Color c, int id) {
-        int size = Integer.parseInt(resources.getString("size"));
-
-        Rectangle r = new Rectangle(size, size);
-        r.setFill(c);
-        Text t = new Text(Integer.toString(id));
-        StackPane stack = new StackPane(r, t);
-
-        return stack;
     }
 }
