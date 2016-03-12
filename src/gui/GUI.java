@@ -3,6 +3,7 @@ package gui;
 import java.util.ResourceBundle;
 import data.CanvasData;
 import data.ReturnData;
+import data.WorkspaceData;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
@@ -14,16 +15,43 @@ import slogo.Controller;
 
 
 public class GUI {
-    private Controller controller;
-    private MyCanvas canvas;
-    private CommandWindow commandWindow;
-    private ScriptWindow scriptWindow;
-    private Workspace workspace;
+	private Controller controller;
+	private MyCanvas canvas;
+	private CommandWindow commandWindow;
+	private ScriptWindow scriptWindow;
+	private Workspace workspace;
+	private Parent root;
     private HistoryWindow historyWindow;
-    private Parent root;
 
-    private ResourceBundle resources = ResourceBundle.getBundle("resources/GUI");
+	private ResourceBundle resources = ResourceBundle.getBundle("resources/GUI");
 
+	/*public GUI(String language, int width, int height) {
+		controller = new Controller(language);
+
+		BorderPane pane = new BorderPane();
+		root = pane;
+		// scene = new Scene(root, width, height);
+
+		canvas = new MyCanvas(width / 2, height / 2, controller);
+		commandWindow = new CommandWindow(controller);
+		controller.initialize(commandWindow); // TODO: remove backdoor
+												// dependency?
+		scriptWindow = new ScriptWindow(controller, commandWindow);
+		workspace = new Workspace();
+
+		GridPane grid = createGridPane(this.canvas, this.commandWindow, this.scriptWindow, this.workspace);
+
+		pane.setTop(MenuFactory.createMenuBar(scriptWindow, controller));
+		pane.setCenter(grid);
+
+		int msDelay = Integer.parseInt(resources.getString("frameDelayMs"));
+		KeyFrame frame = new KeyFrame(Duration.millis(msDelay), e -> step());
+		Timeline animation = new Timeline();
+		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.getKeyFrames().add(frame);
+		animation.play();
+	}*/
+	
     public GUI (String language, int width, int height) {
         controller = new Controller(language);
 
@@ -53,16 +81,18 @@ public class GUI {
         animation.getKeyFrames().add(frame);
         animation.play();
     }
+    
 
-    public Parent getParent () {
-        return root;
-    }
+	public Parent getParent() {
+		return root;
+	}
+
 
     public void step () {
         ReturnData data = controller.getReturnData();
 
         canvas.update((CanvasData) data);
-        workspace.setData(data.getUserVariables(), data.getUserFunctions());
+        workspace.setData((WorkspaceData) data);
         historyWindow.update(data.getHistory());
     }
 
@@ -89,7 +119,7 @@ public class GUI {
         grid.setVgap(10);
         grid.setPadding(new Insets(0, 10, 0, 10));
     }
-
+    
     private GridPane createBottomGridPane (CommandWindow console, HistoryWindow historyWindow) {
         GridPane grid = new GridPane();
         setGridPaneStyle(grid);

@@ -19,7 +19,7 @@ public class CommandFactory {
         double constant = 0;
         // Gets correct command constructor through reflection, instantiates node
         try {
-            constant = Integer.parseInt(word);
+            constant = Double.parseDouble(word);
         }
         catch (NumberFormatException e) {
             // throw new

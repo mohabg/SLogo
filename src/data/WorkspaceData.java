@@ -1,13 +1,15 @@
 package data;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 public interface WorkspaceData {
 
-    public Map<String, String> getUserVariables ();
+	Map<String, String> getUserVariables();
 
-    public Set<String> getUserFunctions ();
+	Set<String> getUserFunctions();
+
+	List<TurtleData> getTurtles();
 
 }
