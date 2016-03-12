@@ -3,6 +3,7 @@ package gui;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.ResourceBundle;
 import data.CanvasData;
 import data.Line;
 import data.Point;
@@ -19,23 +20,23 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import slogo.Controller;
-import slogo.Resources;
 
 
 public class MyCanvas {
+
+    private static final Point CANVAS_MOUSE_OFFSET = new Point(-10, -50);
+    private static final Color SELECTION_COLOR = Color.RED;
+    private final ResourceBundle GUIResources = ResourceBundle.getBundle("resources/GUI");
 
     private Canvas canvas;
     private Controller controller;
     private List<Color> palette;
     private ContextMenu backgroundContextMenu, turtleContextMenu;
-    // private Color backgroundColor;
     private List<TurtleData> turtles, selectedTurtles;
-    public static final Point CANVAS_MOUSE_OFFSET = new Point(-10, -50);
 
     public MyCanvas (int width, int height, Controller controller) {
         this.controller = controller;
         this.canvas = new Canvas(width, height);
-        // TODO: resource
         this.palette = new ArrayList<Color>();
         this.backgroundContextMenu = new ContextMenu();
         this.turtleContextMenu = new ContextMenu();
@@ -80,12 +81,8 @@ public class MyCanvas {
             gc.drawImage(rotated, x, y);
 
             if (selectedTurtles.contains(turtle)) {
-                // TODO: resources
-                // highlightImageView(imageView, Color.CORAL, 4.0);
-
-                gc.setStroke(Color.RED);
-                gc.strokeRect(b.getMinX() - 2, b.getMinY() - 2, b.getWidth() + 4,
-                              b.getHeight() + 4);
+                gc.setStroke(SELECTION_COLOR);
+                gc.strokeRect(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
             }
         }
     }
@@ -110,11 +107,10 @@ public class MyCanvas {
         return submenu;
     }
 
-    // TODO: refactor, combine with background
     private void updateTurtleContextMenu () {
-        // TODO: place in resources
-        Menu penColorSubmenu = createColorSubmenu("Select pen color", palette);
-        MenuItem turtleImageSubmenu = new MenuItem("Select turtle image");
+        Menu penColorSubmenu =
+                createColorSubmenu(GUIResources.getString("selectPenColor"), palette);
+        MenuItem turtleImageSubmenu = new MenuItem(GUIResources.getString("selectTurtleImage"));
         for (MenuItem penColorItem : penColorSubmenu.getItems()) {
             penColorItem.setOnAction(e -> handleSelectPenColor(penColorItem.getText()));
         }
@@ -125,22 +121,19 @@ public class MyCanvas {
     }
 
     private void updateBackgroundContextMenu () {
-        // TODO: place in resources
-        Menu backgroundColorSubmenu = createColorSubmenu("Select background color", palette);
+        Menu backgroundColorSubmenu =
+                createColorSubmenu(GUIResources.getString("selectBackgroundColor"), palette);
         for (MenuItem backgroundColorItem : backgroundColorSubmenu.getItems()) {
             backgroundColorItem
                     .setOnAction(e -> handleSelectBackgroundColor(backgroundColorItem.getText()));
         }
-        // selectBackgroundColor.setOnAction(e ->
-        // handleSelectBackgroundColor());
 
         backgroundContextMenu.getItems().clear();
         backgroundContextMenu.getItems().addAll(backgroundColorSubmenu);
     }
 
     private void handleSelectBackgroundColor (String hex) {
-        // TODO: refactor duplicate
-        Color color = hex2Color(hex);
+        Color color = Color.web(hex);
         int index = palette.indexOf(color);
         controller.compile("setbg " + index); // TODO: language
     }
@@ -158,18 +151,14 @@ public class MyCanvas {
     // canvas.setStyle("-fx-background-color: #" + hex + ";");
     // }
 
-    private Color hex2Color (String hex) {
-        return Color.web(hex);
-    }
-
     private void handleSelectPenColor (String hex) {
-        Color color = hex2Color(hex);
+        Color color = Color.web(hex);
         int index = palette.indexOf(color);
         controller.compile("setpc " + index); // TODO: language
     }
 
     private void handleSelectTurtleImage () {
-
+        // TODO
     }
 
     private void initControls () {
@@ -196,16 +185,13 @@ public class MyCanvas {
     }
 
     private void handleLeftClick (Point mouseCanvasPos) {
-        Resources.debugPrint("mouse: " + convertCanvasPosToCartesian(mouseCanvasPos));
         Collection<TurtleData> clickedTurtles =
                 findTurtlesContainingCanvasPos(turtles, mouseCanvasPos);
         for (TurtleData turtle : clickedTurtles) { // TODO: stream
-            Resources.debugPrint("turtle: " + turtle.getPosition());
             if (!selectedTurtles.remove(turtle)) { // toggle selection
                 selectedTurtles.add(turtle);
             }
         }
-        Resources.debugPrint(selectedTurtles.toString());
     }
 
     private void handleRightClick (Point mouseCanvasPos, Point mouseScreenPos) {
@@ -230,11 +216,11 @@ public class MyCanvas {
         return new Point(x, y, myCartesian.getTheta());
     }
 
-    private Point convertCanvasPosToCartesian (Point canvasPos) {
-        double x = canvasPos.getX() - canvas.getWidth() / 2;
-        double y = canvas.getHeight() / 2 - canvasPos.getY();
-        return new Point(x, y, canvasPos.getTheta());
-    }
+    // private Point convertCanvasPosToCartesian (Point canvasPos) {
+    // double x = canvasPos.getX() - canvas.getWidth() / 2;
+    // double y = canvas.getHeight() / 2 - canvasPos.getY();
+    // return new Point(x, y, canvasPos.getTheta());
+    // }
 
     private Collection<TurtleData> findTurtlesContainingCanvasPos (Collection<TurtleData> turtles,
                                                                    Point canvasPos) {

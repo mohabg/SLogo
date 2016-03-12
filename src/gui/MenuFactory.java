@@ -14,6 +14,7 @@ import slogo.Resources;
 
 
 public class MenuFactory {
+    private static ResourceBundle GUIResources = ResourceBundle.getBundle("resources/GUI");
 
     public static MenuBar createMenuBar (ScriptWindow scriptWindow, Controller controller) {
         ResourceBundle resources = ResourceBundle.getBundle("resources/languages");
@@ -22,9 +23,9 @@ public class MenuFactory {
         String[] langs = langResources.split(",");
 
         MenuBar menuBar = new MenuBar();
-        Menu scriptMenu = new Menu("Script");
-        Menu langMenu = new Menu("Language");
-        Menu helpMenu = new Menu("Help");
+        Menu scriptMenu = new Menu(GUIResources.getString("scriptMenuLabel"));
+        Menu langMenu = new Menu(GUIResources.getString("languageMenuLabel"));
+        Menu helpMenu = new Menu(GUIResources.getString("helpMenuLabel"));
 
         for (String s : langs) {
             String trimmed = s.trim();
@@ -38,8 +39,7 @@ public class MenuFactory {
         scriptMenu.getItems().add(runMenuItem);
 
         MenuItem documentationMenuItem =
-                new MenuItem(ResourceBundle.getBundle("resources/GUI")
-                        .getString("documentationMenuLabel") + " (WIP)");
+                new MenuItem(GUIResources.getString("documentationMenuLabel"));
         documentationMenuItem.setOnAction(e -> displayHelpViewer());
         helpMenu.getItems().add(documentationMenuItem);
 
@@ -50,18 +50,15 @@ public class MenuFactory {
 
     // Reference: https://docs.oracle.com/javase/8/javafx/embedded-browser-tutorial/overview.htm
     private static void displayHelpViewer () {
-        // new
-        // Browser("http://www.cs.duke.edu/courses/compsci308/spring16/assign/03_slogo/commands2_J2W.php");
         Stage stage = new Stage();
-        stage.setTitle("Documentation");
+        stage.setTitle(GUIResources.getString("documentationMenuLabel"));
         Group root = new Group();
         stage.setScene(new Scene(root, 800, 600));
         stage.show();
 
         WebView browser = new WebView();
         WebEngine webEngine = browser.getEngine();
-        webEngine
-                .load("http://www.cs.duke.edu/courses/compsci308/spring16/assign/03_slogo/commands2_J2W.php");
+        webEngine.load(GUIResources.getString("docsURL"));
         root.getChildren().add(browser);
     }
 }

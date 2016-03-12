@@ -1,21 +1,24 @@
 package gui;
 
+import java.util.ResourceBundle;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import slogo.Controller;
-import slogo.Resources;
 
 
 public class CommandWindow {
     private ConsoleTextArea console;
     private Controller interpreter;
+    private String consolePrompt;
 
     public CommandWindow (Controller interpreter) {
         this.console = new ConsoleTextArea();
         this.interpreter = interpreter;
         initControls();
-        print(Resources.CONSOLE_PROMPT_STR);
+        ResourceBundle resources = ResourceBundle.getBundle("resources/CommandWindow");
+        consolePrompt = resources.getString("consolePromptString");
+        print(consolePrompt);
     }
 
     public ConsoleTextArea getConsole () {
@@ -24,7 +27,6 @@ public class CommandWindow {
 
     public void printError (String message) {
         Text errorText = new Text("\nError: " + message);
-        // errorText.setStyle(Resources.ERROR_TEXT_STYLE);
         console.appendText(errorText.getText());
     }
 
@@ -44,17 +46,15 @@ public class CommandWindow {
     }
 
     private void handleReturnKey () {
-        // print("\n");
-
         String text = console.getText();
-        int ignoreLength = Resources.CONSOLE_PROMPT_STR.length();
+        int ignoreLength = consolePrompt.length();
         String command =
-                text.substring(text.lastIndexOf(Resources.CONSOLE_PROMPT_STR) + ignoreLength)
+                text.substring(text.lastIndexOf(consolePrompt) + ignoreLength)
                         .trim();
         String out = interpreter.compile(command);
         print(out);
 
-        print(Resources.CONSOLE_PROMPT_STR);
+        print(consolePrompt);
     }
 
 }
