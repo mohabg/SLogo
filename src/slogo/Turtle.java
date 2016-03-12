@@ -53,7 +53,7 @@ public class Turtle implements TurtleData {
 		Point curPos = position.clone();
 		
 		if (isPenDown())
-			lines.add(new Line(oldPos, curPos));
+			lines.add(new Line(oldPos, curPos, getPenColor(), getPenThickness()));
 	}
 
 	public void setImage(String path) {

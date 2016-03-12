@@ -10,7 +10,8 @@ public class SetPenColor extends CommandNode {
 
 	@Override
 	public double run() {
-		getTurtle().setPenColor(getValue());
+		double color = getChildren().get(0).run();
+		getTurtle().setPenColor(color);
 		return getValue();
 	}
 
