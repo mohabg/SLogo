@@ -8,6 +8,7 @@ public abstract class MultipleTurtleCommands extends CommandNode{
 	
 	public MultipleTurtleCommands(double val) {
 		super(val);
+		setUsesTurtle(true);
 	}
 	@Override
 	public void setTurtleListController(TurtleListController controller){

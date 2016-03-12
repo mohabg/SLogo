@@ -1,8 +1,5 @@
 package data;
 
-import javafx.scene.paint.Color;
-
-
 public class Line {
     private Point a, b;
     private double color;

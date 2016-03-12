@@ -1,12 +1,9 @@
 package data;
 
-import javafx.scene.image.Image;
-
-
 public interface StampData {
 
-    public String getImage ();
+	String getImage();
 
-    public Point getPos ();
+	Point getPos();
 
 }

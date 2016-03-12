@@ -50,11 +50,11 @@ public class Model implements SaveInputs, TurtleListController{
 		return consoleOutput.toString();
 	}
 
-	public void addTurtle(double id){
+	private void addTurtle(double id){
 		int maxId = turtleList.size();
 		if(id > maxId){
-			for(int i = maxId; i < id; i++){
-				Turtle turtle = new Turtle(turtleList.size());
+			for(int i = maxId + 1; i <= id; i++){
+				Turtle turtle = new Turtle(i);
 				turtleList.add(turtle);		
 			}
 		}
