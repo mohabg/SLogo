@@ -20,7 +20,7 @@ public class ReturnData implements CanvasData, WorkspaceData {
     private Map<String, String> userVariables;
     private Set<String> userFunctions;
     private double backgroundColor;
-    private LinkedHashMap<String, Double> history;
+    private List<String[]> history;
 
     public ReturnData () {
     }
@@ -61,11 +61,11 @@ public class ReturnData implements CanvasData, WorkspaceData {
 
     }
 
-    public void setHistory (LinkedHashMap<String, Double> history) {
+    public void setHistory (List<String[]> history) {
         this.history = history;
     }
 
-    public LinkedHashMap<String, Double> getHistory () {
+    public List<String[]> getHistory () {
         return this.history;
     }
 
