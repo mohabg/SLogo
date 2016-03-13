@@ -8,7 +8,7 @@ public class Forward extends CommandNode {
 		setUsesTurtle(true);
 	}
 	public double run() {
-		setValue(getChildren().get(0).run() + getValue());
+		setValue(getChildren().get(0).run());
 		double newXLocation = getTurtle().getX() + getValue()*Math.sin(Math.toRadians(getTurtle().getOrientation()));
 		double newYLocation = getTurtle().getY() + getValue()*Math.cos(Math.toRadians(getTurtle().getOrientation()));
 		getTurtle().move(newXLocation, newYLocation);

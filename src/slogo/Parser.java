@@ -12,8 +12,6 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 import commands.Command;
 import commands.CommandNode;
-import commands.ListEnd;
-import commands.ListStart;
 import exceptions.SlogoException;
 
 public class Parser {
