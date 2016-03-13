@@ -9,7 +9,12 @@ public class Quotient extends CommandNode{
 
 	@Override
 	public double run() {
-		return getChildren().get(0).run() / getChildren().get(1).run();
+		double quotient = getChildren().get(0).run();
+		for(int i = 1 ; i < getChildren().size(); i++){
+			quotient /= getChildren().get(i).run();
+		}
+		setValue(quotient);
+		return getValue();
 	}
 
 }

@@ -109,12 +109,9 @@ public abstract class CommandNode {
 	public CommandIterator getCommandIterator() {
 		return commandIterator;
 	}
-
-	public void setTurtleListController(TurtleListController controller) {
-		// Do Nothing
-		// Override in MultipleTurtlesCommands
+	public boolean shouldSetParametersForChildren(){
+		return false;
 	}
-
 	@Override
 	public String toString() {
 		String out = this.getClass().getSimpleName();

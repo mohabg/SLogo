@@ -72,8 +72,9 @@ public class Controller {
 	public Collection<Double> update(CommandNode command) {
 		ArrayList<Double> outputs = new ArrayList<Double>();
 		if (command instanceof MultipleTurtleCommands) {
-			command.setTurtleListController(myModel);
-			outputs.add(command.run());
+			MultipleTurtleCommands multipleCommand = (MultipleTurtleCommands) command;
+			multipleCommand.setTurtleListController(myModel);
+			outputs.add(multipleCommand.run());
 			return outputs;
 		}
 		if (command.getUsesTurtle()) {

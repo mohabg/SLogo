@@ -9,7 +9,11 @@ public class Sum extends CommandNode {
 
     @Override
     public double run () {
-        setValue(getChildren().get(0).run() + getChildren().get(1).run());
+    	double sum = 0;
+    	for(CommandNode constant : getChildren()){
+    		sum += constant.run();
+    	}
+    	setValue(sum);
         return getValue();
     }
 

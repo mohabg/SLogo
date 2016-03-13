@@ -9,7 +9,11 @@ public class Difference extends CommandNode {
 
     @Override
     public double run () {
-        setValue(getChildren().get(0).run() - getChildren().get(1).run());
+    	double difference = getChildren().get(0).run();
+    	for(int i = 1; i < getChildren().size(); i++){
+    		difference -= getChildren().get(i).run();
+    	}
+        setValue(difference);
         return getValue();
     }
 

@@ -9,7 +9,11 @@ public class Product extends CommandNode {
 
     @Override
     public double run () {
-        setValue(getChildren().get(0).run() * getChildren().get(1).run());
+    	double product = 1;
+    	for(CommandNode constant : getChildren()){
+    		product *= constant.run();
+    	}
+        setValue(product);
         return getValue();
     }
 

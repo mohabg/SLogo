@@ -4,7 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
@@ -19,6 +21,7 @@ public class Parser {
 	private CommandFactory commandFactory;
 	private List<Entry<String, Pattern>> mySymbols;
 	private SaveInputs inputSaver;
+	private Map <String, String> startAndEndOfLists;
 	private Model model;
 
 	public Parser(String language, Model model) {
@@ -28,6 +31,9 @@ public class Parser {
 		addLanguage(language);
 		addPatterns("Syntax");
 		commandFactory = new CommandFactory(saver);
+		startAndEndOfLists = new HashMap<String, String>();
+		startAndEndOfLists.put( "[" , "]" );
+		startAndEndOfLists.put( "(" , ")" );
 		this.model = model;
 	}
 
@@ -66,8 +72,9 @@ public class Parser {
 	}
 
 	private List<CommandNode> createCommandNodes(String[] text)
-			throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
-			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+				throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
+						IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		
 		List<CommandNode> commandList = new ArrayList<>();
 		for (int i = 0; i < text.length; i++) {
 			if (text[i].trim().length() > 0) {
@@ -79,8 +86,9 @@ public class Parser {
 	}
 
 	private CommandNode getCommandForWord(String[] text, int index)
-			throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
-			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+				throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException,
+				IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		
 		String word = text[index];
 		String symbol = getSymbol(word);
 		return commandFactory.getCommandNode(symbol, word);
@@ -94,7 +102,7 @@ public class Parser {
 		while (counter++ < currentCommand.parametersNeeded()) {
 			CommandNode nextCommand = commandList.get(++currentIndex);
 			currentCommand.addToChildren(nextCommand);
-			if (nextCommand instanceof ListStart) {
+			if(startAndEndOfLists.containsKey(nextCommand.getInput())){
 				currentIndex = setChildrenForList(commandList, currentIndex);
 			}
 			if (nextCommand.parametersNeeded() > 0 && nextCommand.getChildren().size() == 0) {
@@ -118,12 +126,21 @@ public class Parser {
 	private int setChildrenForList(List<CommandNode> commandList, int currentIndex) {
 		CommandNode startOfList = commandList.get(currentIndex);
 		currentIndex++;
+		
 		while (currentIndex < commandList.size()) {
-			startOfList.addToChildren(commandList.get(currentIndex));
-			if (commandList.get(currentIndex) instanceof ListEnd) {
+			CommandNode currentCommand = commandList.get(currentIndex);
+			startOfList.addToChildren(currentCommand);
+			if(startAndEndOfLists.get(startOfList.getInput()).equals(currentCommand.getInput())){
 				break;
 			}
 			currentIndex = createChildren(commandList, currentIndex) + 1;
+		}
+		
+		if(startOfList.shouldSetParametersForChildren()){
+			CommandNode commandToSetParameters = startOfList.getChildren().get(0);
+			for(int i = 1; i < startOfList.getChildren().size() - 1; i++){
+				commandToSetParameters.addToChildren(startOfList.getChildren().get(i));
+			}
 		}
 		return currentIndex;
 	}
