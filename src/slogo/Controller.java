@@ -56,7 +56,6 @@ public class Controller {
 		myModel.setCompileInfo();
 	}
 
-	// Double check this- do we ever output more than one thing?
 	public String getConsoleOutput(List<Double> consoleOutputs) {
 		StringBuilder consoleOutput = new StringBuilder();
 		for (Double output : consoleOutputs) {
@@ -78,11 +77,7 @@ public class Controller {
 			return outputs;
 		}
 		if (command.getUsesTurtle()) {
-			for (int i = 0; i < myModel.getActiveTurtles().size(); i++) {
-				if (i >= myModel.getActiveTurtles().size()) {
-					break;
-				}
-				Turtle turtle = myModel.getActiveTurtles().get(i);
+			for (Turtle turtle : myModel.getActiveTurtles()){
 				command.setTurtle(turtle);
 				outputs.add(command.run());
 			}

@@ -2,15 +2,12 @@ package slogo;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.LinkedHashMap;
 import java.util.List;
-import commands.CommandNode;
 import gui.CommandWindow;
 
 
 public class SaveSettings {
 
-    private List<CommandNode> saveInfo;
     private CommandWindow console;
 
     public SaveSettings (CommandWindow console) {
