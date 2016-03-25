@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Tom Wu
+
 package gui;
 
 import java.io.File;
@@ -28,28 +31,24 @@ import slogo.Controller;
 
 
 public class MyCanvas {
-    private static final Point CANVAS_MOUSE_OFFSET = new Point(-10, -50);
+    private static final ResourceBundle GUIResources = ResourceBundle.getBundle("resources/GUI");
     private static final Color SELECTION_COLOR = Color.RED;
-    private final ResourceBundle GUIResources = ResourceBundle.getBundle("resources/GUI");
 
     private Canvas canvas;
     private Controller controller;
     private CommandWindow console;
-    private List<Color> palette;
-    private ContextMenu backgroundContextMenu, turtleContextMenu;
-    private List<TurtleData> turtles, selectedTurtles;
+    private List<Color> palette = new ArrayList<Color>();
+    private ContextMenu backgroundContextMenu = new ContextMenu(),
+            turtleContextMenu = new ContextMenu();
+    private List<TurtleData> turtles = new ArrayList<TurtleData>(),
+            selectedTurtles = new ArrayList<TurtleData>();
 
     public MyCanvas (int width, int height, Controller controller, CommandWindow console) {
         this.controller = controller;
         this.canvas = new Canvas(width, height);
         this.console = console;
-        this.palette = new ArrayList<Color>();
-        this.backgroundContextMenu = new ContextMenu();
-        this.turtleContextMenu = new ContextMenu();
-        initControls();
 
-        this.turtles = new ArrayList<TurtleData>();
-        this.selectedTurtles = new ArrayList<TurtleData>();
+        initControls();
     }
 
     public void update (CanvasData data, double segLength) {
@@ -72,13 +71,22 @@ public class MyCanvas {
         return canvas;
     }
 
+    private void drawLines (GraphicsContext gc, CanvasData data, double lineSpacing) {
+        Collection<Line> lines = data.getLines();
+
+        for (Line l : lines) {
+            int color = (int) l.getColor() % data.getPalette().size();
+            drawLine(gc, l, lineSpacing, data.getPalette().get(color));
+        }
+    }
+
     private void drawLine (GraphicsContext gc, Line l, double dottedLen, Color c) {
         gc.setStroke(c);
 
         Point a = convertCartesianToCanvasPos(l.getA());
         Point b = convertCartesianToCanvasPos(l.getB());
 
-        if (dottedLen < 0.1) {
+        if (dottedLen < Double.parseDouble(GUIResources.getString("dottedLenThreshold"))) {
             gc.strokeLine(a.getX(), a.getY(), b.getX(), b.getY());
             return;
         }
@@ -90,6 +98,15 @@ public class MyCanvas {
         double unitX = dx / length * dottedLen;
         double unitY = dy / length * dottedLen;
 
+        drawDottedLine(gc, dottedLen, a, length, unitX, unitY);
+    }
+
+    private void drawDottedLine (GraphicsContext gc,
+                                 double dottedLen,
+                                 Point a,
+                                 double length,
+                                 double unitX,
+                                 double unitY) {
         boolean drawing = true;
         for (double i = 0; i < length / dottedLen; i++) {
             if (drawing) {
@@ -103,15 +120,6 @@ public class MyCanvas {
                 gc.strokeLine(startX, startY, endX, endY);
             }
             drawing = !drawing;
-        }
-    }
-
-    private void drawLines (GraphicsContext gc, CanvasData data, double lineSpacing) {
-        Collection<Line> lines = data.getLines();
-
-        for (Line l : lines) {
-            int color = (int) l.getColor() % data.getPalette().size();
-            drawLine(gc, l, lineSpacing, data.getPalette().get(color));
         }
     }
 
@@ -179,7 +187,7 @@ public class MyCanvas {
         ResourceBundle langResources = ResourceBundle.getBundle("resources.languages/" + language);
 
         String commands = langResources.getString(key);
-        int beginIndex = 0;// commands.indexOf(',');
+        int beginIndex = 0; // commands.indexOf(',');
         int endIndex = commands.indexOf('|');
         if (endIndex < 0) { // doesn't contain
             endIndex = commands.length();
@@ -188,28 +196,16 @@ public class MyCanvas {
         controller.compile(command + " " + index);
     }
 
-    /*
-     * private String color2Hex (Color c) { int red = (int) (c.getRed() * 255);
-     * String redHex = Integer.toHexString(red); int green = (int) (c.getGreen()
-     * * 255); String greenHex = Integer.toHexString(green); int blue = (int)
-     * (c.getBlue() * 255); String blueHex = Integer.toHexString(blue);
-     * 
-     * return (redHex + greenHex + blueHex); }
-     */
-
     private void initControls () {
         canvas.setOnMouseClicked(e -> {
             backgroundContextMenu.hide();
             turtleContextMenu.hide();
 
-            Point mouseCanvasPos = new Point(e.getSceneX(), e.getSceneY()).add(CANVAS_MOUSE_OFFSET);
+            Point canvasMouseOffset =
+                    new Point(Double.parseDouble(GUIResources.getString("mouseOffsetX")),
+                              Double.parseDouble(GUIResources.getString("mouseOffsetY")));
+            Point mouseCanvasPos = new Point(e.getSceneX(), e.getSceneY()).add(canvasMouseOffset);
             Point mouseScreenPos = new Point(e.getScreenX(), e.getScreenY());
-
-            // GraphicsContext gc = canvas.getGraphicsContext2D();
-            // gc.setFill(Color.DARKORANGE);
-            // gc.fillOval(mouseCanvasPos.getX(),
-            // mouseCanvasPos.getY(), 3, 3);
-            // gc.setFill(Color.DARKMAGENTA);
 
             if (e.getButton() == MouseButton.PRIMARY) {
                 handleLeftClick(mouseCanvasPos);
@@ -251,12 +247,6 @@ public class MyCanvas {
         double y = canvas.getHeight() / 2 - myCartesian.getY();
         return new Point(x, y, myCartesian.getTheta());
     }
-
-    // private Point convertCanvasPosToCartesian (Point canvasPos) {
-    // double x = canvasPos.getX() - canvas.getWidth() / 2;
-    // double y = canvas.getHeight() / 2 - canvasPos.getY();
-    // return new Point(x, y, canvasPos.getTheta());
-    // }
 
     private Collection<TurtleData> findTurtlesContainingCanvasPos (Collection<TurtleData> turtles,
                                                                    Point canvasPos) {
