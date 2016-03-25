@@ -2,11 +2,21 @@ package commands;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import slogo.ColorSetter;
 import slogo.CommandIterator;
 import slogo.Model;
 import slogo.Turtle;
 import slogo.TurtleListController;
-
+//This entire file is part of my masterpiece
+//Mohab Gabal
+/*
+ * This is the abstract super class that all commands inherit from. It has all of the basic components,
+ * such as its children, a turtle to execute on, a value, the user input, etc. Also, it has an instance
+ * of an interface that is responsible for changing the background and palette color. This was done as 
+ * a compromise with the front end, since they originally passed in an instance of the Model, for two methods,
+ * and I created an interface with those two methods and passed that in, instead.
+ */
 public abstract class CommandNode {
 
 	private int parametersNeeded;
@@ -16,7 +26,7 @@ public abstract class CommandNode {
 	private double value;
 	private String input;
 	private CommandIterator commandIterator;
-	private Model model;
+	private ColorSetter colorSetter;
 
 	public CommandNode(double val) {
 		children = new ArrayList<>();
@@ -24,12 +34,12 @@ public abstract class CommandNode {
 		this.value = val;
 	}
 
-	public void setModel(Model m) {
-		model = m;
+	public void setColorSetter(Model m) {
+		colorSetter = m;
 	}
 
-	public Model getModel() {
-		return model;
+	public ColorSetter getColorSetter() {
+		return colorSetter;
 	}
 
 	public int parametersNeeded() {
@@ -84,14 +94,6 @@ public abstract class CommandNode {
 
 	public void setParametersNeeded(int parameters) {
 		parametersNeeded = parameters;
-	}
-
-	public void updateVariablesInChildren() {
-		for (CommandNode variable : getChildren()) {
-			if (variable instanceof Variable) {
-				variable.setValue(getValue());
-			}
-		}
 	}
 
 	public void setValue(double value) {

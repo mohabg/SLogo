@@ -71,17 +71,8 @@ public class Controller {
 
 	public Collection<Double> update(CommandNode command) {
 		ArrayList<Double> outputs = new ArrayList<Double>();
-		if (command instanceof MultipleTurtleCommands) {
-			MultipleTurtleCommands multipleCommand = (MultipleTurtleCommands) command;
-			multipleCommand.setTurtleListController(myModel);
-			outputs.add(multipleCommand.run());
-			return outputs;
-		}
 		if (command.getUsesTurtle()) {
 			for (int i = 0; i < myModel.getActiveTurtles().size(); i++) {
-				if (i >= myModel.getActiveTurtles().size()) {
-					break;
-				}
 				Turtle turtle = myModel.getActiveTurtles().get(i);
 				command.setTurtle(turtle);
 				outputs.add(command.run());

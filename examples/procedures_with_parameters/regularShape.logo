@@ -1,4 +1,4 @@
-to regularShape [ :distance :angle ]
+ to regularShape [ :distance :angle ]
 [
   repeat quotient 360 :angle
   [

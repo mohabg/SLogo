@@ -10,7 +10,7 @@ public class SetBackground extends CommandNode{
 	@Override
 	public double run() {
 		double color = (int)getChildren().get(0).run();
-		getModel().setBackgroundColor(color);
+		getColorSetter().setBackgroundColor(color);
 		return color;
 	}
 

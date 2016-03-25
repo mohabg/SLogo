@@ -3,6 +3,7 @@ package slogo;
 import java.lang.reflect.Constructor;
 import commands.Command;
 import commands.CommandNode;
+import commands.MultipleTurtleCommands;
 import commands.Variable;
 import exceptions.SlogoException;
 
@@ -10,9 +11,11 @@ import exceptions.SlogoException;
 public class CommandFactory {
 
     private SaveInputs inputSaver;
-
-    public CommandFactory (SaveInputs model) {
+    private TurtleListController turtleListController;
+    
+    public CommandFactory (Model model) {
         inputSaver = model;
+        turtleListController = model;
     }
 
     public CommandNode getCommandNode (String commandName, String word) {
@@ -62,6 +65,9 @@ public class CommandFactory {
                 // Adds only the first definition for a function
                 inputSaver.addCommandToMap(command, word);
             }
+        }
+        if(command instanceof MultipleTurtleCommands){
+        	((MultipleTurtleCommands) command).setTurtleListController(turtleListController);
         }
         return command;
     }

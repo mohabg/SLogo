@@ -17,7 +17,7 @@ import data.TurtleData;
 import javafx.scene.paint.Color;
 
 
-public class Model implements SaveInputs, TurtleListController {
+public class Model implements SaveInputs, TurtleListController, ColorSetter {
 
     private static final List<double[]> DEFAULT_PALETTE = new ArrayList<double[]>() {
         {

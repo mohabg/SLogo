@@ -23,12 +23,12 @@ public class Parser {
 	private Model model;
 
 	public Parser(String language, Model model) {
-		SaveInputs saver = (SaveInputs) model;
+		SaveInputs saver = model;
 		mySymbols = new ArrayList<>();
 		inputSaver = saver;
 		addLanguage(language);
 		addPatterns("Syntax");
-		commandFactory = new CommandFactory(saver);
+		commandFactory = new CommandFactory(model);
 		startAndEndOfLists = new HashMap<String, String>();
 		startAndEndOfLists.put( "[" , "]" );
 		startAndEndOfLists.put( "(" , ")" );
@@ -57,7 +57,7 @@ public class Parser {
 		List<CommandNode> commandList = createCommandNodes(text);
 
 		for (CommandNode c : commandList) {
-			c.setModel(model);
+			c.setColorSetter(model);
 		}
 
 		List<CommandNode> commandHeads = new ArrayList<>();

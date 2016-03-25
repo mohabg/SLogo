@@ -1,10 +1,18 @@
 package commands;
-import java.util.ArrayList;
 import java.util.List;
-
 import slogo.Turtle;
 import slogo.TurtleListController;
 
+//This entire file is part of my masterpiece.
+//Mohab Gabal
+/*
+ * This class is the second level of abstraction in the command hierarchy that is responsible for the 
+ * implementation of the multiple turtle commands. It extends the CommandNode class, and its only 
+ * difference is the presence of the interface TurtleListController. Also, there is a method called
+ * setTurtlesAndRun in which all of the turtles in the commands that are to be executed by this command.
+ * recursively, have each turtle in the list of active turtles set to them, and are then executed. This
+ * removes a lot of potential duplicated code, across the subclasses. 
+ */
 public abstract class MultipleTurtleCommands extends CommandNode{
 	
 	private TurtleListController model;
