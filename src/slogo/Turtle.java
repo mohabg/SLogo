@@ -2,6 +2,8 @@ package slogo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
+
 import data.Line;
 import data.Point;
 import data.TurtleData;
@@ -18,6 +20,9 @@ public class Turtle implements TurtleData {
     private static final Image DEFAULT_IMAGE =
             new Image("resources/turtle.png", TURTLE_WIDTH, TURTLE_HEIGHT, true, true);
 
+	private ResourceBundle resources = ResourceBundle.getBundle("resources/Main");
+	private double screenWidth;
+	private double screenHeight;
     private Point position;
     private Image myImage;
     private Boolean visible;
@@ -27,7 +32,8 @@ public class Turtle implements TurtleData {
     private double shape;
     private int ID;
     private List<Line> lines = new ArrayList<Line>();
-
+    private Boolean wrap;
+    private Boolean fence;
     private String GUID = java.util.UUID.randomUUID().toString();
 
     public String getGUID () {
@@ -42,11 +48,18 @@ public class Turtle implements TurtleData {
         penThickness = DEFAULT_THICKNESS;
         penColor = DEFAULT_COLOR;
         this.ID = ID;
+        this.screenHeight = Double.parseDouble(resources.getString("height"));
+        this.screenWidth = Double.parseDouble(resources.getString("width"));
+        wrap = false;
+        fence = false;
     }
 
     public void move (double x, double y) {
         Point oldPos = position.clone();
-
+        if(wrap || fence){
+        	x = toroidalX(x);
+        	y = toroidalY(y);
+        }
         position.setX(x);
         position.setY(y);
 
@@ -55,7 +68,49 @@ public class Turtle implements TurtleData {
         if (isPenDown())
             lines.add(new Line(oldPos, curPos, getPenColor(), getPenThickness()));
     }
+    public void enableFence(){
+    	fence = true;
+    }
+    public void disableFence(){
+    	fence = false;
+    }
+	protected double toroidalX(double x) {
+		if(x >= screenWidth){
+			if(fence){
+				x = screenWidth;
+			}
+			else x = 0;
+        }
+        if(x <= 0){
+        	if(fence){
+        		x = 0;
+        	}	
+        	else x = screenWidth;
+        }
+		return x;
+	}
 
+	protected double toroidalY(double y) {
+		if(y >= screenHeight){
+			if(fence){
+				y = screenHeight;
+			}
+			else y = 0;
+        }
+        if(y <= 0){
+        	if(fence){
+        		y = 0;
+        	}
+        	else y = screenHeight;
+        }
+		return y;
+	}
+	public void enableWrap(){
+		this.wrap = true;
+	}
+	public void enableWindow(){
+		this.wrap = false;
+	}
     public void setImage (String path) {
         myImage = new Image(path, TURTLE_WIDTH, TURTLE_HEIGHT, true, true);
     }
