@@ -7,152 +7,161 @@ import data.Point;
 import data.TurtleData;
 import javafx.scene.image.Image;
 
-
 public class Turtle implements TurtleData {
 
-    private static final double DEFAULT_THICKNESS = 1;
-    private static final double DEFAULT_COLOR = 0;
-    private static final Point HOME = new Point(0, 0, 0);
-    private static final int TURTLE_WIDTH = 30;
-    private static final int TURTLE_HEIGHT = 30;
-    private static final Image DEFAULT_IMAGE =
-            new Image("resources/turtle.png", TURTLE_WIDTH, TURTLE_HEIGHT, true, true);
+	private static final double DEFAULT_THICKNESS = 1;
+	private static final double DEFAULT_COLOR = 0;
+	private static final Point HOME = new Point(0, 0, 0);
+	private static final int TURTLE_WIDTH = 30;
+	private static final int TURTLE_HEIGHT = 30;
 
-    private Point position;
-    private Image myImage;
-    private Boolean visible;
-    private Boolean penDown;
-    private double penColor;
-    private double penThickness;
-    private double shape;
-    private int ID;
-    private List<Line> lines = new ArrayList<Line>();
+	private static final Image IMAGE1 = new Image("resources/turtle.png", TURTLE_WIDTH, TURTLE_HEIGHT, true, true);
+	private static final Image IMAGE2 = new Image("resources/turtle2.jpg", TURTLE_WIDTH, TURTLE_HEIGHT, true, true);
+	private static final Image IMAGE3 = new Image("resources/turtle3.jpg", TURTLE_WIDTH, TURTLE_HEIGHT, true, true);
 
-    private String GUID = java.util.UUID.randomUUID().toString();
+	private List<Image> images = new ArrayList<>();
 
-    public String getGUID () {
-        return GUID;
-    }
+	private Point position;
+	private Image myImage;
+	private Boolean visible;
+	private Boolean penDown;
+	private double penColor;
+	private double penThickness;
+	private double shape;
+	private int ID;
+	private List<Line> lines = new ArrayList<Line>();
 
-    public Turtle (int ID) {
-        myImage = DEFAULT_IMAGE;
-        position = HOME.clone();
-        penDown = true;
-        visible = true;
-        penThickness = DEFAULT_THICKNESS;
-        penColor = DEFAULT_COLOR;
-        this.ID = ID;
-    }
+	private String GUID = java.util.UUID.randomUUID().toString();
 
-    public void move (double x, double y) {
-        Point oldPos = position.clone();
+	public String getGUID() {
+		return GUID;
+	}
 
-        position.setX(x);
-        position.setY(y);
+	public Turtle(int ID) {
+		images.add(IMAGE1);
+		images.add(IMAGE2);
+		images.add(IMAGE3);
 
-        Point curPos = position.clone();
+		myImage = IMAGE1;
+		position = HOME.clone();
+		penDown = true;
+		visible = true;
+		penThickness = DEFAULT_THICKNESS;
+		penColor = DEFAULT_COLOR;
+		this.ID = ID;
+	}
 
-        if (isPenDown())
-            lines.add(new Line(oldPos, curPos, getPenColor(), getPenThickness()));
-    }
+	public void move(double x, double y) {
+		Point oldPos = position.clone();
 
-    public void setImage (String path) {
-        myImage = new Image(path, TURTLE_WIDTH, TURTLE_HEIGHT, true, true);
-    }
+		position.setX(x);
+		position.setY(y);
 
-    public Point getPosition () {
-        return position.clone();
-    }
+		Point curPos = position.clone();
 
-    public double getX () {
-        return position.getX();
-    }
+		if (isPenDown())
+			lines.add(new Line(oldPos, curPos, getPenColor(), getPenThickness()));
+	}
 
-    public double getY () {
-        return position.getY();
-    }
+	public void setImage(String path) {
+		myImage = new Image(path, TURTLE_WIDTH, TURTLE_HEIGHT, true, true);
+	}
 
-    public double getOrientation () {
-        return position.getTheta();
-    }
+	public Point getPosition() {
+		return position.clone();
+	}
 
-    public void setOrientation (double orientationToSet) {
-        position.setTheta(orientationToSet);
-    }
+	public double getX() {
+		return position.getX();
+	}
 
-    public void setPenThickness (double thickness) {
-        penThickness = thickness;
-    }
+	public double getY() {
+		return position.getY();
+	}
 
-    public void setPenColor (double color) {
-        penColor = color;
-    }
+	public double getOrientation() {
+		return position.getTheta();
+	}
 
-    public void turn (Double angle) {
-        position.setTheta(position.getTheta() + angle);
-    }
+	public void setOrientation(double orientationToSet) {
+		position.setTheta(orientationToSet);
+	}
 
-    public List<Line> getLines () {
-        return lines;
-    }
+	public void setPenThickness(double thickness) {
+		penThickness = thickness;
+	}
 
-    public void clearLines () {
-        lines.clear();
-    }
+	public void setPenColor(double color) {
+		penColor = color;
+	}
 
-    public void setPenDown () {
-        penDown = true;
-    }
+	public void turn(Double angle) {
+		position.setTheta(position.getTheta() + angle);
+	}
 
-    public void setPenUp () {
-        penDown = false;
-    }
+	public List<Line> getLines() {
+		return lines;
+	}
 
-    public void setVisible () {
-        visible = true;
-    }
+	public void clearLines() {
+		lines.clear();
+	}
 
-    public void setInvisible () {
-        visible = false;
-    }
+	public void setPenDown() {
+		penDown = true;
+	}
 
-    @Override
-    public Image getImage () {
-        return myImage;
-    }
+	public void setPenUp() {
+		penDown = false;
+	}
 
-    @Override
-    public double getPenThickness () {
-        return penThickness;
-    }
+	public void setVisible() {
+		visible = true;
+	}
 
-    @Override
-    public double getPenColor () {
-        return penColor;
-    }
+	public void setInvisible() {
+		visible = false;
+	}
 
-    @Override
-    public Boolean isPenDown () {
-        return penDown;
-    }
+	@Override
+	public Image getImage() {
+		return myImage;
+	}
 
-    @Override
-    public Boolean isVisible () {
-        return visible;
-    }
+	@Override
+	public double getPenThickness() {
+		return penThickness;
+	}
 
-    @Override
-    public double getShape () {
-        return shape;
-    }
+	@Override
+	public double getPenColor() {
+		return penColor;
+	}
 
-    @Override
-    public int getID () {
-        return ID;
-    }
+	@Override
+	public Boolean isPenDown() {
+		return penDown;
+	}
 
-    public void setShape (double shape) {
-        this.shape = shape;
+	@Override
+	public Boolean isVisible() {
+		return visible;
+	}
 
-    }
+	@Override
+	public double getShape() {
+		return shape;
+	}
+
+	@Override
+	public int getID() {
+		return ID;
+	}
+
+	public void setShape(double shape) {
+		int shapeIndex = (int)shape - 1;
+		myImage = images.get(shapeIndex);
+		this.shape = shape;
+
+	}
 }

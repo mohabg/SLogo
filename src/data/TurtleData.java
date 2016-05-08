@@ -15,7 +15,9 @@ public interface TurtleData {
     Image getImage ();
 
     void setImage (String path);
-
+    
+    void setShape(double shape);
+    
     double getShape ();
 
     Boolean isPenDown ();

@@ -264,6 +264,7 @@ public class MyCanvas {
         for (TurtleData turtle : turtles) {
             TurtleView turtleView = new TurtleView(turtle, this);
             Point2D p = new Point2D(canvasPos.getX(), canvasPos.getY());
+            //System.out.printf("%f %f %f %f\n", turtleView.getX(), turtleView.getY(), p.getX(), p.getY());
             if (turtleView.contains(p)) {
                 ret.add(turtle);
             }

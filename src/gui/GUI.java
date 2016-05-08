@@ -27,6 +27,7 @@ public class GUI {
     private HistoryWindow historyWindow;
     private ColorDisplay colorDisplay;
     private LineStyle lineStyle;
+    private ImagePicker imagePicker;
 
     private ResourceBundle resources = ResourceBundle.getBundle("resources/GUI");
 
@@ -45,10 +46,11 @@ public class GUI {
         historyWindow = new HistoryWindow();
         colorDisplay = new ColorDisplay();
         lineStyle = new LineStyle();
+        imagePicker = new ImagePicker();
 
         GridPane grid =
                 createGridPane(this.canvas, this.commandWindow, this.scriptWindow, this.workspace,
-                               this.historyWindow, colorDisplay, lineStyle);
+                               this.historyWindow, colorDisplay, lineStyle, imagePicker);
 
         pane.setTop(MenuFactory.createMenuBar(scriptWindow, controller));
         pane.setCenter(grid);
@@ -72,6 +74,7 @@ public class GUI {
         workspace.setData((WorkspaceData) data);
         historyWindow.update(data.getHistory());
         colorDisplay.update((CanvasData) data);
+        imagePicker.update((CanvasData)data);
     }
 
     private GridPane createGridPane (MyCanvas canvas,
@@ -80,7 +83,7 @@ public class GUI {
                                      Workspace workspace,
                                      HistoryWindow historyWindow,
                                      ColorDisplay colorDisplay,
-                                     LineStyle lineStyle) {
+                                     LineStyle lineStyle, ImagePicker imagePicker) {
         GridPane grid = new GridPane();
         setGridPaneStyle(grid);
 
@@ -96,6 +99,7 @@ public class GUI {
         setGridPaneStyle(subGrid);
         subGrid.add(colorDisplay.getParent(), 0, 0);
         subGrid.add(lineStyle.getParent(), 0, 1);
+        subGrid.add(imagePicker.getParent(), 0, 2);
 
         grid.add(subGrid, 2, 1);
 
