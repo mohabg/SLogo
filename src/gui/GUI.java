@@ -1,6 +1,5 @@
 package gui;
 
-import java.util.ResourceBundle;
 import data.CanvasData;
 import data.ReturnData;
 import data.WorkspaceData;
@@ -13,6 +12,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import slogo.Controller;
+
+import java.util.ResourceBundle;
 
 
 public class GUI {
@@ -27,6 +28,8 @@ public class GUI {
     private HistoryWindow historyWindow;
     private ColorDisplay colorDisplay;
     private LineStyle lineStyle;
+
+    private TurtleDisplay turtleDisplay = new TurtleDisplay();
 
     private ResourceBundle resources = ResourceBundle.getBundle("resources/GUI");
 
@@ -52,6 +55,7 @@ public class GUI {
 
         pane.setTop(MenuFactory.createMenuBar(scriptWindow, controller));
         pane.setCenter(grid);
+        pane.setLeft(turtleDisplay.getPane());
 
         int msDelay = Integer.parseInt(resources.getString("frameDelayMs"));
         KeyFrame frame = new KeyFrame(Duration.millis(msDelay), e -> step());
@@ -72,6 +76,7 @@ public class GUI {
         workspace.setData((WorkspaceData) data);
         historyWindow.update(data.getHistory());
         colorDisplay.update((CanvasData) data);
+        turtleDisplay.update(data.getTurtles());
     }
 
     private GridPane createGridPane (MyCanvas canvas,
