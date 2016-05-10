@@ -17,10 +17,12 @@ public class Turtle implements TurtleData {
     private static final int TURTLE_HEIGHT = 30;
     private static final Image DEFAULT_IMAGE =
             new Image("resources/turtle.png", TURTLE_WIDTH, TURTLE_HEIGHT, true, true);
+    private static final double CANVAS_RATIO = 1.0/4.0;
 
     private Point position;
     private Image myImage;
     private Boolean visible;
+    private Boolean fence;
     private Boolean penDown;
     private double penColor;
     private double penThickness;
@@ -39,6 +41,7 @@ public class Turtle implements TurtleData {
         position = HOME.clone();
         penDown = true;
         visible = true;
+        fence = false;
         penThickness = DEFAULT_THICKNESS;
         penColor = DEFAULT_COLOR;
         this.ID = ID;
@@ -49,8 +52,24 @@ public class Turtle implements TurtleData {
 
         position.setX(x);
         position.setY(y);
-
-        Point curPos = position.clone();
+        
+        if (fence){        	
+        	if (position.getX() > Integer.parseInt(Main.MainResources.getString("width"))*CANVAS_RATIO){
+        		position.setX(Integer.parseInt(Main.MainResources.getString("width"))*CANVAS_RATIO);
+        	}
+        	if (position.getX() < -1*Integer.parseInt(Main.MainResources.getString("width"))*CANVAS_RATIO){
+        		position.setX(-1*Integer.parseInt(Main.MainResources.getString("width"))*CANVAS_RATIO);
+        	}
+        	if(position.getY() > Integer.parseInt(Main.MainResources.getString("height"))*CANVAS_RATIO){
+        		position.setY(Integer.parseInt(Main.MainResources.getString("height"))*CANVAS_RATIO);
+        	}
+        	if(position.getY() < -1*Integer.parseInt(Main.MainResources.getString("height"))*CANVAS_RATIO){
+        		position.setY(-1*Integer.parseInt(Main.MainResources.getString("height"))*CANVAS_RATIO);
+        	}
+        }
+        System.out.println("turtle x position: " + position.getX());
+    	System.out.println("turtle y position: " + position.getY());
+    	Point curPos = position.clone();
 
         if (isPenDown())
             lines.add(new Line(oldPos, curPos, getPenColor(), getPenThickness()));
@@ -153,6 +172,8 @@ public class Turtle implements TurtleData {
 
     public void setShape (double shape) {
         this.shape = shape;
-
+    }
+    public void setFence(boolean fence){
+    	this.fence = fence;
     }
 }

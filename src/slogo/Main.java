@@ -16,7 +16,7 @@ public class Main extends Application {
 
 	// private List<GUI> GUIs = new ArrayList<GUI>();
 	// private int currentGUI = 0;
-	private ResourceBundle resources = ResourceBundle.getBundle("resources/Main");
+	public static final ResourceBundle MainResources = ResourceBundle.getBundle("resources/Main");
 	private TabPane tabPane = new TabPane();
 
 	public void start(Stage stage) {
@@ -29,7 +29,7 @@ public class Main extends Application {
 
 		stage.setScene(new Scene(mainPane));
 
-		String title = resources.getString("title");
+		String title = MainResources.getString("title");
 		stage.setTitle(title);
 		stage.show();
 	}
@@ -38,8 +38,8 @@ public class Main extends Application {
 		Button newTabBtn = new Button("New Tab");
 		newTabBtn.setOnAction(e -> addGUI());
 
-		double right = Double.parseDouble(resources.getString("buttonRightSpacing"));
-		double top = Double.parseDouble(resources.getString("buttonTopSpacing"));
+		double right = Double.parseDouble(MainResources.getString("buttonRightSpacing"));
+		double top = Double.parseDouble(MainResources.getString("buttonTopSpacing"));
 		AnchorPane.setRightAnchor(newTabBtn, right);
 		AnchorPane.setTopAnchor(newTabBtn, top);
 
@@ -47,9 +47,9 @@ public class Main extends Application {
 	}
 
 	public void addGUI() {
-		int width = Integer.parseInt(resources.getString("width"));
-		int height = Integer.parseInt(resources.getString("height"));
-		String language = resources.getString("default_language");
+		int width = Integer.parseInt(MainResources.getString("width"));
+		int height = Integer.parseInt(MainResources.getString("height"));
+		String language = MainResources.getString("default_language");
 
 		GUI gui = new GUI(language, width, height);
 		// GUIs.add(gui);
